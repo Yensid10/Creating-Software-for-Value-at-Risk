@@ -18,8 +18,7 @@
         #     hint_text: 'Search'
         Label:
             font_size: 25
-            size_hint_y: None
-            height: 43
+            size_hint_y: 0.113
             text: 'Stock List: FTSE100'
             canvas.before:
                 Color:
@@ -45,8 +44,7 @@
         size_hint_x: 0.55
         Label:
             id: currentStock
-            size_hint: 1, None
-            height: 43
+            size_hint: 1, 0.1
             font_size: 30
             text: 'No Selected Stock'
             color: 0, 0, 0, 1
@@ -67,7 +65,7 @@
             cols: 1
             size_hint_y: None
             spacing: 5
-            height: 427
+            size_hint : 1, 0.85
             canvas.before:
                 Color:
                     rgba: 0.5, 0.5, 0.5, 1
@@ -82,8 +80,7 @@
 
         BoxLayout:
             orientation: 'horizontal'
-            size_hint_y: None
-            height: 30
+            size_hint_y: 0.05
             Button:
                 size_hint_x: 0.3
                 text: 'Generate'

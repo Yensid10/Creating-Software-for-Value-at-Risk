@@ -1,6 +1,6 @@
 #Needed so that it doesn't scale the window and ruin the layouts
 import ctypes
-ctypes.windll.user32.SetProcessDPIAware()
+# ctypes.windll.user32.SetProcessDPIAware()
 
 #Importing the libraries needed
 from kivy.app import App

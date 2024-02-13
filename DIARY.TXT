@@ -39,3 +39,12 @@ I have spent the last few days working hard on the documentation. I regret not b
 
 07/12/23 - Finale
 I have finally completed the documentation, I am unhappy with the fact I had to miss out on so many sections that I had planned, but in the end I'm rather blown away that I was able to consolidate and present so much in such a small amount of time. I'm proud of the result, of this report and the code I created this term, but I do plan to spend the majority of my holiday catching up on the time I feel that I lost for my project throughout the term due to my illnesses and heartbreak. I need to compile all the programs I think are relevant for my submission, and put them all together within a zip file to be submitted. I am also dreading my presentation, as I know I will be quite sleep deprived for it, but I am happy with the slides I made, and I hope to be able to justify my project well, especially after I was able to justify it so well within the interim report/documentation. There are many changes that I want to make, but for now I will finally take a bit of a break to recover from the excessive amount of work that I have put in before the deadline to achieve this. Thank you for reading for now...
+
+29/01/24 - Start of Term 2
+I have discovered testing over the winter break that it displays properly on my normal monitor, but not on my laptop, even though I have fixed the resizing issues. I need to make sure to take screenshot references for this, and write about it within my FYP documentation.
+
+05/02/24 - Fixing an issue from the last term
+I fixed the above issue etc..
+
+12/02/24 - Plans to catch up on Documentation and research, groundwork for tabs in application
+The above
