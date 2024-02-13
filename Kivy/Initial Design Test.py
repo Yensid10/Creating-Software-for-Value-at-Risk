@@ -2,7 +2,7 @@
 # import ctypes
 # ctypes.windll.user32.SetProcessDPIAware()
 from kivy.config import Config
-Config.set('graphics', 'resizable', '1')
+Config.set('graphics', 'resizable', '0')
 
 
 #Importing the libraries needed
