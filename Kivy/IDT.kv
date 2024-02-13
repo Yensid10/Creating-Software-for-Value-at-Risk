@@ -17,7 +17,7 @@
         #     height: 43
         #     hint_text: 'Search'
         Label:
-            font_size: 25
+            font_size: "25sp"
             size_hint_y: 0.113
             text: 'Stock List: FTSE100'
             canvas.before:
@@ -45,7 +45,7 @@
         Label:
             id: currentStock
             size_hint: 1, 0.1
-            font_size: 30
+            font_size: "30sp"
             text: 'No Selected Stock'
             color: 0, 0, 0, 1
             canvas.before:
@@ -76,7 +76,7 @@
                     rgba: 0, 0, 0, 1 
                 Line:
                     rectangle: (self.x, self.y, self.width, self.height)
-                    width: 1.5
+                    width: 1.5            
 
         BoxLayout:
             orientation: 'horizontal'
@@ -84,13 +84,13 @@
             Button:
                 size_hint_x: 0.3
                 text: 'Generate'
-                font_size: 25
+                font_size: "25sp"
                 on_press: root.generateVaR()        
             Label:
                 id: valAtRisk
                 size_hint_x: 0.525
                 text: ' VaR: '
-                font_size: 25
+                font_size: "25sp"
                 halign: 'left'
                 valign: 'middle'
                 text_size: self.size
@@ -98,8 +98,17 @@
                 id: backTestCheck
                 size_hint_x: 0.175
                 text: ''
-                font_size: 10
+                font_size: "10sp"
                 halign: 'left'
                 valign: 'middle'
                 text_size: self.size
+    # FloatLayout:
+    #     orientation: 'horizontal'
+
+    #     Widget:
+    #     Label:
+    #         font_size: "14sp"
+    #         color: 0, 0, 0, 1
+    #         text:"[u]Back-Testing[/u]"
+    #         markup: True
 

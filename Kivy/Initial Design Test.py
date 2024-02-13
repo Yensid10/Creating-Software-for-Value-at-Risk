@@ -1,6 +1,9 @@
 #Needed so that it doesn't scale the window and ruin the layouts
-import ctypes
+# import ctypes
 # ctypes.windll.user32.SetProcessDPIAware()
+from kivy.config import Config
+Config.set('graphics', 'resizable', '1')
+
 
 #Importing the libraries needed
 from kivy.app import App
@@ -37,7 +40,7 @@ class ApplicationView(BoxLayout):
 
     def populateList(self):
         for i in range(len(ftse100)):
-            button = Button(text=ftse100['Company'][i], size_hint_y=None, height=30, font_size=20)
+            button = Button(text=ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")
             #Set the currentStock to the stock ticker that is clicked, and save it to the variable
             button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + ftse100['Ticker'][i]), setattr(self, 'currentTicker', str(ftse100['Ticker'][i])))) 
             self.stockList.add_widget(button)
@@ -101,11 +104,11 @@ class ApplicationView(BoxLayout):
         self.backTest(stock)
 
     def createButtons(self):
-        self.userInputs.add_widget(Label(text="Select Method:", size_hint_y=None, height=30, font_size=20))
-        radioButtons = BoxLayout(size_hint_y=None, height=35, padding=[120, 0])
+        self.userInputs.add_widget(Label(text="Select Method:", size_hint_y=None, height="30sp", font_size="20sp"))
+        radioButtons = BoxLayout(size_hint_y=None, height="35sp", padding=["120sp", 0])
         
         #Historical Simulation Button
-        hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width=100)
+        hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width="100sp")
         hButton.bind(on_press=self.simMethodPressed)
         if self.simMethod == 'Historical':
             hButton.state = 'down'
@@ -114,7 +117,7 @@ class ApplicationView(BoxLayout):
         radioButtons.add_widget(hButton)
         
         #Model Simulation Button
-        mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width=100)
+        mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width="100sp")
         mButton.bind(on_press=self.simMethodPressed)
         if self.simMethod == 'Model':
             mButton.state = 'down'
@@ -149,7 +152,7 @@ class ApplicationView(BoxLayout):
 
     def populateInputs(self):
         self.userInputs.clear_widgets() #Clears all the widgets in the layout, or they will duplicate
-        self.userInputs.add_widget(Label(text="\n", size_hint_y=None, height=5, font_size=20))
+        self.userInputs.add_widget(Label(text="\n", size_hint_y=None, height="5sp", font_size="20sp"))
         # Create a dictionary of variable names and their corresponding displayed texts and max values
         variables = {
             'portfolio': ('Enter Portfolio Value (£): ', '1000000000'),
@@ -157,10 +160,10 @@ class ApplicationView(BoxLayout):
             'timeHori': ('Enter Time Horizon (No. of Days): ', '31')
         }
         for varName, (label, maxVal) in variables.items():
-            self.userInputs.add_widget(Label(text=label, size_hint_y=None, height=30, font_size=20))
-            centeredLayout = BoxLayout(size_hint_y=None, height=30, padding=[85, 0]) #Padding used to center the text input
+            self.userInputs.add_widget(Label(text=label, size_hint_y=None, height="30sp", font_size="20sp"))
+            centeredLayout = BoxLayout(size_hint_y=None, height="30sp", padding=["85sp", 0]) #Padding used to center the text input
             #Needs to set multiline to false or it won't let you use enter to validate         
-            text = TextInput(size_hint_x=None, width=275, font_size=15, multiline=False)
+            text = TextInput(size_hint_x=None, width="275sp", font_size="15sp", multiline=False)
             # text.bind(on_focus=self.onFocus) #Was not working, so will maybe try again in the future
             text.bind(on_text_validate=lambda current, varName=varName, maxVal=int(maxVal): self.validateInput(current, varName, maxVal))
             centeredLayout.add_widget(text)
@@ -169,11 +172,9 @@ class ApplicationView(BoxLayout):
         self.createButtons()
         
         if self.portfolio == 100000000 and self.rlPercent == 5 and self.timeHori == 1:
-            self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given (Default)[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height=10, markup=True, font_size=20, pos_hint={'center_x': 0.3}))
+            self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given (Default)[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
         else:
-            self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height=10, markup=True, font_size=20, pos_hint={'center_x': 0.3}))
-        self.userInputs.add_widget(Label(text="\n\n\n\n\n\n\n\n\n\n\n\n                                                                                                                       [u]Back-Testing[/u]",size_hint_y=None, height=10, markup=True, font_size=14, color=(0, 0, 0, 1)))
-        #Use of \n and spaces is very crude for formatting, I will try and correct this in the future so it still displays correctly
+            self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
 
 class IDTApp(App):
     def build(self):
