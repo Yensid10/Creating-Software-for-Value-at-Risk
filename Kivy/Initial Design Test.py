@@ -12,6 +12,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.togglebutton import ToggleButton
 import datetime as dt
 import numpy as np
@@ -175,6 +176,15 @@ class ApplicationView(BoxLayout):
             self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given (Default)[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
         else:
             self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
+
+        #Adding back-testing title
+        floatLayout = FloatLayout()
+        label = Label(text='[u]Back-Testing[/u]', pos_hint={'center_x': 0.9, 'center_y': 0.1}, font_size="14sp", markup=True, color=(0, 0, 0, 1))#Using the pos_hint to make sure its in the right place, which it now always is
+        floatLayout.add_widget(label)
+
+        # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time
+        self.userInputs.add_widget(floatLayout)
+
 
 class IDTApp(App):
     def build(self):
