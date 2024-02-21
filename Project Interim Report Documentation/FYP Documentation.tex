@@ -632,10 +632,10 @@ This initial design was guided by principles of user centered design (UCD) best 
 The conceptualisation phase was pivotal in laying the groundwork for the subsequent development of this GUI. It helped me visualise how it needed to look and how the interactions would have to take place, so even if the final result wasn't visually the same, it still provided an excellent user story for how it needed to perform.
 
 \subsection{Initial GUI Creation}
-Before my initial creation, I followed a lot of the book [\ref{ref9}], \textit{Kivy - Interactive Applications and Games in Python - Second Edition} by Roberto Ulloa, which I have referenced in my bibliography, as it was a very useful book for learning the basics of Kivy, and I would highly recommend it to anyone who wants to learn Kivy.
+Before my initial creation, I briefly followed the book [\ref{ref9}], \textit{Kivy - Interactive Applications and Games in Python - Second Edition} by Roberto Ulloa, which I have referenced in my bibliography, as it's a very useful book for learning the basics of Kivy, and I would highly recommend it to anyone who wants to learn the library.
 
 \subsubsection{First Iteration}
-Since the book taught me to seperate the GUI into two files, I have done so for my baseline of the application, these files  being the .py file, which contains the code for the GUI, and the other being the .kv file, which contains the layout and styling of the GUI, I will be explaining the code for both of these files, as well as the code for the main.py file, which is the file that runs the GUI.\@\\\vspace{0.3cm}
+Since the book taught me to separate the GUI into two files, I have done so for my baseline of the application, these files  being the .py file, which contains the code for the GUI, and the other being the .kv file, which contains the layout and styling of the GUI, I will be explaining the code for both of these files, as well as the code for the main.py file, which is the file that runs the GUI.\@\\\vspace{0.3cm}
 
 The Python script `Initial Design Test.py' serves as the backbone of the application. Utilizing Kivy's standard libraries, the script defines my ApplicationView class, which inherits from Kivy's BoxLayout to establish the fundamental structure of the GUI:
 
@@ -696,12 +696,112 @@ if __name__ == '__main__':
 \end{figure}
 
 \newpage
+
 \subsubsection{Final Iteration}
-For my final iteration of the design, I took all of the elements that were explored within the Combining Implementations chapter, and implemented them into the GUI, as well as adapting some of the old features so they could work in the boundary of what I was able to achieve. I would explain some of the code for both of the .py and .kv files respectively.\@\\\vspace{0.3cm}
+For my final iteration of my first design, I took all of the elements that were explored within the Combining Implementations chapter, and implemented them into the GUI, as well as adapting some of the old features so they could work in the boundary of what I was able to achieve.
 
-However, I do not feel that I have adequate time left when writing this to explain all of the code for both the files, like I have in previous sections. I plan to cover the code in full detail in my final report. Instead, I will show images of this final iteration of the initial design, explaining my thoughts on the compromises I had to make (such as removing the search feature in the top left and the scrolling ability of the right hand side), and what I would like to improve on in the future. I will also include a link to a Youtube video that showcases various interactions with the programs. Finally, I plan to briefly touch on a few elements from the code when I discuss some of the Design Patterns that I implemented within it.\\\vspace{0.3cm}
 
-I used pyInstaller \href[page=1]{https://www.pyinstaller.org/}{(https://www.pyinstaller.org/)} to create an executable file for the GUI, which can be found within the base folder for this project, which can be run on any Windows computer. I will work on having the visual accessibility to be able to port my future GUI's onto mobile devices. The .exe also opens up a console whilst the program runs, I cannot seem to get the program to work without crashing when I disable the console, so I will try and fix that for next term. As another final thing to add, I have left heavy comments within the code helping to explain certain sections, as is such with good software engineering practices.\\\vspace{0.3cm}
+\subsubsection{Enhanced Application Structure}
+The `ApplicationView` class has been expanded to include new properties and functionalities that support a richer user experience and more sophisticated data analysis capabilities:
+
+\begin{verbatim}
+class ApplicationView(BoxLayout):
+    portfolio = 100000000
+    rlPercent = 5
+    timeHori = 1
+    simMethod = "Historical"
+    currentTicker = ""
+    ...
+\end{verbatim}
+
+These new properties include a default portfolio value, risk level percentage, time horizon for analysis, simulation method preference, and the currently selected stock ticker. This setup allows for a dynamic and customizable analysis based on user inputs.
+
+\subsubsection{Dynamic Stock List Generation}
+The method `populateList` dynamically generates a list of stocks from the FTSE 100 index, allowing users to select a company for analysis:
+
+\begin{verbatim}
+def populateList(self):
+    for i in range(len(ftse100)):
+        button = Button(text=ftse100['Company'][i], ...)
+        button.bind(on_release=lambda btn, i=i: ...)
+        self.stockList.add_widget(button)
+\end{verbatim}
+
+This code snippet showcases the application's ability to fetch and display a list of companies from a live data source (Wikipedia), with each company represented as a button within the user interface.
+
+\subsubsection{Value at Risk (VaR) Calculation}
+The `generateVaR` method calculates the Value at Risk for the selected stock, using either historical data or a model simulation approach:
+
+\begin{verbatim}
+def generateVaR(self):
+    ...
+    stock = yf.download(self.currentTicker, startDate, endDate).tail(500)
+    ...
+    if self.simMethod == "Historical":
+        VaR = np.percentile(closeDiffs, self.rlPercent)...
+    else:
+        VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, ...)...
+    ...
+    setattr(self.valAtRisk, 'text', " VaR: £" + VaR)
+\end{verbatim}
+
+This function demonstrates complex financial analysis by downloading stock data using `yfinance`, calculating percentage changes in the stock's closing price, and determining the VaR based on the user's selected risk assessment method.
+
+\subsubsection{Back-testing Functionality}
+The `backTest` method evaluates the performance of the VaR calculation against historical data to assess its accuracy:
+
+\begin{verbatim}
+def backTest(self, stock):
+    ...
+    for i in range(1, len(stock) - adjust - 1):
+        ...
+        if VaR > nextDay:
+            count += 1
+    ...
+    if pValue > self.rlPercent/100:
+        ...
+    else:
+        ...
+\end{verbatim}
+
+This section of the code uses historical stock price data to perform a back-test, comparing calculated VaR values against actual market movements to generate a statistical p-value representing the model's reliability.
+
+\subsubsection{User Input Handling and Validation}
+The application includes mechanisms to handle and validate user inputs, ensuring that the analysis is based on accurate and realistic parameters:
+
+\begin{verbatim}
+def validateInput(self, current, varName, maxVal):
+    ...
+    if varName == 'portfolio':
+        ...
+    elif varName == 'rlPercent':
+        ...
+    else:
+        ...
+    self.populateInputs()
+\end{verbatim}
+
+This function validates user inputs for the portfolio value, risk level percentage, and time horizon, applying constraints and default values as necessary. It showcases the application's robust error handling and user feedback mechanisms.
+
+\subsubsection{Kivy Layout and Styling}
+The Kivy language file (.kv) defines the layout and appearance of the application, separating the design from the Python logic:
+
+\begin{verbatim}
+<ApplicationView>:
+    orientation: 'horizontal'
+    ...
+    ScrollView:
+        ...
+    BoxLayout:
+        ...
+\end{verbatim}
+
+This .kv file segment outlines the application's main layout, demonstrating the use of ScrollView for the stock list and BoxLayout for organizing interface elements. This separation of concerns facilitates easier maintenance and updates to the UI without altering the backend logic.
+
+\textbf{Conclusion:}
+The final iteration of the application incorporates advanced data processing, user interaction, and financial analysis features. Through detailed explanations of key code sections, we have illustrated how the application leverages Python's capabilities and Kivy's framework to provide a rich user experience and robust financial analysis tools. Further elaboration may be required to fully cover all aspects of the code's functionality and design decisions.
+
+% I used pyInstaller \href[page=1]{https://www.pyinstaller.org/}{(https://www.pyinstaller.org/)} to create an executable file for the GUI, which can be found within the base folder for this project, which can be run on any Windows computer. I will work on having the visual accessibility to be able to port my future GUI's onto mobile devices. The .exe also opens up a console whilst the program runs, I cannot seem to get the program to work without crashing when I disable the console, so I will try and fix that for next term. As another final thing to add, I have left heavy comments within the code helping to explain certain sections, as is such with good software engineering practices.\\\vspace{0.3cm}
 
 \begin{figure}[h!]
   \centering
@@ -717,7 +817,7 @@ I used pyInstaller \href[page=1]{https://www.pyinstaller.org/}{(https://www.pyin
   \label{fig:Initial Design Test - Final Iteration 2}
 \end{figure}
 
-Youtube Video: \href{https://youtu.be/2GIWug_IESI}{Presentation Demonstration For FYP}
+Youtube Video: \href{https://youtu.be/2GIWug_IESI}{Presentation Demonstration For Final Initial Design - FYP}
 
 % \subsection{GUI Practicality \& Industry Comparisons}
 % Explain the uses of the GUI, and delve into the fact you need to look up what other ones do for next turn

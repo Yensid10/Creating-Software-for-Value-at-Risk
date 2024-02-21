@@ -18,11 +18,17 @@
 \contentsline {subsection}{\numberline {4.3}Initial GUI Creation}{23}{subsection.4.3}%
 \contentsline {subsubsection}{\numberline {4.3.1}First Iteration}{23}{subsubsection.4.3.1}%
 \contentsline {subsubsection}{\numberline {4.3.2}Final Iteration}{25}{subsubsection.4.3.2}%
-\contentsline {section}{\numberline {5}Chapter 4 --- Software Engineering}{27}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Design Patterns}{27}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Testing}{28}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Version Control (Git)}{29}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Self Evaluation}{30}{section.6}%
-\contentsline {section}{\numberline {7}Bibliography}{31}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Literature Review - Summary}{32}{subsection.7.1}%
-\contentsline {section}{\numberline {8}Appendix - Diary}{33}{section.8}%
+\contentsline {subsubsection}{\numberline {4.3.3}Enhanced Application Structure}{25}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}Dynamic Stock List Generation}{26}{subsubsection.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.5}Value at Risk (VaR) Calculation}{26}{subsubsection.4.3.5}%
+\contentsline {subsubsection}{\numberline {4.3.6}Back-testing Functionality}{26}{subsubsection.4.3.6}%
+\contentsline {subsubsection}{\numberline {4.3.7}User Input Handling and Validation}{27}{subsubsection.4.3.7}%
+\contentsline {subsubsection}{\numberline {4.3.8}Kivy Layout and Styling}{27}{subsubsection.4.3.8}%
+\contentsline {section}{\numberline {5}Chapter 4 --- Software Engineering}{29}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Design Patterns}{29}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Testing}{30}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Version Control (Git)}{31}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Self Evaluation}{32}{section.6}%
+\contentsline {section}{\numberline {7}Bibliography}{33}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Literature Review - Summary}{34}{subsection.7.1}%
+\contentsline {section}{\numberline {8}Appendix - Diary}{35}{section.8}%
