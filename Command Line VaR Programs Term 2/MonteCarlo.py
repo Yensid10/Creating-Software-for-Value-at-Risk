@@ -27,3 +27,5 @@ portfoReturns = sorted(portfoReturns)
 rlPercent = 0.05
 
 print("VaR: £" + str("{:,}".format(round(-np.percentile(portfoReturns, 100 * rlPercent)*100000000, 2))))
+
+# Leave backtesting for now, try and focus on getting the IDT to start displaying multiple tabs.
