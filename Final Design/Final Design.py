@@ -11,6 +11,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.screenmanager import Screen, ScreenManager
 import datetime as dt
 import numpy as np
 from scipy.stats import norm, binom
@@ -20,7 +21,7 @@ import pandas as pd
 #Importing the FTSE100 list from Wikipedia
 ftse100 = pd.read_html('https://en.wikipedia.org/wiki/FTSE_100_Index')[4]
 
-class ApplicationView(BoxLayout):
+class VaRChecker(Screen):
     # Declare ObjectProperty variables for the stock list and user inputs, as well as all other variables
     stockList = ObjectProperty(None)
     userInputs = ObjectProperty(None)
@@ -32,7 +33,7 @@ class ApplicationView(BoxLayout):
 
     def __init__(self, **kwargs):
         # Call the parent class's constructor
-        super(ApplicationView, self).__init__(**kwargs)
+        super(VaRChecker, self).__init__(**kwargs)
         self.populateList()
         self.populateInputs()
 
@@ -182,10 +183,17 @@ class ApplicationView(BoxLayout):
         # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time
         self.userInputs.add_widget(floatLayout)
 
+class BlankScreen(Screen):
+    pass
+
 
 class FDApp(App):
     def build(self):
-        return ApplicationView()
+        sm = ScreenManager()
+        sm.add_widget(VaRChecker(name='VarChecker'))
+        sm.add_widget(BlankScreen(name='Other'))
+        return sm
+        # return VaRChecker()
 
 if __name__ == '__main__':
     FDApp().run()
