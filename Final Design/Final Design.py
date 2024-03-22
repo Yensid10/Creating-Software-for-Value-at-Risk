@@ -1,6 +1,6 @@
-from kivy.config import Config
-Config.set('graphics', 'resizable', '0')
+from kivy.core.window import Window
 
+Window.size = (800, 550)
 
 #Importing the libraries needed
 from kivy.app import App
@@ -183,16 +183,38 @@ class VaRChecker(Screen):
         # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time
         self.userInputs.add_widget(floatLayout)
 
-class BlankScreen(Screen):
+class Portfolio(Screen):
     pass
 
+class Rankings(Screen):
+    pass
+
+class Trends(Screen):
+    pass
 
 class FDApp(App):
     def build(self):
-        sm = ScreenManager()
-        sm.add_widget(VaRChecker(name='VarChecker'))
-        sm.add_widget(BlankScreen(name='Other'))
-        return sm
+        sm = ScreenManager()        
+        sm.add_widget(Portfolio(name='Portfolio'))
+        sm.add_widget(Rankings(name='Rankings'))
+        sm.add_widget(Trends(name='Trends'))
+        sm.add_widget(VaRChecker(name='VaRChecker'))
+
+        def screenSwitch(instance):
+            sm.current = instance.text
+
+        tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1})
+        for screen in sm.screens:
+            print(screen.name)
+            tabButton = Button(text=screen.name, size_hint=(None, 1), width=200)
+            tabButton.bind(on_release=screenSwitch)
+            tabs.add_widget(tabButton)
+
+        layout = BoxLayout(orientation='vertical')
+        layout.add_widget(tabs)
+        layout.add_widget(sm)
+
+        return layout
         # return VaRChecker()
 
 if __name__ == '__main__':
