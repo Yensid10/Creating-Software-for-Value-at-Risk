@@ -48,3 +48,5 @@ I worked out what the issue was with my program. Essentially, I had hard coded t
 
 19/03/24 - Finished Researching Monte-Carlo simulation
 After a busy month, with lots of other coursework and external factors, I have now finally been able to return to focusing on my project for the final stretch needed. I have now researched and understood the Monte-Carlo simulation, so I will start by creating a simple Monte-Carlo command line program to test that my knowledge lines up with creating it within Python. After that, I will start implementing tabs for the program, so I can move on to adding more utilities for the program, as well as implementing Monte-Carlo within it too.
+
+23/03/24 - Created tabbing system

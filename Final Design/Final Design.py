@@ -9,10 +9,10 @@ from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager
 
 #Importing the classes from other files within the directory
-from VaRChecker import VaRChecker
-from Portfolio import Portfolio
-from Rankings import Rankings
-from Trends import Trends
+from Screens.Portfolio import Portfolio
+from Screens.Rankings import Rankings
+from Screens.Trends import Trends
+from Screens.VaRChecker import VaRChecker
 
 class FDApp(App):
     def build(self):
@@ -28,7 +28,7 @@ class FDApp(App):
         tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1})
         for screen in sm.screens:
             print(screen.name)
-            tabButton = Button(text=screen.name, size_hint=(None, 1), width=200)
+            tabButton = Button(text=screen.name, size_hint=(0.25, 1))
             tabButton.bind(on_release=screenSwitch)
             tabs.add_widget(tabButton)
 
