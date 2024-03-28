@@ -27,7 +27,6 @@ class FDApp(App):
 
         tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1})
         for screen in sm.screens:
-            print(screen.name)
             tabButton = Button(text=screen.name, size_hint=(0.25, 1))
             tabButton.bind(on_release=screenSwitch)
             tabs.add_widget(tabButton)
