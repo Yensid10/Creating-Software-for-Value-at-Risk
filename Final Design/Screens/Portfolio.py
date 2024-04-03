@@ -8,7 +8,7 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
-from kivy.clock import Clock
+from kivy.clock import Clock, ClockEvent
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -17,12 +17,14 @@ class Portfolio(Screen):
     totalReturn = ObjectProperty(None)
     totalShares = ObjectProperty(None)
     dailyVaR = ObjectProperty(None)
+    stockInfo = None
+    iSTCheck = None
+    sSTCheck = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.loadStocks()
         self.initialStockTotals()
-        # Clock.schedule_interval(self.loadStocks, 10)
 
         # test1 = yf.download(['AAPL'], period='1d').tail(1)['Close'].iloc[0]
         # print(test1)
@@ -49,6 +51,12 @@ class Portfolio(Screen):
             self.addStock(stockData)
 
     def initialStockTotals(self, *args):
+        if isinstance(self.sSTCheck, ClockEvent):
+            Clock.unschedule(self.sSTCheck)
+            self.sSTCheck = None
+
+        if not isinstance(self.iSTCheck, ClockEvent):
+            self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 10)
         store = JsonStore('holdings.json')
 
         if len(store) != 0:
@@ -73,12 +81,26 @@ class Portfolio(Screen):
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
         
 
-    def specificStockTotals(self, totalStockInfo):
-        self.stockName.text = totalStockInfo['ticker']
-        # self.totalValue.text = f"Total Value (£): {totalStockInfo['totalPrice']}"
-        # self.dailyReturn.text = f"Daily Return (%): {totalStockInfo['dailyReturns']}"
-        self.totalShares.text = f"Total No. of Shares: {totalStockInfo['sharesOwned']}"
-        # self.dailyVaR.text = f"5% Daily VaR (£): {totalStockInfo['currentVaR']}"
+    def specificStockTotals(self, *args):
+        if self.stockInfo is None:
+                    return
+
+        if isinstance(self.iSTCheck, ClockEvent):
+            Clock.unschedule(self.iSTCheck)
+            self.iSTCheck = None
+
+        if not isinstance(self.sSTCheck, ClockEvent):
+            self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 10)
+        
+        currentPrice = yf.download([self.stockInfo['ticker']], period='1d').tail(1)['Close'].iloc[0]
+        totalValue = currentPrice * float(self.stockInfo['sharesOwned'])
+        totalReturn = ((currentPrice / self.stockInfo['initialPrice']) - 1) * 10
+
+        self.stockName.text = "[u]" + self.stockInfo['ticker'] + " Stock Value[/u]"
+        self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
+        self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
+        self.totalShares.text = f"Current No. of Shares: {self.stockInfo['sharesOwned']}"
+        # self.dailyVaR.text = f"5% Daily VaR (£): {stockInfo['currentVaR']}"
 
 class Stocks(Button):
     def __init__(self, portfolio, ticker, sharesOwned, initialPrice, **kwargs):
@@ -93,11 +115,13 @@ class Stocks(Button):
         self.stockInfo = {
             'ticker': ticker,
             'sharesOwned': sharesOwned,
+            'initialPrice': initialPrice
         }
 
     def on_release(self):
         print(self.stockInfo)
-        self.currentPortfolio.specificStockTotals(self.stockInfo)
+        self.currentPortfolio.stockInfo = self.stockInfo  # Update stockInfo in Portfolio
+        self.currentPortfolio.specificStockTotals()
 
 class InputStock(Popup):
     def __init__(self, **kwargs):
