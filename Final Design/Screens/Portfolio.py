@@ -34,7 +34,6 @@ class Portfolio(Screen):
         store = JsonStore('holdings.json')
         # Clear existing stock widgets
         self.ids.stockCards.clear_widgets()
-        print("stock cards cleared")
 
         # Load existing stocks and display them
         for stockKeys in store:
@@ -55,17 +54,15 @@ class Stocks(Button):
         self.size_hint_y = None
         self.height = "113sp"
 
-        print(f"ticker: {ticker}, overallShares: {overallShares}")
-        self.label = Label(text=f"ticker: {ticker}", size_hint_y=None)
-        self.add_widget(self.label)
-        
+        self.text = f"ticker: {ticker}"
+
         self.stockInfo = {
             'ticker': ticker,
             'overallShares': overallShares,
         }
 
     def on_release(self):
-        print("This is an on Release test")
+        pass
 
 class InputStock(Popup):
     def __init__(self, **kwargs):
