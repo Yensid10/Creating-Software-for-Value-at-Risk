@@ -6,6 +6,7 @@
         "dropna",
         "floatlayout",
         "Hori",
+        "iloc",
         "jsonstore",
         "portfo",
         "screenmanager",

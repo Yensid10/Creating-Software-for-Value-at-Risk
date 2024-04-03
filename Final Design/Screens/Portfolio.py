@@ -14,18 +14,23 @@ class Portfolio(Screen):
     stockCards = ObjectProperty(None)
     stockName = ObjectProperty(None)
     totalValue = ObjectProperty(None)
-    dailyReturn = ObjectProperty(None)
+    totalReturn = ObjectProperty(None)
     totalShares = ObjectProperty(None)
     dailyVaR = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.loadStocks()
-        Clock.schedule_interval(self.loadStocks, 10)
+        self.initialStockTotals()
+        # Clock.schedule_interval(self.loadStocks, 10)
+
+        # test1 = yf.download(['AAPL'], period='1d').tail(1)['Close'].iloc[0]
+        # print(test1)
 
     def openPopup(self):
         popup = InputStock()
         popup.bind(on_dismiss=self.loadStocks)
+        popup.bind(on_dismiss=self.initialStockTotals)
         popup.open()
 
     def addStock(self, stockData):
@@ -43,15 +48,40 @@ class Portfolio(Screen):
             stockData = store.get(stockKeys)
             self.addStock(stockData)
 
-    def updateTotals(self, totalStockInfo):
+    def initialStockTotals(self, *args):
+        store = JsonStore('holdings.json')
+
+        if len(store) != 0:
+            totalValue = 0
+            totalCurrentPrices = 0
+            totalInitialPrices = 0
+            totalShares = 0
+
+            for stockKeys in store:
+                stockData = store.get(stockKeys)
+                currentPrice = yf.download([stockData['ticker']], period='1d').tail(1)['Close'].iloc[0]
+                totalValue = totalValue + (currentPrice * float(stockData['sharesOwned']))
+                totalCurrentPrices = totalCurrentPrices + currentPrice
+                totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])
+                totalShares = totalShares + int(stockData['sharesOwned'])
+            
+            print(totalCurrentPrices, totalInitialPrices)
+            totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 10
+            self.stockName.text = "[u]Total Portfolio Value[/u]"
+            self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
+            self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
+            self.totalShares.text = f"Total No. of Shares: {totalShares}"
+        
+
+    def specificStockTotals(self, totalStockInfo):
         self.stockName.text = totalStockInfo['ticker']
         # self.totalValue.text = f"Total Value (£): {totalStockInfo['totalPrice']}"
         # self.dailyReturn.text = f"Daily Return (%): {totalStockInfo['dailyReturns']}"
-        self.totalShares.text = f"Total No. of Shares: {totalStockInfo['overallShares']}"
+        self.totalShares.text = f"Total No. of Shares: {totalStockInfo['sharesOwned']}"
         # self.dailyVaR.text = f"5% Daily VaR (£): {totalStockInfo['currentVaR']}"
 
 class Stocks(Button):
-    def __init__(self, portfolio, ticker, overallShares, **kwargs):
+    def __init__(self, portfolio, ticker, sharesOwned, initialPrice, **kwargs):
         super().__init__(**kwargs)
         self.currentPortfolio = portfolio
         self.orientation = 'vertical'
@@ -62,12 +92,12 @@ class Stocks(Button):
 
         self.stockInfo = {
             'ticker': ticker,
-            'overallShares': overallShares,
+            'sharesOwned': sharesOwned,
         }
 
     def on_release(self):
         print(self.stockInfo)
-        self.currentPortfolio.updateTotals(self.stockInfo)
+        self.currentPortfolio.specificStockTotals(self.stockInfo)
 
 class InputStock(Popup):
     def __init__(self, **kwargs):
@@ -77,14 +107,15 @@ class InputStock(Popup):
 
     def saveStock(self):
         # Generate Initial Stock Info
-
+        initialPrice = yf.download([self.inputTicker.text], period='1d').tail(1)['Close'].iloc[0]
 
         stockData = {
             'ticker': self.inputTicker.text,
-            'overallShares': self.inputShares.text,
+            'sharesOwned': self.inputShares.text,
+            'initialPrice': initialPrice,
         }
         JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
-        print(f"Added new holding: {stockData['ticker']}") # Current form of verification that it has added properly, add some stuff to make sure they can only input certain bits of information
+        print(f"Added new holding: {stockData}") 
         self.dismiss()
 
 
