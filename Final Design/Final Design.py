@@ -10,7 +10,6 @@ from kivy.uix.screenmanager import ScreenManager
 
 #Importing the classes from other files within the directory
 from Screens.Portfolio import Portfolio
-from Screens.Rankings import Rankings
 from Screens.Trends import Trends
 from Screens.VaRChecker import VaRChecker
 
@@ -18,7 +17,6 @@ class FDApp(App):
     def build(self):
         sm = ScreenManager()        
         sm.add_widget(Portfolio(name='Portfolio'))
-        sm.add_widget(Rankings(name='Rankings'))
         sm.add_widget(Trends(name='Trends'))
         sm.add_widget(VaRChecker(name='VaRChecker'))
 
