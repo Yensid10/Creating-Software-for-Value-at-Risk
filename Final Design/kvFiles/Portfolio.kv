@@ -48,7 +48,6 @@
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 1.3
-
                     Label:
                         text: 'PORTFOLIO'
                         color: 0, 0, 0, 1
@@ -69,6 +68,7 @@
                     Line:
                         rectangle: self.x, self.y, self.width, self.height
                         width: 1.3
+
                 GridLayout:
                     id: stockCards
                     cols: 1
@@ -90,7 +90,6 @@
                 Line:
                     rectangle: self.x, self.y, self.width, self.height
                     width: 1.3
-
             Label:
                 text: '[u]Total Portfolio Value[/u]'
                 id: stockName
@@ -143,6 +142,9 @@
             width: 1.3
 
 <InputStock>:
+    inputTicker: inputTicker
+    inputShares: inputShares
+
     title_size: 20
     size_hint: (0.8, 0.6)
     auto_dismiss: False
@@ -154,40 +156,19 @@
         spacing: '8dp'
 
         TextInput:
-            id: inputName
+            id: inputTicker
             hint_text: 'Stock Ticker'
             size_hint_y: None
             height: '30dp'
             multiline: False
-
-        TextInput:
-            id: inputPrice
-            hint_text: 'Stock Price' #I will remove this at some point since it is not necassary tbh
-            size_hint_y: None
-            height: '30dp'
-            multiline: False
-
+        
         TextInput:
             id: inputShares
-            hint_text: 'Shares Buying'
+            hint_text: 'No. of Shares'
             size_hint_y: None
             height: '30dp'
             multiline: False
-
-        TextInput:
-            id: inputReturns
-            hint_text: 'Daily Return (%)' #I realise I have done this slighty wrong but I will correct it all in the future.
-            size_hint_y: None
-            height: '30dp'
-            multiline: False
-
-        TextInput:
-            id: inputVaR
-            hint_text: 'VaR' 
-            size_hint_y: None
-            height: '30dp'
-            multiline: False
-
+        
         Button:
             text: 'Save'
             size_hint_y: None
