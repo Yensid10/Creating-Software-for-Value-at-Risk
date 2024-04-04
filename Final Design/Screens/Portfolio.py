@@ -12,6 +12,8 @@ from kivy.clock import Clock, ClockEvent
 import numpy as np
 from scipy.stats import norm
 import time
+import matplotlib.pyplot as plt
+import logging
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -42,7 +44,6 @@ class Portfolio(Screen):
         self.ids.stockCards.add_widget(stockCard)
 
     def loadStocks(self, *args):
-        print("Loading stocks")
         store = JsonStore('holdings.json')
         # Clear existing stock widgets
         self.ids.stockCards.clear_widgets()
@@ -71,7 +72,10 @@ class Portfolio(Screen):
             totalInitialPrices = 0
             totalShares = 0
 
+            start = time.time()
             stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
+            end = time.time()
+            print(f"Initial Stock Totals Speed: {end - start} seconds")
 
             for stockKeys in store:
                 stockData = store.get(stockKeys)
@@ -86,10 +90,12 @@ class Portfolio(Screen):
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
             self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
+            self.dailyVaR.text = f"Value at Risk: £{self.varCalc.convMonteCarloSim(totalValue, stocks)}"
 
-            self.dailyVaR.text = f"Value at Risk: £{self.varCalc.monteCarloSim(totalValue, stocks)}"
-
-        
+            # Option to perform Monte Carlo Simulation visual convergence analysis below
+            # Clock.unschedule(self.iSTCheck)
+            # self.iSTCheck = None
+            # self.varCalc.monteCarloSimAnalysis(totalValue, stocks)
 
     def specificStockTotals(self, *args):
         if isinstance(self.iSTCheck, ClockEvent):
@@ -112,7 +118,6 @@ class Portfolio(Screen):
         self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
         self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
         self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
-
         self.dailyVaR.text = f"Value at Risk: £{self.varCalc.modelSim(totalValue, stocks)}"
 
 
@@ -124,8 +129,67 @@ class VaRCalculators:
     def __init__(self, *args):
         pass
 
-    def monteCarloSim(self, totalValue, stocks):
-        start_time = time.time()
+    # def monteCarloSim(self, totalValue, stocks):
+    #     start = time.time()
+    #     store = JsonStore('holdings.json')
+    #     weightings = np.zeros(len(stocks['Close'].columns))
+
+    #     for x, stockKey in enumerate(store):
+    #         stockData = store.get(stockKey)
+    #         currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+    #         currentValue = currentPrice * float(stockData['sharesOwned'])
+    #         weightings[x] = currentValue / totalValue
+
+    #     closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+    #     simNum = 10000
+    #     portfoReturns = np.zeros(simNum)
+
+    #     # Massive optimisation here, I generate all the simulations at once, rather than one at a time, using (timeHori, simNum)!
+    #     optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, simNum)) 
+    #     for x in range(simNum): 
+    #         portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+        
+    #     end = time.time()
+    #     print(f"Monte Carlo Sim Speed: {end - start} seconds")
+    #     return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 * self.rlPercent)*totalValue)
+    
+    def convMonteCarloSim(self, totalValue, stocks):
+        start = time.time()
+
+        store = JsonStore('holdings.json')
+        weightings = np.zeros(len(stocks['Close'].columns))
+        for x, stockKey in enumerate(store):
+            stockData = store.get(stockKey)
+            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            currentValue = currentPrice * float(stockData['sharesOwned'])
+            weightings[x] = currentValue / totalValue
+
+        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+        simNum = 5000
+        convThreshold = 0.005
+        previousVar = float('inf')
+        converged = False
+
+        while not converged and simNum <= 100000:            
+            portfoReturns = np.zeros(simNum)
+            optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
+
+            for x in range(simNum):
+                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+
+            currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
+
+            if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
+                converged = True
+            else:
+                previousVar = currentVar
+                simNum += 5000
+
+        end = time.time()
+        print(f"Monte Carlo Sim Speed: {end - start} seconds")
+        return "{:,.2f}".format(currentVar * totalValue)
+
+    def monteCarloSimAnalysis(self, totalValue, stocks):
         store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Close'].columns))
 
@@ -136,17 +200,32 @@ class VaRCalculators:
             weightings[x] = currentValue / totalValue
 
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
-        simNum = 100000
-        portfoReturns = np.zeros(simNum)
-
-        # Massive optimisation here, I generate all the simulations at once, rather than one at a time, using (timeHori, simNum)!
-        optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, simNum)) 
-        for x in range(simNum): 
-            portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
         
-        end_time = time.time()
-        print(f"Execution time: {end_time - start_time} seconds")
-        return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 * self.rlPercent)*totalValue)
+        checkpoints = list(range(500, 10500, 500)) # Iteration checkpoints to check for convergence 
+        varResults = []
+
+        for sim in checkpoints:
+            # Generate all simulations at once
+            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, sim))
+            portfoReturns = np.zeros(sim)
+
+            for x in range(sim):
+                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+
+            # Calculate VaR at this checkpoint
+            VaR = np.percentile(sorted(portfoReturns), 100 * self.rlPercent) * totalValue
+            varResults.append(-VaR)
+        
+
+        logging.getLogger('matplotlib').setLevel(logging.WARNING)
+        # Plotting the convergence of VaR
+        plt.plot(checkpoints, varResults, marker='o')
+        plt.xlabel('Number of Simulations')
+        plt.ylabel('Value at Risk (VaR)')
+        plt.title('Convergence Analysis of Monte Carlo Simulation')
+        plt.grid(True)
+        plt.show()
+
     
     def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()

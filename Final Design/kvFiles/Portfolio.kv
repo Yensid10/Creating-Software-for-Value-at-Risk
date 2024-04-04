@@ -127,15 +127,26 @@
                     text: '5% Daily VaR (£): --'
                     id: dailyVaR
                     halign: 'left'
-    FloatLayout:
-        size_hint: 1, None
-        height: '50dp'
+
+    AnchorLayout:
+        anchor_x: 'right'
+        anchor_y: 'top'
+        # BoxLayout:
+        #     size_hint: None, None
+        #     size: '60dp', '60dp'
+        #     canvas.before:
+        #         Color:
+        #             rgba: 0, 0, 0, 1  # Black
+        #         Line:
+        #             width: 0.5
+        #             rectangle: self.x, self.y, self.width, self.height
         Button:
             id: returnButton
-            text: 'Return to Portfolio'
+            text: 'X'
+            font_size: '40sp'
             size_hint: None, None
-            size: '200dp', '40dp'
-            pos_hint: {'right': 1, 'top': 1}
+            size: '60dp', '60dp'
+            background_color: 0, 0, 0, 0
             opacity: 0
             disabled: True
             on_release: root.initialStockTotals()
@@ -155,36 +166,43 @@
             width: 1.3
 
 <InputStock>:
-    inputTicker: inputTicker
-    inputShares: inputShares
-
-    title_size: 20
     size_hint: (0.8, 0.6)
     auto_dismiss: False
-    title_align: 'center'
-
-    BoxLayout:
+    title: 'Create/Update Holding'
+    BoxLayout:  # This BoxLayout is the single content widget of the Popup
         orientation: 'vertical'
         padding: '12dp'
         spacing: '8dp'
 
+        # Your widgets go here
         TextInput:
             id: inputTicker
             hint_text: 'Stock Ticker'
             size_hint_y: None
             height: '30dp'
             multiline: False
-        
+
         TextInput:
             id: inputShares
             hint_text: 'No. of Shares'
             size_hint_y: None
             height: '30dp'
             multiline: False
-        
+
         Button:
             text: 'Save'
             size_hint_y: None
             height: '40dp'
             on_release: root.saveStock()
+
+        # Your AnchorLayout can be part of this main BoxLayout
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
+            Button:
+                size_hint: None, None
+                size: '40dp', '40dp'
+                text: 'X'
+                on_release: root.dismiss()
+
 

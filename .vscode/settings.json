@@ -10,6 +10,8 @@
         "jsonstore",
         "portfo",
         "screenmanager",
-        "togglebutton"
+        "togglebutton",
+        "xlabel",
+        "ylabel"
     ]
 }
