@@ -1,10 +1,6 @@
-from kivy.app import App
 from kivy.uix.screenmanager import Screen
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
@@ -27,17 +23,22 @@ class Portfolio(Screen):
     sSTCheck = None
     returnButton = ObjectProperty(None)
 
+    logging.getLogger('yfinance').setLevel(logging.WARNING)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.varCalc = VaRCalculators()
         self.loadStocks()
         self.initialStockTotals()
 
+    def handle_popup_dismiss(self, value):
+        self.loadStocks()
+        self.initialStockTotals()
+
     def openPopup(self):
         popup = InputStock()
-        popup.bind(on_dismiss=self.loadStocks)
-        popup.bind(on_dismiss=self.initialStockTotals)
-        popup.open()
+        popup.dismiss_handler = self.handle_popup_dismiss
+        popup.open() 
 
     def addStock(self, stockData):
         stockCard = Stocks(portfolio=self, **stockData)
@@ -62,9 +63,9 @@ class Portfolio(Screen):
             self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60)
         store = JsonStore('holdings.json')
 
-        if hasattr(self, 'returnButton'):  # Check if the returnButton exists
-            self.returnButton.opacity = 0
-            self.returnButton.disabled = True
+        # if hasattr(self, 'returnButton'):  # Check if the returnButton exists
+        self.returnButton.opacity = 0
+        self.returnButton.disabled = True
 
         if len(store) != 0:
             totalValue = 0
@@ -128,30 +129,6 @@ class VaRCalculators:
 
     def __init__(self, *args):
         pass
-
-    # def monteCarloSim(self, totalValue, stocks):
-    #     start = time.time()
-    #     store = JsonStore('holdings.json')
-    #     weightings = np.zeros(len(stocks['Close'].columns))
-
-    #     for x, stockKey in enumerate(store):
-    #         stockData = store.get(stockKey)
-    #         currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
-    #         currentValue = currentPrice * float(stockData['sharesOwned'])
-    #         weightings[x] = currentValue / totalValue
-
-    #     closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
-    #     simNum = 10000
-    #     portfoReturns = np.zeros(simNum)
-
-    #     # Massive optimisation here, I generate all the simulations at once, rather than one at a time, using (timeHori, simNum)!
-    #     optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, simNum)) 
-    #     for x in range(simNum): 
-    #         portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
-        
-    #     end = time.time()
-    #     print(f"Monte Carlo Sim Speed: {end - start} seconds")
-    #     return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 * self.rlPercent)*totalValue)
     
     def convMonteCarloSim(self, totalValue, stocks):
         start = time.time()
@@ -165,7 +142,7 @@ class VaRCalculators:
             weightings[x] = currentValue / totalValue
 
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
-        simNum = 5000
+        simNum = 10000
         convThreshold = 0.005
         previousVar = float('inf')
         converged = False
@@ -257,6 +234,7 @@ class InputStock(Popup):
         super().__init__(**kwargs)
         self.size_hint = (0.5, 0.5)
         self.title = 'Create/Update Holding'
+        self.dismiss_handler = None
 
     def saveStock(self):
         # Generate Initial Stock Info
@@ -270,4 +248,5 @@ class InputStock(Popup):
         }
         JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
         print(f"Added new holding: {stockData}") 
+        self.dismiss_handler(1)
         self.dismiss()
