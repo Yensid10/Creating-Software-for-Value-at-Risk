@@ -9,6 +9,7 @@ from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
 from kivy.clock import Clock, ClockEvent
+import numpy as np
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -17,7 +18,7 @@ class Portfolio(Screen):
     totalReturn = ObjectProperty(None)
     totalShares = ObjectProperty(None)
     dailyVaR = ObjectProperty(None)
-    stockInfo = None
+    tempStockInfo = None
     iSTCheck = None
     sSTCheck = None
 
@@ -50,6 +51,39 @@ class Portfolio(Screen):
             stockData = store.get(stockKeys)
             self.addStock(stockData)
 
+    def calcVaR(self, tickers, totalValue):
+        store = JsonStore('holdings.json')
+
+        # Create a list for tickers and an array for weightings
+        
+        weightings = np.zeros(len(tickers))
+
+        stocks = yf.download(tickers, period='500d')
+        for x, stockKey in enumerate(store):
+            stockData = store.get(stockKey)
+            currentPrice = stocks['Close'].tail(1)[stockData['ticker']].iloc[0]
+            currentValue = currentPrice * float(stockData['sharesOwned'])
+            weightings[x] = currentValue / totalValue
+
+        closeDiffs = stocks['Close'].pct_change().dropna()
+
+        # Calculate mean and covariance of returns
+        mean = closeDiffs.mean()
+        cov = closeDiffs.cov()
+        timeHori = 1
+
+        portfoReturns = []
+        # Monte Carlo simulations
+        for x in range(10000):
+            simReturns = np.random.multivariate_normal(mean, cov, timeHori)
+            singleReturn = np.sum(simReturns * weightings)
+            portfoReturns.append(singleReturn)
+
+        # Calculate VaR
+        portfoReturns = sorted(portfoReturns)
+        rlPercent = 0.05
+        return str("{:,}".format(round(-np.percentile(portfoReturns, 100 * rlPercent)*totalValue, 2)))
+
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
             Clock.unschedule(self.sSTCheck)
@@ -73,18 +107,17 @@ class Portfolio(Screen):
                 totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])
                 totalShares = totalShares + int(stockData['sharesOwned'])
             
-            print(totalCurrentPrices, totalInitialPrices)
             totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 10
             self.stockName.text = "[u]Total Portfolio Value[/u]"
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
             self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
+
+            tickers = [store.get(stockKey)['ticker'] for stockKey in store]
+            self.dailyVaR.text = f"5% Daily VaR (£): {self.calcVaR(tickers, totalValue)}"
         
 
     def specificStockTotals(self, *args):
-        if self.stockInfo is None:
-                    return
-
         if isinstance(self.iSTCheck, ClockEvent):
             Clock.unschedule(self.iSTCheck)
             self.iSTCheck = None
@@ -92,15 +125,17 @@ class Portfolio(Screen):
         if not isinstance(self.sSTCheck, ClockEvent):
             self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 10)
         
-        currentPrice = yf.download([self.stockInfo['ticker']], period='1d').tail(1)['Close'].iloc[0]
-        totalValue = currentPrice * float(self.stockInfo['sharesOwned'])
-        totalReturn = ((currentPrice / self.stockInfo['initialPrice']) - 1) * 10
+        currentPrice = yf.download([self.tempStockInfo['ticker']], period='1d').tail(1)['Close'].iloc[0]
+        totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
+        totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 10
 
-        self.stockName.text = "[u]" + self.stockInfo['ticker'] + " Stock Value[/u]"
+        self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
         self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
         self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
-        self.totalShares.text = f"Current No. of Shares: {self.stockInfo['sharesOwned']}"
-        # self.dailyVaR.text = f"5% Daily VaR (£): {stockInfo['currentVaR']}"
+        self.totalShares.text = f"Current No. of Shares: {self.tempStockInfo['sharesOwned']}"
+
+        # Use Model VaR
+        # self.dailyVaR.text = f"5% Daily VaR (£): {self.calcVaR([self.tempStockInfo['ticker']], totalValue)}"
 
 class Stocks(Button):
     def __init__(self, portfolio, ticker, sharesOwned, initialPrice, **kwargs):
@@ -120,14 +155,14 @@ class Stocks(Button):
 
     def on_release(self):
         print(self.stockInfo)
-        self.currentPortfolio.stockInfo = self.stockInfo  # Update stockInfo in Portfolio
+        self.currentPortfolio.tempStockInfo = self.stockInfo  # Update tempStockInfo in Portfolio
         self.currentPortfolio.specificStockTotals()
 
 class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (0.5, 0.5)
-        self.title = 'New Holding'
+        self.title = 'Create/Update Holding'
 
     def saveStock(self):
         # Generate Initial Stock Info
@@ -141,5 +176,3 @@ class InputStock(Popup):
         JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
         print(f"Added new holding: {stockData}") 
         self.dismiss()
-
-

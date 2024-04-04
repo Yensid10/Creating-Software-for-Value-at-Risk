@@ -121,12 +121,6 @@ class VaRChecker(Screen):
 
         self.userInputs.add_widget(radioButtons)
         
-    #This didn't work, onFocus would never run or print anything, so I will try and fix it in the future    
-    # def onFocus(self, instance, value):
-    #     print("Text: " + instance.text)
-    #     if instance.text == "Max: £1,000,000,000" or instance.text == "Max: 50%" or instance.text == "Max: 31 Days":
-    #         instance.text = ""
-    
     def validateInput(self, current, varName, maxVal):
         try:
             if current.text == "" or int(current.text) < 0:
