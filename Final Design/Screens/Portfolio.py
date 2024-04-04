@@ -10,6 +10,7 @@ from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
 from kivy.clock import Clock, ClockEvent
 import numpy as np
+from scipy.stats import norm
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -24,11 +25,9 @@ class Portfolio(Screen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.varCalc = VaRCalculators()
         self.loadStocks()
         self.initialStockTotals()
-
-        # test1 = yf.download(['AAPL'], period='1d').tail(1)['Close'].iloc[0]
-        # print(test1)
 
     def openPopup(self):
         popup = InputStock()
@@ -51,46 +50,13 @@ class Portfolio(Screen):
             stockData = store.get(stockKeys)
             self.addStock(stockData)
 
-    def calcVaR(self, tickers, totalValue):
-        store = JsonStore('holdings.json')
-
-        # Create a list for tickers and an array for weightings
-        
-        weightings = np.zeros(len(tickers))
-
-        stocks = yf.download(tickers, period='500d')
-        for x, stockKey in enumerate(store):
-            stockData = store.get(stockKey)
-            currentPrice = stocks['Close'].tail(1)[stockData['ticker']].iloc[0]
-            currentValue = currentPrice * float(stockData['sharesOwned'])
-            weightings[x] = currentValue / totalValue
-
-        closeDiffs = stocks['Close'].pct_change().dropna()
-
-        # Calculate mean and covariance of returns
-        mean = closeDiffs.mean()
-        cov = closeDiffs.cov()
-        timeHori = 1
-
-        portfoReturns = []
-        # Monte Carlo simulations
-        for x in range(10000):
-            simReturns = np.random.multivariate_normal(mean, cov, timeHori)
-            singleReturn = np.sum(simReturns * weightings)
-            portfoReturns.append(singleReturn)
-
-        # Calculate VaR
-        portfoReturns = sorted(portfoReturns)
-        rlPercent = 0.05
-        return str("{:,}".format(round(-np.percentile(portfoReturns, 100 * rlPercent)*totalValue, 2)))
-
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
             Clock.unschedule(self.sSTCheck)
             self.sSTCheck = None
 
         if not isinstance(self.iSTCheck, ClockEvent):
-            self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 10)
+            self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60)
         store = JsonStore('holdings.json')
 
         if len(store) != 0:
@@ -99,22 +65,23 @@ class Portfolio(Screen):
             totalInitialPrices = 0
             totalShares = 0
 
+            stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
+
             for stockKeys in store:
                 stockData = store.get(stockKeys)
-                currentPrice = yf.download([stockData['ticker']], period='1d').tail(1)['Close'].iloc[0]
+                currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
                 totalValue = totalValue + (currentPrice * float(stockData['sharesOwned']))
                 totalCurrentPrices = totalCurrentPrices + currentPrice
                 totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])
                 totalShares = totalShares + int(stockData['sharesOwned'])
             
-            totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 10
+            totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
             self.stockName.text = "[u]Total Portfolio Value[/u]"
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
             self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
 
-            tickers = [store.get(stockKey)['ticker'] for stockKey in store]
-            self.dailyVaR.text = f"5% Daily VaR (£): {self.calcVaR(tickers, totalValue)}"
+            self.dailyVaR.text = f"5% Daily VaR: £{self.varCalc.monteCarloSim(totalValue, stocks)}"
         
 
     def specificStockTotals(self, *args):
@@ -125,17 +92,48 @@ class Portfolio(Screen):
         if not isinstance(self.sSTCheck, ClockEvent):
             self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 10)
         
-        currentPrice = yf.download([self.tempStockInfo['ticker']], period='1d').tail(1)['Close'].iloc[0]
+        stocks = yf.download([self.tempStockInfo['ticker']], period='500d')
+
+        currentPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
-        totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 10
+        totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
 
         self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
         self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
         self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
         self.totalShares.text = f"Current No. of Shares: {self.tempStockInfo['sharesOwned']}"
+        self.dailyVaR.text = f"5% Daily VaR: £{self.varCalc.modelSim(totalValue, stocks)}"
 
-        # Use Model VaR
-        # self.dailyVaR.text = f"5% Daily VaR (£): {self.calcVaR([self.tempStockInfo['ticker']], totalValue)}"
+
+
+class VaRCalculators:
+    def __init__(self, *args):
+        self.rlPercent = 0.05
+        self.timeHori = 1
+
+    def monteCarloSim(self, totalValue, stocks):
+        store = JsonStore('holdings.json')
+        weightings = np.zeros(len(stocks['Close'].columns))
+
+        for x, stockKey in enumerate(store):
+            stockData = store.get(stockKey)
+            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            currentValue = currentPrice * float(stockData['sharesOwned'])
+            weightings[x] = currentValue / totalValue
+
+        closeDiffs = stocks['Close'].pct_change().dropna()
+
+        portfoReturns = []
+        # Monte Carlo simulations
+        for x in range(10000):
+            simReturns = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov() , self.timeHori)
+            portfoReturns.append(np.sum(simReturns * weightings))
+        
+        return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 * self.rlPercent)*totalValue)
+    
+    def modelSim(self, totalValue, stocks):
+        closeDiffs = stocks['Close'].pct_change().dropna()
+        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
 
 class Stocks(Button):
     def __init__(self, portfolio, ticker, sharesOwned, initialPrice, **kwargs):
@@ -166,7 +164,8 @@ class InputStock(Popup):
 
     def saveStock(self):
         # Generate Initial Stock Info
-        initialPrice = yf.download([self.inputTicker.text], period='1d').tail(1)['Close'].iloc[0]
+        stocks = yf.download([self.inputTicker.text], period='1d')
+        initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
 
         stockData = {
             'ticker': self.inputTicker.text,
