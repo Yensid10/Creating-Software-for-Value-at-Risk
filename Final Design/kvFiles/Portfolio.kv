@@ -168,43 +168,50 @@
 <InputStock>:
     inputTicker: inputTicker
     inputShares: inputShares
+    title: 'Create/Update Holding'
     size_hint: (0.8, 0.6)
     auto_dismiss: False
-    title: 'Create/Update Holding'
-    BoxLayout:  # This BoxLayout is the single content widget of the Popup
+
+    BoxLayout:
         orientation: 'vertical'
-        padding: '12dp'
-        spacing: '8dp'
 
-        # Your widgets go here
-        TextInput:
-            id: inputTicker
-            hint_text: 'Stock Ticker'
+        BoxLayout:
+            padding: [10, 10, 10, 10]  
             size_hint_y: None
-            height: '30dp'
-            multiline: False
+            height: '50dp' 
+            
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'top'
+                Button:
+                    size_hint: None, None
+                    size: '40dp', '40dp'
+                    text: 'X'
+                    on_release: root.dismiss()
+        
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '12dp'
+            spacing: '8dp'
 
-        TextInput:
-            id: inputShares
-            hint_text: 'No. of Shares'
-            size_hint_y: None
-            height: '30dp'
-            multiline: False
+            TextInput:
+                id: inputTicker
+                hint_text: 'Stock Ticker'
+                size_hint_y: None
+                height: '30dp'
+                multiline: False
 
-        Button:
-            text: 'Save'
-            size_hint_y: None
-            height: '40dp'
-            on_release: root.saveStock()
+            TextInput:
+                id: inputShares
+                hint_text: 'No. of Shares'
+                size_hint_y: None
+                height: '30dp'
+                multiline: False
 
-        # Your AnchorLayout can be part of this main BoxLayout
-        AnchorLayout:
-            anchor_x: 'right'
-            anchor_y: 'top'
             Button:
-                size_hint: None, None
-                size: '40dp', '40dp'
-                text: 'X'
-                on_release: root.dismiss()
+                text: 'Save'
+                size_hint_y: None
+                height: '40dp'
+                on_release: root.saveStock()
 
 

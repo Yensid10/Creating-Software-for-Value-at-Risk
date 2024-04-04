@@ -63,7 +63,6 @@ class Portfolio(Screen):
             self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60)
         store = JsonStore('holdings.json')
 
-        # if hasattr(self, 'returnButton'):  # Check if the returnButton exists
         self.returnButton.opacity = 0
         self.returnButton.disabled = True
 
@@ -120,8 +119,6 @@ class Portfolio(Screen):
         self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
         self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
         self.dailyVaR.text = f"Value at Risk: £{self.varCalc.modelSim(totalValue, stocks)}"
-
-
 
 class VaRCalculators:
     rlPercent = 0.05
@@ -233,7 +230,7 @@ class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (0.5, 0.5)
-        self.title = 'Create/Update Holding'
+        self.title = '                                     Create/Update Holding'
         self.dismiss_handler = None
 
     def saveStock(self):
