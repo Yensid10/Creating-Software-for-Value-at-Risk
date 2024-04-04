@@ -11,6 +11,7 @@ import yfinance as yf
 from kivy.clock import Clock, ClockEvent
 import numpy as np
 from scipy.stats import norm
+import time
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -22,6 +23,7 @@ class Portfolio(Screen):
     tempStockInfo = None
     iSTCheck = None
     sSTCheck = None
+    returnButton = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -59,6 +61,10 @@ class Portfolio(Screen):
             self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60)
         store = JsonStore('holdings.json')
 
+        if hasattr(self, 'returnButton'):  # Check if the returnButton exists
+            self.returnButton.opacity = 0
+            self.returnButton.disabled = True
+
         if len(store) != 0:
             totalValue = 0
             totalCurrentPrices = 0
@@ -81,7 +87,8 @@ class Portfolio(Screen):
             self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
 
-            self.dailyVaR.text = f"5% Daily VaR: £{self.varCalc.monteCarloSim(totalValue, stocks)}"
+            self.dailyVaR.text = f"Value at Risk: £{self.varCalc.monteCarloSim(totalValue, stocks)}"
+
         
 
     def specificStockTotals(self, *args):
@@ -90,7 +97,10 @@ class Portfolio(Screen):
             self.iSTCheck = None
 
         if not isinstance(self.sSTCheck, ClockEvent):
-            self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 10)
+            self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)
+
+        self.returnButton.opacity = 1
+        self.returnButton.disabled = False
         
         stocks = yf.download([self.tempStockInfo['ticker']], period='500d')
 
@@ -101,17 +111,21 @@ class Portfolio(Screen):
         self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
         self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
         self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
-        self.totalShares.text = f"Current No. of Shares: {self.tempStockInfo['sharesOwned']}"
-        self.dailyVaR.text = f"5% Daily VaR: £{self.varCalc.modelSim(totalValue, stocks)}"
+        self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
+
+        self.dailyVaR.text = f"Value at Risk: £{self.varCalc.modelSim(totalValue, stocks)}"
 
 
 
 class VaRCalculators:
+    rlPercent = 0.05
+    timeHori = 1
+
     def __init__(self, *args):
-        self.rlPercent = 0.05
-        self.timeHori = 1
+        pass
 
     def monteCarloSim(self, totalValue, stocks):
+        start_time = time.time()
         store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Close'].columns))
 
@@ -121,18 +135,21 @@ class VaRCalculators:
             currentValue = currentPrice * float(stockData['sharesOwned'])
             weightings[x] = currentValue / totalValue
 
-        closeDiffs = stocks['Close'].pct_change().dropna()
+        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+        simNum = 100000
+        portfoReturns = np.zeros(simNum)
 
-        portfoReturns = []
-        # Monte Carlo simulations
-        for x in range(10000):
-            simReturns = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov() , self.timeHori)
-            portfoReturns.append(np.sum(simReturns * weightings))
+        # Massive optimisation here, I generate all the simulations at once, rather than one at a time, using (timeHori, simNum)!
+        optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, simNum)) 
+        for x in range(simNum): 
+            portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
         
+        end_time = time.time()
+        print(f"Execution time: {end_time - start_time} seconds")
         return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 * self.rlPercent)*totalValue)
     
-    def modelSim(self, totalValue, stocks):
-        closeDiffs = stocks['Close'].pct_change().dropna()
+    def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
+        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
         return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
 
 class Stocks(Button):

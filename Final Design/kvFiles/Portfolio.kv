@@ -8,6 +8,7 @@
     totalReturn: totalReturn
     totalShares: totalShares
     dailyVaR: dailyVaR
+    returnButton: returnButton
 
     BoxLayout:
         orientation: 'horizontal'
@@ -126,6 +127,18 @@
                     text: '5% Daily VaR (£): --'
                     id: dailyVaR
                     halign: 'left'
+    FloatLayout:
+        size_hint: 1, None
+        height: '50dp'
+        Button:
+            id: returnButton
+            text: 'Return to Portfolio'
+            size_hint: None, None
+            size: '200dp', '40dp'
+            pos_hint: {'right': 1, 'top': 1}
+            opacity: 0
+            disabled: True
+            on_release: root.initialStockTotals()
 
 <Stocks>:
     canvas.before:
