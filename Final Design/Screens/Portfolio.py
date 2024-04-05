@@ -32,6 +32,7 @@ class Portfolio(Screen):
         self.varCalc = VaRCalculators()
         self.loadStocks()
         self.initialStockTotals()
+        Clock.schedule_interval(self.loadStocks, 60)
 
     def handle_popup_dismiss(self, value):
         self.loadStocks()
@@ -223,8 +224,9 @@ class Stocks(Button):
         self.background_normal = ''  # remove default background image
         self.background_color = (1, 1, 1, 1)  # white
         self.color = (0, 0, 0, 1)
+        self.font_size = "20sp"
 
-        self.text = f"{name}"
+        self.text = f"{name}: £{yf.download(ticker, period='1d')['Close'].loc[yf.download(ticker, period='1d')['Close'].last_valid_index()]:,.2f}"
 
         self.stockInfo = {
             'name': name,
