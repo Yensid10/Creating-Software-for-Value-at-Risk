@@ -9,6 +9,7 @@
     totalShares: totalShares
     dailyVaR: dailyVaR
     returnButton: returnButton
+    deleteButton: deleteButton
 
     BoxLayout:
         orientation: 'horizontal'
@@ -123,10 +124,12 @@
                 padding: '15sp'
             
                 Button:
-
+                    id: deleteButton
                     text: 'Delete Stock'
                     size_hint: 0.2, 0.7
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    opacity: 0
+                    disabled: True
                     on_release: root.deleteStock()
 
     AnchorLayout:
@@ -161,7 +164,7 @@
         padding: '12dp'
         spacing: '8dp'
         Label:
-            text: 'This is a test'
+            text: 'If you own the stock, it will update your no. of shares'
 
         TextInput:
             id: inputTicker

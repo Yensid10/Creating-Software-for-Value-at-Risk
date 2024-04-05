@@ -24,6 +24,7 @@ class Portfolio(Screen):
     iSTCheck = None
     sSTCheck = None
     returnButton = ObjectProperty(None)
+    deleteButton = ObjectProperty(None)
 
     logging.getLogger('yfinance').setLevel(logging.WARNING)
 
@@ -55,7 +56,6 @@ class Portfolio(Screen):
             currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
             self.addStock(stockData, currentPrice)
 
-
     def deleteStock(self):
         store = JsonStore('holdings.json')
         store.delete(self.tempStockInfo['ticker'])
@@ -71,7 +71,10 @@ class Portfolio(Screen):
         store = JsonStore('holdings.json')
 
         self.returnButton.opacity = 0
+        self.deleteButton.opacity = 0
         self.returnButton.disabled = True
+        self.deleteButton.disabled = True
+
 
         if len(store) != 0:
             totalValue = 0
@@ -118,7 +121,9 @@ class Portfolio(Screen):
             self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)
 
         self.returnButton.opacity = 1
+        self.deleteButton.opacity = 1
         self.returnButton.disabled = False
+        self.deleteButton.disabled = False
         
         store = JsonStore('holdings.json')
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
