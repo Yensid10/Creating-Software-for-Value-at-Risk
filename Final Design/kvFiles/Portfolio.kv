@@ -153,6 +153,7 @@
         Line:
             rectangle: self.x, self.y, self.width, self.height
             width: 1.3
+    
 
 <InputStock>:
     inputTicker: inputTicker
@@ -164,7 +165,9 @@
         padding: '12dp'
         spacing: '8dp'
         Label:
-            text: 'If you own the stock, it will update your no. of shares'
+            text: 'If you enter a stock you already own, it will\nupdate your No. of Shares, with a new inital price.'
+            halign: 'center'
+            valign: 'center'
 
         TextInput:
             id: inputTicker
@@ -189,3 +192,27 @@
             on_release: root.saveStock()
 
 
+<ConfirmDelete>:
+    size_hint: 0.5, 0.35
+    title: '                                           Confirm Deletion'
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+
+        Label:
+            text: "Are you sure you want to delete this stock?\n\nIt will be permanent."
+            halign: 'center'
+            valign: 'center'
+
+        BoxLayout:
+            size_hint_y: None
+            height: '50sp'
+
+            Button:
+                text: "Yes"
+                on_release: root.on_confirm()
+
+            Button:
+                text: "No"
+                on_release: root.dismiss()

@@ -57,9 +57,8 @@ class Portfolio(Screen):
             self.addStock(stockData, currentPrice)
 
     def deleteStock(self):
-        store = JsonStore('holdings.json')
-        store.delete(self.tempStockInfo['ticker'])
-        self.initialStockTotals()
+        popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
+        popup.open()
 
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
@@ -163,7 +162,7 @@ class VaRCalculators:
 
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
         simNum = 10000
-        convThreshold = 0.005
+        convThreshold = 0.0075
         previousVar = float('inf')
         converged = False
 
@@ -257,7 +256,7 @@ class Stocks(Button):
 class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (0.5, 0.4)
+        self.size_hint = (0.5, 0.47)
         self.title = '                                   Create/Update Holding' # Centers title
         self.dismiss_handler = None
 
@@ -275,16 +274,27 @@ class InputStock(Popup):
 
     def saveStock(self):
         # Generate Initial Stock Info
-        stocks = yf.download([self.inputTicker.text], period='1d')
+        stocks = yf.download(self.inputTicker.text.capitalize(), period='1d')
         initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
 
         stockData = {
             'name': self.findCompanyName(self.inputTicker.text),
-            'ticker': self.inputTicker.text,
+            'ticker': self.inputTicker.text.upper(),
             'sharesOwned': self.inputShares.text,
             'initialPrice': initialPrice,
         }
         JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
         print(f"Added new holding: {stockData}") 
         self.dismiss_handler(1)
+        self.dismiss()
+
+class ConfirmDelete(Popup):
+    def __init__(self, portfolio, ticker=None,  **kwargs):
+        super().__init__(**kwargs)
+        self.ticker = ticker
+        self.currentPortfolio = portfolio
+
+    def on_confirm(self):
+        JsonStore('holdings.json').delete(self.ticker)
+        self.currentPortfolio.initialStockTotals()
         self.dismiss()
