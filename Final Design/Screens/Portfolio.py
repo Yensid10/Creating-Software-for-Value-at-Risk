@@ -10,6 +10,8 @@ from scipy.stats import norm
 import time
 import matplotlib.pyplot as plt
 import logging
+from bs4 import BeautifulSoup
+import requests
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -212,19 +214,20 @@ class VaRCalculators:
         return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
 
 class Stocks(Button):
-    def __init__(self, portfolio, ticker, sharesOwned, initialPrice, **kwargs):
+    def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, **kwargs):
         super().__init__(**kwargs)
         self.currentPortfolio = portfolio
         self.orientation = 'vertical'
         self.size_hint_y = None
-        self.height = "113sp"
+        self.height = "110sp"
         self.background_normal = ''  # remove default background image
         self.background_color = (1, 1, 1, 1)  # white
         self.color = (0, 0, 0, 1)
 
-        self.text = f"ticker: {ticker}"
+        self.text = f"{name}"
 
         self.stockInfo = {
+            'name': name,
             'ticker': ticker,
             'sharesOwned': sharesOwned,
             'initialPrice': initialPrice
@@ -242,12 +245,25 @@ class InputStock(Popup):
         self.title = '                                   Create/Update Holding' # Centers title
         self.dismiss_handler = None
 
+    def findCompanyName(self, ticker):
+        yFinancePage = f"https://finance.yahoo.com/quote/{ticker}"
+        headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    } # I don't know why this makes it work for certain stocks but it does, so great!!
+        response = requests.get(yFinancePage, headers=headers)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        companyName = soup.find('h1', class_='D(ib) Fz(18px)')
+        if companyName:
+            return companyName.text
+        return None
+
     def saveStock(self):
         # Generate Initial Stock Info
         stocks = yf.download([self.inputTicker.text], period='1d')
         initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
 
         stockData = {
+            'name': self.findCompanyName(self.inputTicker.text),
             'ticker': self.inputTicker.text,
             'sharesOwned': self.inputShares.text,
             'initialPrice': initialPrice,
