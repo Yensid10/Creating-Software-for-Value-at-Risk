@@ -30,12 +30,9 @@ class Portfolio(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.varCalc = VaRCalculators()
-        self.loadStocks()
         self.initialStockTotals()
-        Clock.schedule_interval(self.loadStocks, 60)
 
     def handle_popup_dismiss(self, value):
-        self.loadStocks()
         self.initialStockTotals()
 
     def openPopup(self):
@@ -43,11 +40,11 @@ class Portfolio(Screen):
         popup.dismiss_handler = self.handle_popup_dismiss
         popup.open() 
 
-    def addStock(self, stockData):
-        stockCard = Stocks(portfolio=self, **stockData)
+    def addStock(self, stockData, currentPrice):
+        stockCard = Stocks(portfolio=self, **stockData, currentPrice=currentPrice)
         self.ids.stockCards.add_widget(stockCard)
 
-    def loadStocks(self, *args):
+    def loadStocks(self, stocks):
         store = JsonStore('holdings.json')
         # Clear existing stock widgets
         self.ids.stockCards.clear_widgets()
@@ -55,7 +52,8 @@ class Portfolio(Screen):
         # Load existing stocks and display them
         for stockKeys in store:
             stockData = store.get(stockKeys)
-            self.addStock(stockData)
+            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            self.addStock(stockData, currentPrice)
 
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
@@ -98,6 +96,8 @@ class Portfolio(Screen):
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
             self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
 
+            self.loadStocks(stocks)
+
             # Option to perform Monte Carlo Simulation visual convergence analysis below
             # Clock.unschedule(self.iSTCheck)
             # self.iSTCheck = None
@@ -114,9 +114,10 @@ class Portfolio(Screen):
         self.returnButton.opacity = 1
         self.returnButton.disabled = False
         
-        stocks = yf.download([self.tempStockInfo['ticker']], period='500d')
+        store = JsonStore('holdings.json')
+        stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
 
-        currentPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
+        currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
         totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
@@ -126,8 +127,10 @@ class Portfolio(Screen):
         self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalReturnMoney:,.2f}"
         self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
 
-        VaR = self.varCalc.modelSim(totalValue, stocks)
+        VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
         self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
+
+        self.loadStocks(stocks)
 
 class VaRCalculators:
     rlPercent = 0.05
@@ -211,11 +214,11 @@ class VaRCalculators:
 
     
     def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
-        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+        closeDiffs = stocks.pct_change(fill_method=None).dropna()
         return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
 
 class Stocks(Button):
-    def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, **kwargs):
+    def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, currentPrice, **kwargs):
         super().__init__(**kwargs)
         self.currentPortfolio = portfolio
         self.orientation = 'vertical'
@@ -226,7 +229,7 @@ class Stocks(Button):
         self.color = (0, 0, 0, 1)
         self.font_size = "20sp"
 
-        self.text = f"{name}: £{yf.download(ticker, period='1d')['Close'].loc[yf.download(ticker, period='1d')['Close'].last_valid_index()]:,.2f}"
+        self.text = f"{name}: £{currentPrice:,.2f}"
 
         self.stockInfo = {
             'name': name,
