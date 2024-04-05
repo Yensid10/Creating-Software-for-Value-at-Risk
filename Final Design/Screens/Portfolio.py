@@ -41,11 +41,13 @@ class Portfolio(Screen):
         popup.dismiss_handler = self.handle_popup_dismiss
         popup.open() 
 
-    def adjDeleteCheck(self):
+    def adjDeleteHandler(self):
         if self.adjDeleteButton.text == "Adjust VaR":
-            pass
+            popup = AdjustVaRPopup(self.varCalc)            
         else:
-            self.deleteStock()
+            popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
+        popup.open()
+
 
     def addStock(self, stockData, currentPrice):
         stockCard = Stocks(portfolio=self, **stockData, currentPrice=currentPrice)
@@ -60,11 +62,7 @@ class Portfolio(Screen):
         for stockKeys in store:
             stockData = store.get(stockKeys)
             currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
-            self.addStock(stockData, currentPrice)
-
-    def deleteStock(self):
-        popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
-        popup.open()
+            self.addStock(stockData, currentPrice)        
 
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
@@ -302,3 +300,18 @@ class ConfirmDelete(Popup):
         JsonStore('holdings.json').delete(self.ticker)
         self.currentPortfolio.initialStockTotals()
         self.dismiss()
+
+class AdjustVaRPopup(Popup):
+    def __init__(self, varCalc, **kwargs):
+        super().__init__(**kwargs)
+        self.varCalc = varCalc
+        self.size_hint = (0.5, 0.4)
+        self.title = 'Adjust VaR Parameters'
+
+    def submit(self):
+        try: # Need to get add verification to stop them from doing certain numbers. And waaaay more verification in the other inputs.
+            self.varCalc.timeHori = float(self.timeHoriInput.text)
+            self.varCalc.rlPercent = float(self.riskLevelInput.text) / 100.0
+            self.dismiss()
+        except ValueError:
+            print("Invalid input. Please enter valid numbers.")

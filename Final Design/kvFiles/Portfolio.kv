@@ -131,7 +131,7 @@
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     # opacity: 0
                     # disabled: True
-                    on_release: root.adjDeleteCheck()
+                    on_release: root.adjDeleteHandler()
 
     AnchorLayout:
         anchor_x: 'right'
@@ -159,7 +159,6 @@
 <InputStock>:
     inputTicker: inputTicker
     inputShares: inputShares
-    auto_dismiss: True
 
     BoxLayout:
         orientation: 'vertical'
@@ -217,3 +216,33 @@
             Button:
                 text: "No"
                 on_release: root.dismiss()
+
+
+<AdjustVaRPopup>:
+    timeHoriInput: timeHoriInput
+    riskLevelInput: riskLevelInput
+    
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '10dp'
+        padding: '20dp'
+
+        TextInput:
+            id: timeHoriInput
+            hint_text: 'Time Horizon (days)'
+            input_filter: 'float'
+            size_hint_y: None
+            height: '40dp'
+
+        TextInput:
+            id: riskLevelInput
+            hint_text: 'Risk Level Percentage'
+            input_filter: 'float'
+            size_hint_y: None
+            height: '40dp'
+
+        Button:
+            text: 'Submit'
+            size_hint_y: None
+            height: '50dp'
+            on_release: root.submit()
