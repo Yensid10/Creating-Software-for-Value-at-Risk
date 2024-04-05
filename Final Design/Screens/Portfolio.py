@@ -24,8 +24,8 @@ class Portfolio(Screen):
     iSTCheck = None
     sSTCheck = None
     returnButton = ObjectProperty(None)
-    deleteButton = ObjectProperty(None)
-
+    adjDeleteButton = ObjectProperty(None)
+    
     logging.getLogger('yfinance').setLevel(logging.WARNING)
 
     def __init__(self, **kwargs):
@@ -40,6 +40,12 @@ class Portfolio(Screen):
         popup = InputStock()
         popup.dismiss_handler = self.handle_popup_dismiss
         popup.open() 
+
+    def adjDeleteCheck(self):
+        if self.adjDeleteButton.text == "Adjust VaR":
+            pass
+        else:
+            self.deleteStock()
 
     def addStock(self, stockData, currentPrice):
         stockCard = Stocks(portfolio=self, **stockData, currentPrice=currentPrice)
@@ -70,9 +76,8 @@ class Portfolio(Screen):
         store = JsonStore('holdings.json')
 
         self.returnButton.opacity = 0
-        self.deleteButton.opacity = 0
         self.returnButton.disabled = True
-        self.deleteButton.disabled = True
+        self.adjDeleteButton.text = "Adjust VaR"
 
 
         if len(store) != 0:
@@ -120,9 +125,8 @@ class Portfolio(Screen):
             self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)
 
         self.returnButton.opacity = 1
-        self.deleteButton.opacity = 1
         self.returnButton.disabled = False
-        self.deleteButton.disabled = False
+        self.adjDeleteButton.text = "Delete Stock"
         
         store = JsonStore('holdings.json')
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
@@ -256,7 +260,7 @@ class Stocks(Button):
 class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (0.5, 0.47)
+        self.size_hint = (0.5, 0.48)
         self.title = '                                   Create/Update Holding' # Centers title
         self.dismiss_handler = None
 
