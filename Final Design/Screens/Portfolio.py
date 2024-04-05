@@ -55,6 +55,12 @@ class Portfolio(Screen):
             currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
             self.addStock(stockData, currentPrice)
 
+
+    def deleteStock(self):
+        store = JsonStore('holdings.json')
+        store.delete(self.tempStockInfo['ticker'])
+        self.initialStockTotals()
+
     def initialStockTotals(self, *args):
         if isinstance(self.sSTCheck, ClockEvent):
             Clock.unschedule(self.sSTCheck)
