@@ -80,22 +80,25 @@ class Portfolio(Screen):
             for stockKeys in store:
                 stockData = store.get(stockKeys)
                 currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
-                totalValue = totalValue + (currentPrice * float(stockData['sharesOwned']))
-                totalCurrentPrices = totalCurrentPrices + currentPrice
-                totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])
-                totalShares = totalShares + int(stockData['sharesOwned'])
-            
+                totalValue += (currentPrice * float(stockData['sharesOwned']))
+                totalCurrentPrices += currentPrice * float(stockData['sharesOwned'])
+                totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])
+                totalShares += int(stockData['sharesOwned'])
+
             totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
+
             self.stockName.text = "[u]Total Portfolio Value[/u]"
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
-            self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
+            self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalCurrentPrices - totalInitialPrices:,.2f}"
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
-            self.dailyVaR.text = f"Value at Risk: £{self.varCalc.convMonteCarloSim(totalValue, stocks)}"
+
+            VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
+            self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
 
             # Option to perform Monte Carlo Simulation visual convergence analysis below
             # Clock.unschedule(self.iSTCheck)
             # self.iSTCheck = None
-            # self.varCalc.monteCarloSimAnalysis(totalValue, stocks)
+            # self.varCalc.monteCarloSimVisualisation(totalValue, stocks)
 
     def specificStockTotals(self, *args):
         if isinstance(self.iSTCheck, ClockEvent):
@@ -113,12 +116,15 @@ class Portfolio(Screen):
         currentPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
+        totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
 
         self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
         self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
-        self.totalReturn.text = "Current Return: {:.2f}%".format(totalReturn)
+        self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalReturnMoney:,.2f}"
         self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
-        self.dailyVaR.text = f"Value at Risk: £{self.varCalc.modelSim(totalValue, stocks)}"
+
+        VaR = self.varCalc.modelSim(totalValue, stocks)
+        self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
 
 class VaRCalculators:
     rlPercent = 0.05
@@ -163,7 +169,7 @@ class VaRCalculators:
         print(f"Monte Carlo Sim Speed: {end - start} seconds")
         return "{:,.2f}".format(currentVar * totalValue)
 
-    def monteCarloSimAnalysis(self, totalValue, stocks):
+    def monteCarloSimVisualisation(self, totalValue, stocks):
         store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Close'].columns))
 
@@ -212,6 +218,9 @@ class Stocks(Button):
         self.orientation = 'vertical'
         self.size_hint_y = None
         self.height = "113sp"
+        self.background_normal = ''  # remove default background image
+        self.background_color = (1, 1, 1, 1)  # white
+        self.color = (0, 0, 0, 1)
 
         self.text = f"ticker: {ticker}"
 
@@ -230,7 +239,7 @@ class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (0.5, 0.4)
-        self.title = '                                   Create/Update Holding'
+        self.title = '                                   Create/Update Holding' # Centers title
         self.dismiss_handler = None
 
     def saveStock(self):
