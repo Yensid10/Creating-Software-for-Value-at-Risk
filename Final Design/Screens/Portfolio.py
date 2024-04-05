@@ -229,8 +229,8 @@ class Stocks(Button):
 class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (0.5, 0.5)
-        self.title = '                                     Create/Update Holding'
+        self.size_hint = (0.5, 0.4)
+        self.title = '                                   Create/Update Holding'
         self.dismiss_handler = None
 
     def saveStock(self):

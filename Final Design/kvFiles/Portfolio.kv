@@ -101,28 +101,28 @@
                 valign: 'middle'
 
             BoxLayout:
-                height: '30dp'
+                height: '20dp'
                 Label:
                     text: 'Total Value (£): --'
                     id: totalValue
                     halign: 'left'
 
             BoxLayout:
-                height: '30dp'
+                height: '20dp'
                 Label:
                     text: 'Total Return (%): --'
                     id: totalReturn
                     halign: 'left'
                 
             BoxLayout:
-                height: '30dp'
+                height: '20dp'
                 Label:
                     text: 'Total No. of Shares: --'
                     id: totalShares
                     halign: 'left'
 
             BoxLayout:
-                height: '30dp'
+                height: '20dp'
                 Label:
                     text: '5% Daily VaR (£): --'
                     id: dailyVaR
@@ -131,15 +131,6 @@
     AnchorLayout:
         anchor_x: 'right'
         anchor_y: 'top'
-        # BoxLayout:
-        #     size_hint: None, None
-        #     size: '60dp', '60dp'
-        #     canvas.before:
-        #         Color:
-        #             rgba: 0, 0, 0, 1  # Black
-        #         Line:
-        #             width: 0.5
-        #             rectangle: self.x, self.y, self.width, self.height
         Button:
             id: returnButton
             text: 'X'
@@ -168,50 +159,35 @@
 <InputStock>:
     inputTicker: inputTicker
     inputShares: inputShares
-    title: 'Create/Update Holding'
-    size_hint: (0.8, 0.6)
-    auto_dismiss: False
+    auto_dismiss: True
 
     BoxLayout:
         orientation: 'vertical'
+        padding: '12dp'
+        spacing: '8dp'
+        Label:
+            text: 'This is a test'
 
-        BoxLayout:
-            padding: [10, 10, 10, 10]  
+        TextInput:
+            id: inputTicker
+            hint_text: 'Stock Ticker'
             size_hint_y: None
-            height: '50dp' 
-            
-            AnchorLayout:
-                anchor_x: 'right'
-                anchor_y: 'top'
-                Button:
-                    size_hint: None, None
-                    size: '40dp', '40dp'
-                    text: 'X'
-                    on_release: root.dismiss()
-        
-        BoxLayout:
-            orientation: 'vertical'
-            padding: '12dp'
-            spacing: '8dp'
+            height: '30dp'
+            multiline: False
+            focus_next: inputShares
 
-            TextInput:
-                id: inputTicker
-                hint_text: 'Stock Ticker'
-                size_hint_y: None
-                height: '30dp'
-                multiline: False
+        TextInput:
+            id: inputShares
+            hint_text: 'No. of Shares'
+            size_hint_y: None
+            height: '30dp'
+            multiline: False
+            focus_previous: inputTicker
 
-            TextInput:
-                id: inputShares
-                hint_text: 'No. of Shares'
-                size_hint_y: None
-                height: '30dp'
-                multiline: False
-
-            Button:
-                text: 'Save'
-                size_hint_y: None
-                height: '40dp'
-                on_release: root.saveStock()
+        Button:
+            text: 'Save'
+            size_hint_y: None
+            height: '40dp'
+            on_release: root.saveStock()
 
 

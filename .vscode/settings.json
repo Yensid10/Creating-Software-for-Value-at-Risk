@@ -8,6 +8,7 @@
         "Hori",
         "iloc",
         "jsonstore",
+        "numpy",
         "portfo",
         "screenmanager",
         "togglebutton",
