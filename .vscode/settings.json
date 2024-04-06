@@ -5,6 +5,7 @@
         "centered",
         "dropna",
         "floatlayout",
+        "halign",
         "Hori",
         "iloc",
         "jsonstore",
@@ -13,7 +14,9 @@
         "portfo",
         "screenmanager",
         "togglebutton",
+        "valign",
         "xlabel",
         "ylabel"
-    ]
+    ],
+    "python.analysis.autoImportCompletions": true
 }

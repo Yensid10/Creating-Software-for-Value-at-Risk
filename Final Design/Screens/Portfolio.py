@@ -1,5 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
@@ -79,6 +81,10 @@ class Portfolio(Screen):
         self.adjDeleteButton.text = "Adjust VaR"
 
 
+        anime = Animation(rgba=[0.25, 0.25, 0.25, 1], duration=0.5)
+        anime.start(self.rightSide.canvas.before.children[0])
+
+
         if len(store) != 0:
             totalValue = 0
             totalCurrentPrices = 0
@@ -127,6 +133,9 @@ class Portfolio(Screen):
         self.returnButton.opacity = 1
         self.returnButton.disabled = False
         self.adjDeleteButton.text = "Delete Stock"
+
+        anime = Animation(rgba=[0.35, 0.35, 0.35, 1], duration=0.5)
+        anime.start(self.rightSide.canvas.before.children[0])
         
         store = JsonStore('holdings.json')
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
@@ -239,21 +248,42 @@ class VaRCalculators:
     
 
 
-
-
-class Stocks(Button):
+class Stocks(GridLayout):
     def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, currentPrice, **kwargs):
         super().__init__(**kwargs)
         self.currentPortfolio = portfolio
-        self.orientation = 'vertical'
+        self.cols = 2
         self.size_hint_y = None
         self.height = "110sp"
-        self.background_normal = ''  # remove default background image
-        self.background_color = (1, 1, 1, 1)  # white
-        self.color = (0, 0, 0, 1)
-        self.font_size = "20sp"
+        
+        nameLabel = Label(
+            text="" + name + ": ",
+            markup=True,
+            halign='right',
+            valign='middle',
+            text_size=(300, None), 
+            size_hint_x=None,
+            width=300,
+            color=(0, 0, 0, 1),
+            font_size="20sp"
+        )
+        nameLabel.bind(size=nameLabel.setter('text_size'))
+        
+        priceLabel = Label(
+            text=f" [b]£{currentPrice*float(sharesOwned):,.2f}[/b]",
+            halign='left',
+            valign='middle',
+            text_size=(200, None),
+            size_hint_x=None,
+            width=200,
+            markup=True,
+            color=(0, 0, 0, 1),
+            font_size="20sp"
+        )
+        priceLabel.bind(size=priceLabel.setter('text_size'))
 
-        self.text = f"{name}: [b]£{currentPrice*float(sharesOwned):,.2f}[/b]"
+        self.add_widget(nameLabel)
+        self.add_widget(priceLabel)
 
         self.stockInfo = {
             'name': name,
@@ -262,10 +292,12 @@ class Stocks(Button):
             'initialPrice': initialPrice
         }
 
-    def on_release(self):
-        print(self.stockInfo)
-        self.currentPortfolio.tempStockInfo = self.stockInfo  # Update tempStockInfo in Portfolio
-        self.currentPortfolio.specificStockTotals()
+    def on_touch_down(self, touch): # Has to be called this, its a kivy thing
+        if self.collide_point(*touch.pos):
+            self.currentPortfolio.tempStockInfo = self.stockInfo
+            self.currentPortfolio.specificStockTotals()
+        return super().on_touch_down(touch)
+
 
 
 
