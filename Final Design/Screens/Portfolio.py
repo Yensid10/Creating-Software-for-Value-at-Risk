@@ -135,7 +135,7 @@ class Portfolio(Screen):
         totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
 
         self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
-        self.totalValue.text = "Current Value: £{:,.2f}".format(totalValue)
+        self.totalValue.text = "Current Price: £{:,.2f}".format(currentPrice)
         self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalReturnMoney:,.2f}"
         self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
 
@@ -242,7 +242,7 @@ class Stocks(Button):
         self.color = (0, 0, 0, 1)
         self.font_size = "20sp"
 
-        self.text = f"{name}: £{currentPrice:,.2f}"
+        self.text = f"{name}: £{currentPrice*float(sharesOwned):,.2f}"
 
         self.stockInfo = {
             'name': name,
