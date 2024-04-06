@@ -113,7 +113,7 @@ class Portfolio(Screen):
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
-            self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}[/b]"
+            self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
 
             self.loadStocks(stocks)
 
@@ -152,7 +152,7 @@ class Portfolio(Screen):
         self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 
         VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
-        self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}[/b]"
+        self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
 
         self.loadStocks(stocks)
 
@@ -257,7 +257,7 @@ class Stocks(GridLayout):
         self.height = "110sp"
         
         nameLabel = Label(
-            text="" + name + ": ",
+            text=name,
             markup=True,
             halign='right',
             valign='middle',
@@ -270,7 +270,7 @@ class Stocks(GridLayout):
         nameLabel.bind(size=nameLabel.setter('text_size'))
         
         priceLabel = Label(
-            text=f" [b]£{currentPrice*float(sharesOwned):,.2f}[/b]",
+            text=f"[b]: £{currentPrice*float(sharesOwned):,.2f}[/b]",
             halign='left',
             valign='middle',
             text_size=(200, None),

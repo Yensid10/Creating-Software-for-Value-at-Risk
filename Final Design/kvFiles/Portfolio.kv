@@ -18,7 +18,7 @@
         
         BoxLayout:
             orientation: 'vertical'
-            size_hint_x: 0.6
+            size_hint_x: 0.575
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -53,7 +53,7 @@
                             rectangle: self.x, self.y, self.width, self.height
                             width: 1.3
                     Label:
-                        text: '[u]STOCKS: HOLDING[/u]    '
+                        text: '       [u]OWNED STOCK[b]: HOLDING[/b][/u]'
                         color: 0, 0, 0, 1
                         font_size: '25sp'
                         halign: 'center'
@@ -83,7 +83,7 @@
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_x: 0.4
+            size_hint_x: 0.425
             id: rightSide
             canvas.before:
                 Color:
