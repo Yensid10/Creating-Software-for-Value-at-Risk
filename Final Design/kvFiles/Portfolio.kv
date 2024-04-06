@@ -177,7 +177,8 @@
             size_hint_y: None
             height: '30dp'
             multiline: False
-            focus_next: inputShares
+            focus: True
+            on_text_validate: inputShares.focus = True
 
         TextInput:
             id: inputShares
@@ -185,7 +186,8 @@
             size_hint_y: None
             height: '30dp'
             multiline: False
-            focus_previous: inputTicker
+            input_filter: 'int'
+            on_text_validate: root.saveStock()  
 
         Button:
             text: 'Save'
@@ -243,6 +245,7 @@
             size_hint_y: None
             height: '30dp'
             multiline: False
+            on_text_validate: riskLevelInput.focus = True
 
         TextInput:
             id: riskLevelInput
@@ -251,6 +254,7 @@
             size_hint_y: None
             height: '30dp'
             multiline: False
+            on_text_validate: root.submit()
 
         Button:
             text: 'Submit'
