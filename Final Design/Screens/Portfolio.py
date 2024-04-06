@@ -44,7 +44,7 @@ class Portfolio(Screen):
 
     def adjDeleteHandler(self):
         if self.adjDeleteButton.text == "Adjust VaR":
-            popup = AdjustVaRPopup(portfolio=self, varCalc=self.varCalc)            
+            popup = AdjustVaRPopup(portfolio=self, varCalc=self.varCalc, var=self.dailyVaR.text)            
         else:
             popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
         popup.open()
@@ -106,7 +106,7 @@ class Portfolio(Screen):
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
-            self.dailyVaR.text = f"Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}"
+            self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}[/b]"
 
             self.loadStocks(stocks)
 
@@ -327,10 +327,11 @@ class ConfirmDelete(Popup):
         self.dismiss()
 
 class AdjustVaRPopup(Popup):
-    def __init__(self, portfolio, varCalc, **kwargs):
+    def __init__(self, portfolio, varCalc, var, **kwargs):
         super().__init__(**kwargs)
         self.varCalc = varCalc
         self.currentPortfolio = portfolio
+        self.varLabel.text = f"There is a [color=ff7070]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=6060ff]{self.varCalc.timeHori}[/color] day(s)."
 
     def submit(self):
         try: # Need to get add verification to stop them from doing certain numbers. And waaaay more verification in the other inputs.            
