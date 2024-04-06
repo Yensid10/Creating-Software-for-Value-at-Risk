@@ -33,17 +33,17 @@ class Portfolio(Screen):
         self.varCalc = VaRCalculators()
         self.initialStockTotals()
 
-    def handle_popup_dismiss(self, value):
+    def handlePopupDismiss(self, value):
         self.initialStockTotals()
 
     def openPopup(self):
         popup = InputStock()
-        popup.dismiss_handler = self.handle_popup_dismiss
+        popup.dismissHandler = self.handlePopupDismiss
         popup.open() 
 
     def adjDeleteHandler(self):
         if self.adjDeleteButton.text == "Adjust VaR":
-            popup = AdjustVaRPopup(self.varCalc)            
+            popup = AdjustVaRPopup(portfolio=self, varCalc=self.varCalc)            
         else:
             popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
         popup.open()
@@ -105,7 +105,7 @@ class Portfolio(Screen):
             self.totalShares.text = f"Total No. of Shares: {totalShares}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
-            self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
+            self.dailyVaR.text = f"Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}"
 
             self.loadStocks(stocks)
 
@@ -147,6 +147,7 @@ class Portfolio(Screen):
 class VaRCalculators:
     rlPercent = 0.05
     timeHori = 1
+    print(f"VaR Calculators Initialised: rlPercent = {rlPercent}, timeHori = {timeHori}")
 
     def __init__(self, *args):
         pass
@@ -258,9 +259,7 @@ class Stocks(Button):
 class InputStock(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (0.5, 0.48)
-        self.title = '                                   Create/Update Holding' # Centers title
-        self.dismiss_handler = None
+        self.dismissHandler = None
 
     def findCompanyName(self, ticker):
         yFinancePage = f"https://finance.yahoo.com/quote/{ticker}"
@@ -287,7 +286,7 @@ class InputStock(Popup):
         }
         JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
         print(f"Added new holding: {stockData}") 
-        self.dismiss_handler(1)
+        self.dismissHandler(1)
         self.dismiss()
 
 class ConfirmDelete(Popup):
@@ -302,16 +301,16 @@ class ConfirmDelete(Popup):
         self.dismiss()
 
 class AdjustVaRPopup(Popup):
-    def __init__(self, varCalc, **kwargs):
+    def __init__(self, portfolio, varCalc, **kwargs):
         super().__init__(**kwargs)
         self.varCalc = varCalc
-        self.size_hint = (0.5, 0.4)
-        self.title = 'Adjust VaR Parameters'
+        self.currentPortfolio = portfolio
 
     def submit(self):
-        try: # Need to get add verification to stop them from doing certain numbers. And waaaay more verification in the other inputs.
-            self.varCalc.timeHori = float(self.timeHoriInput.text)
+        try: # Need to get add verification to stop them from doing certain numbers. And waaaay more verification in the other inputs.            
+            self.varCalc.timeHori = int(self.timeHoriInput.text)
             self.varCalc.rlPercent = float(self.riskLevelInput.text) / 100.0
+            self.currentPortfolio.initialStockTotals()
             self.dismiss()
         except ValueError:
             print("Invalid input. Please enter valid numbers.")

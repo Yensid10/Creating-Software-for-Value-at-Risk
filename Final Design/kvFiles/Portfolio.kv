@@ -159,6 +159,8 @@
 <InputStock>:
     inputTicker: inputTicker
     inputShares: inputShares
+    size_hint: 0.5, 0.5
+    title: '                                   Create/Update Holding'
 
     BoxLayout:
         orientation: 'vertical'
@@ -221,25 +223,34 @@
 <AdjustVaRPopup>:
     timeHoriInput: timeHoriInput
     riskLevelInput: riskLevelInput
-    
+    size_hint: 0.5, 0.5
+    title: '                                     Adjust VaR Parameters'
+
     BoxLayout:
         orientation: 'vertical'
         spacing: '10dp'
         padding: '20dp'
 
+        Label:
+            text: "Speak about some VaR stuff here"
+            halign: 'center'
+            valign: 'center'
+
         TextInput:
             id: timeHoriInput
             hint_text: 'Time Horizon (days)'
-            input_filter: 'float'
+            input_filter: 'int'
             size_hint_y: None
-            height: '40dp'
+            height: '30dp'
+            multiline: False
 
         TextInput:
             id: riskLevelInput
             hint_text: 'Risk Level Percentage'
-            input_filter: 'float'
+            input_filter: 'int'
             size_hint_y: None
-            height: '40dp'
+            height: '30dp'
+            multiline: False
 
         Button:
             text: 'Submit'
