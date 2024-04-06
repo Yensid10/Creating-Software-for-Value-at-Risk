@@ -1,5 +1,4 @@
 from kivy.uix.screenmanager import Screen
-from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
@@ -389,10 +388,11 @@ class AdjustVaRPopup(Popup):
 
     def submit(self):
         inputCheck = True
-        anime = Animation(background_color=[1, 0.6, 0.6, 1], duration=0.5) + Animation(background_color=[1, 1, 1, 1], duration=0.5)
         if not self.timeHoriInput.text.isdigit() or not (1 <= int(self.timeHoriInput.text) <= 30):
             self.timeHoriInput.text = ""
             self.timeHoriInput.hint_text = "Invalid Horizon [1-30]"
+            self.timeHoriInput.background_color = [1, 0.6, 0.6, 1]
+            anime = Animation(background_color=[1, 1, 1, 1], duration=1)
             anime.start(self.timeHoriInput)
             self.timeHoriInput.focus = True
             inputCheck = False
@@ -406,6 +406,8 @@ class AdjustVaRPopup(Popup):
         except:
             self.riskLevelInput.text = ""
             self.riskLevelInput.hint_text = "Invalid Percentage [1-50]"
+            self.riskLevelInput.background_color = [1, 0.6, 0.6, 1]
+            anime = Animation(background_color=[1, 1, 1, 1], duration=1)
             anime.start(self.riskLevelInput)
             self.riskLevelInput.focus = True
             inputCheck = False

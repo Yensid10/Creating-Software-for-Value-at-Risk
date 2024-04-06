@@ -1,4 +1,4 @@
 from kivy.uix.screenmanager import Screen
 
-class Trends(Screen):
+class Graphs(Screen):
     pass
