@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import logging
 from bs4 import BeautifulSoup
 import requests
+from kivy.animation import Animation
 
 class Portfolio(Screen):
     stockCards = ObjectProperty(None)
@@ -102,7 +103,7 @@ class Portfolio(Screen):
             self.stockName.text = "[u]Total Portfolio Value[/u]"
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
             self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalCurrentPrices - totalInitialPrices:,.2f}"
-            self.totalShares.text = f"Total No. of Shares: {totalShares}"
+            self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
             self.dailyVaR.text = f"Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}"
@@ -137,10 +138,10 @@ class Portfolio(Screen):
         self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
         self.totalValue.text = "Current Price: £{:,.2f}".format(currentPrice)
         self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalReturnMoney:,.2f}"
-        self.totalShares.text = f"No. of Shares: {self.tempStockInfo['sharesOwned']}"
+        self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 
         VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
-        self.dailyVaR.text = f"Value at Risk: {(float(VaR) / totalValue) * 100:.2f}% / £{VaR}"
+        self.dailyVaR.text = f"Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}"
 
         self.loadStocks(stocks)
 
@@ -274,20 +275,45 @@ class InputStock(Popup):
         return None
 
     def saveStock(self):
-        # Generate Initial Stock Info
-        stocks = yf.download(self.inputTicker.text.capitalize(), period='1d')
-        initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
+        sharesCheck = True
+        if self.inputTicker.text == "":
+            stocks = None        
+        else:
+            stocks = yf.download(self.inputTicker.text.capitalize(), period='1d')
+        if self.inputShares.text == "":
+            self.inputShares.text = "0"
 
-        stockData = {
-            'name': self.findCompanyName(self.inputTicker.text),
-            'ticker': self.inputTicker.text.upper(),
-            'sharesOwned': self.inputShares.text,
-            'initialPrice': initialPrice,
-        }
-        JsonStore('holdings.json').put(stockData['ticker'], **stockData) # Save to JSONStore, basically caching the data 
-        print(f"Added new holding: {stockData}") 
-        self.dismissHandler(1)
-        self.dismiss()
+        if int(self.inputShares.text) <= 0:
+            self.inputShares.text = ""
+            self.inputShares.hint_text = "Invalid Shares"
+            self.inputShares.background_color = [1, 0.6, 0.6, 1]
+            anime = Animation(background_color=[1, 1, 1, 1], duration=1)
+            anime.start(self.inputShares)
+            self.inputShares.focus = True
+            sharesCheck = False
+
+        try:
+            initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
+        except:
+            self.inputTicker.text = ""
+            self.inputTicker.hint_text = "Invalid Ticker"
+            self.inputTicker.background_color = [1, 0.6, 0.6, 1]
+            anime = Animation(background_color=[1, 1, 1, 1], duration=1)
+            anime.start(self.inputTicker)
+            self.inputTicker.focus = True
+            sharesCheck = False
+        
+        if sharesCheck:
+            stockData = {
+                'name': self.findCompanyName(self.inputTicker.text),
+                'ticker': self.inputTicker.text.upper(),
+                'sharesOwned': self.inputShares.text,
+                'initialPrice': initialPrice,
+            }
+            JsonStore('holdings.json').put(stockData['ticker'], **stockData)
+            print(f"Added new holding: {stockData}") 
+            self.dismissHandler(1)
+            self.dismiss()
 
 class ConfirmDelete(Popup):
     def __init__(self, portfolio, ticker=None,  **kwargs):
