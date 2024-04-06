@@ -99,10 +99,11 @@ class Portfolio(Screen):
                 totalShares += int(stockData['sharesOwned'])
 
             totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
+            totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
 
-            self.stockName.text = "[u]Total Portfolio Value[/u]"
+            self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
             self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
-            self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalCurrentPrices - totalInitialPrices:,.2f}"
+            self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn:.2f}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
@@ -134,16 +135,21 @@ class Portfolio(Screen):
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
         totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
+        totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
 
-        self.stockName.text = "[u]" + self.tempStockInfo['ticker'] + " Stock Value[/u]"
+        self.stockName.text = "[u][b]" + self.tempStockInfo['ticker'] + "[/u][/b]"
         self.totalValue.text = "Current Price: £{:,.2f}".format(currentPrice)
-        self.totalReturn.text = f"Total Return: {totalReturn:.2f}% / £{totalReturnMoney:,.2f}"
+        self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn:.2f}% / £{totalReturnMoney:,.2f}[/color]"
         self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 
         VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
-        self.dailyVaR.text = f"Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}"
+        self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR}[/b]"
 
         self.loadStocks(stocks)
+
+
+
+
 
 class VaRCalculators:
     rlPercent = 0.05
@@ -230,6 +236,10 @@ class VaRCalculators:
     def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
         closeDiffs = stocks.pct_change(fill_method=None).dropna()
         return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
+    
+
+
+
 
 class Stocks(Button):
     def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, currentPrice, **kwargs):
@@ -243,7 +253,7 @@ class Stocks(Button):
         self.color = (0, 0, 0, 1)
         self.font_size = "20sp"
 
-        self.text = f"{name}: £{currentPrice*float(sharesOwned):,.2f}"
+        self.text = f"{name}: [b]£{currentPrice*float(sharesOwned):,.2f}[/b]"
 
         self.stockInfo = {
             'name': name,
@@ -256,6 +266,10 @@ class Stocks(Button):
         print(self.stockInfo)
         self.currentPortfolio.tempStockInfo = self.stockInfo  # Update tempStockInfo in Portfolio
         self.currentPortfolio.specificStockTotals()
+
+
+
+
 
 class InputStock(Popup):
     def __init__(self, **kwargs):
@@ -276,6 +290,7 @@ class InputStock(Popup):
 
     def saveStock(self):
         sharesCheck = True
+        self.inputTicker.text = self.inputTicker.text.strip()
         if self.inputTicker.text == "":
             stocks = None        
         else:
@@ -315,6 +330,10 @@ class InputStock(Popup):
             self.dismissHandler(1)
             self.dismiss()
 
+
+
+
+
 class ConfirmDelete(Popup):
     def __init__(self, portfolio, ticker=None,  **kwargs):
         super().__init__(**kwargs)
@@ -326,29 +345,30 @@ class ConfirmDelete(Popup):
         self.currentPortfolio.initialStockTotals()
         self.dismiss()
 
+
+
+
 class AdjustVaRPopup(Popup):
     def __init__(self, portfolio, varCalc, var, **kwargs):
         super().__init__(**kwargs)
         self.varCalc = varCalc
         self.currentPortfolio = portfolio
-        self.varLabel.text = f"There is a [color=ff7070]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=6060ff]{self.varCalc.timeHori}[/color] day(s)."
+        self.varLabel.text = f"There is a [color=ff8000]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=00AAff]{self.varCalc.timeHori}[/color] day(s)."
 
     def submit(self):
         inputCheck = True
         anime = Animation(background_color=[1, 0.6, 0.6, 1], duration=0.5) + Animation(background_color=[1, 1, 1, 1], duration=0.5)
-        timeHoriText = self.timeHoriInput.text.strip()
-        if not timeHoriText.isdigit() or not (1 <= int(timeHoriText) <= 30):
+        if not self.timeHoriInput.text.isdigit() or not (1 <= int(self.timeHoriInput.text) <= 30):
             self.timeHoriInput.text = ""
             self.timeHoriInput.hint_text = "Invalid Horizon [1-30]"
             anime.start(self.timeHoriInput)
             self.timeHoriInput.focus = True
             inputCheck = False
         else:
-            self.varCalc.timeHori = int(timeHoriText)
+            self.varCalc.timeHori = int(self.timeHoriInput.text)
 
-        rlPercentText = self.riskLevelInput.text.strip()
         try:
-            rlPercent = float(rlPercentText)
+            rlPercent = float(self.riskLevelInput.text)
             if not (0 < rlPercent <= 50):
                 raise Exception
         except:
