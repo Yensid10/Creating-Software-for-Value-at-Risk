@@ -334,10 +334,32 @@ class AdjustVaRPopup(Popup):
         self.varLabel.text = f"There is a [color=ff7070]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=6060ff]{self.varCalc.timeHori}[/color] day(s)."
 
     def submit(self):
-        try: # Need to get add verification to stop them from doing certain numbers. And waaaay more verification in the other inputs.            
-            self.varCalc.timeHori = int(self.timeHoriInput.text)
-            self.varCalc.rlPercent = float(self.riskLevelInput.text) / 100.0
+        inputCheck = True
+        anime = Animation(background_color=[1, 0.6, 0.6, 1], duration=0.5) + Animation(background_color=[1, 1, 1, 1], duration=0.5)
+        timeHoriText = self.timeHoriInput.text.strip()
+        if not timeHoriText.isdigit() or not (1 <= int(timeHoriText) <= 30):
+            self.timeHoriInput.text = ""
+            self.timeHoriInput.hint_text = "Invalid Horizon [1-30]"
+            anime.start(self.timeHoriInput)
+            self.timeHoriInput.focus = True
+            inputCheck = False
+        else:
+            self.varCalc.timeHori = int(timeHoriText)
+
+        rlPercentText = self.riskLevelInput.text.strip()
+        try:
+            rlPercent = float(rlPercentText)
+            if not (0 < rlPercent <= 50):
+                raise Exception
+        except:
+            self.riskLevelInput.text = ""
+            self.riskLevelInput.hint_text = "Invalid Percentage [1-50]"
+            anime.start(self.riskLevelInput)
+            self.riskLevelInput.focus = True
+            inputCheck = False
+        else:
+            self.varCalc.rlPercent = rlPercent / 100.0
+        if inputCheck:
             self.currentPortfolio.initialStockTotals()
             self.dismiss()
-        except ValueError:
-            print("Invalid input. Please enter valid numbers.")
+
