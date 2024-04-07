@@ -9,7 +9,6 @@ from kivy.clock import Clock, ClockEvent
 import numpy as np
 from scipy.stats import norm
 import time
-import matplotlib.pyplot as plt
 import logging
 from bs4 import BeautifulSoup
 import requests

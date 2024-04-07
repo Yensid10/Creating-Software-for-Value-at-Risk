@@ -1,9 +1,13 @@
+import time
 from kivy.uix.screenmanager import Screen
 import matplotlib.pyplot as plt
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import random
 import numpy as np
 from kivy.storage.jsonstore import JsonStore
+
+import threading
+from kivy.clock import mainthread
 
 import logging
 logging.getLogger('matplotlib').setLevel(logging.INFO)
@@ -29,7 +33,10 @@ class Graphs(Screen):
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
 
 
-    def Graph3(self):
+    def graph3(self):
+        threading.Thread(target=self.monteCarloConvSim).start()
+
+    def monteCarloConvSim(self):
         portfolio = self.manager.get_screen('Portfolio')
         stocks = portfolio.tempDownload
         store = JsonStore('holdings.json')
@@ -58,11 +65,12 @@ class Graphs(Screen):
             # Calculate VaR at this checkpoint
             VaR = np.percentile(sorted(portfoReturns), 100 * portfolio.varCalc.rlPercent) * totalValue
             varResults.append(round(-VaR))
+            time.sleep(1) # Make it so i show that the graph is loading somehow.
         
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio')
 
-
+    @mainthread
     def createGraph(self, x, y, xlabel, ylabel, title):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
@@ -77,6 +85,8 @@ class Graphs(Screen):
 
         canvas = FigureCanvasKivyAgg(self.fig)
         canvas.mpl_connect("motion_notify_event", self.mouse_hover)
+
+        self.fig.tight_layout()
         
         canvas = FigureCanvasKivyAgg(self.fig)
         self.ids.graphSection.add_widget(canvas)
