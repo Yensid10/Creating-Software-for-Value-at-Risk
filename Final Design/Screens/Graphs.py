@@ -6,48 +6,42 @@ import random
 import logging
 logging.getLogger('matplotlib').setLevel(logging.INFO)
 
+# Contains code inspired by: https://stackoverflow.com/a/55184676
 class Graphs(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.line1 = None
-        self.createGraph1()
+        self.infoPopup = None
+        self.currentLine = None
+        self.Graph1()
+        
 
-    # Inspired by: https://stackoverflow.com/a/55184676
-    def createGraph1(self):
-        self.ids.graphSection.clear_widgets()
-
-        # Create matplotlib figure and axes
-        self.fig, self.ax = plt.subplots()
-
+    def Graph1(self):
         x = list(range(1, 101))
         y = [random.randint(i, 1000) for i in x]
-        self.line1, = self.ax.plot(x, y, 'o-')
+        self.createGraph(x, y, 'some random linear numbers', 'more random linear numbers', 'Random Graph 1')
 
-        self.ax.set_xlabel('some random linear numbers')
-        self.ax.set_title('Random Graph 1')
-        self.ax.set_ylabel('more random linear numbers')
+    def Graph2(self):
+        x = list(range(1, 101))
+        y = [i ** 2 for i in x]  # Example quadratic data
+        self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
+
+
+    def createGraph(self, x, y, xlabel, ylabel, title):
+        self.ids.graphSection.clear_widgets()
+        self.fig, self.ax = plt.subplots()
+        self.currentLine, = self.ax.plot(x, y, 'o-')
+        self.ax.set_xlabel(xlabel)
+        self.ax.set_ylabel(ylabel)
+        self.ax.set_title(title)
+        
+        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points",bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+        self.infoPopup.set_visible(False)
 
         canvas = FigureCanvasKivyAgg(self.fig)
         canvas.mpl_connect("motion_notify_event", self.mouse_hover)
-
-        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, -30), textcoords="offset points",
-                                            bbox=dict(boxstyle="round", fc="w"),
-                                            arrowprops=dict(arrowstyle="->"))
-        self.infoPopup.set_visible(False)
-
-        self.ids.graphSection.add_widget(canvas)
-
-    def createGraph2(self):
-        self.ids.graphSection.clear_widgets()
-        plt.figure(figsize=(6, 4))
-        plt.plot([124, 34345, 123, 1333])
-        plt.ylabel('some random numbers')
-        plt.title('Random Graph 2')
-        plt.xlabel('more random numbers')
-
-        plt.tight_layout()
         
-        self.ids.graphSection.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+        canvas = FigureCanvasKivyAgg(self.fig)
+        self.ids.graphSection.add_widget(canvas)
 
     def showPopup(self, x, y):
         text = f"({x}, {y})"
@@ -62,10 +56,10 @@ class Graphs(Screen):
 
     def mouse_hover(self, event):
         if event.inaxes == self.ax:
-            cont, ind = self.line1.contains(event)
+            cont, ind = self.currentLine.contains(event)
             if cont:
                 pos = ind['ind'][0]
-                x, y = self.line1.get_data()
+                x, y = self.currentLine.get_data()
                 self.showPopup(x[pos], y[pos])
             else:
                 self.hidePopup()
