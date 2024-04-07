@@ -22,10 +22,12 @@ class Graphs(Screen):
         y = [random.randint(i, 1000) for i in x]
         self.createGraph(x, y, 'some random linear numbers', 'more random linear numbers', 'Random Graph 1')
 
+
     def Graph2(self):
         x = list(range(1, 101))
         y = [i ** 2 for i in x]  # Example quadratic data
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
+
 
     def Graph3(self):
         portfolio = self.manager.get_screen('Portfolio')
@@ -42,7 +44,7 @@ class Graphs(Screen):
 
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
         
-        checkpoints = list(range(500, 10500, 500)) # Iteration checkpoints to check for convergence 
+        checkpoints = list(range(500, 25500, 500)) # Iteration checkpoints to check for convergence 
         varResults = []
 
         for sim in checkpoints:
@@ -55,7 +57,7 @@ class Graphs(Screen):
 
             # Calculate VaR at this checkpoint
             VaR = np.percentile(sorted(portfoReturns), 100 * portfolio.varCalc.rlPercent) * totalValue
-            varResults.append(-VaR)
+            varResults.append(round(-VaR))
         
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio')
@@ -80,7 +82,7 @@ class Graphs(Screen):
         self.ids.graphSection.add_widget(canvas)
 
     def showPopup(self, x, y):
-        text = f"({x}, {y})"
+        text = f"({y})"
         self.infoPopup.set_text(text)
         self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
