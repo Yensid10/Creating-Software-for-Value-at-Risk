@@ -154,7 +154,7 @@ class Portfolio(Screen):
 
         self.stockName.text = "[u][b]" + self.tempStockInfo['ticker'] + "[/u][/b]"
         self.totalValue.text = "Current Share Price: £{:,.2f}".format(currentPrice)
-        self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn:.2f}% / £{totalReturnMoney:,.2f}[/color]"
+        self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalReturnMoney:,.2f}[/color]"
         self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 
         VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
