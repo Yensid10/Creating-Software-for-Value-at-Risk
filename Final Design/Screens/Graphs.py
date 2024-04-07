@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import random
 import numpy as np
-from scipy.stats import norm
+from kivy.storage.jsonstore import JsonStore
 
 import logging
 logging.getLogger('matplotlib').setLevel(logging.INFO)
@@ -28,8 +28,10 @@ class Graphs(Screen):
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
 
     def Graph3(self):
-        portfolio = self.manager.get_screen('Portfolio') 
-        stocks, totalValue, store, rlPercent, timeHori = portfolio.getMonteCarloSimData()
+        portfolio = self.manager.get_screen('Portfolio')
+        stocks = portfolio.tempDownload
+        store = JsonStore('holdings.json')
+        totalValue = float(portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
 
         weightings = np.zeros(len(stocks['Close'].columns))
         for x, stockKey in enumerate(store):
@@ -45,14 +47,14 @@ class Graphs(Screen):
 
         for sim in checkpoints:
             # Generate all simulations at once
-            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (timeHori, sim))
+            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (portfolio.varCalc.timeHori, sim))
             portfoReturns = np.zeros(sim)
 
             for x in range(sim):
                 portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
 
             # Calculate VaR at this checkpoint
-            VaR = np.percentile(sorted(portfoReturns), 100 * rlPercent) * totalValue
+            VaR = np.percentile(sorted(portfoReturns), 100 * portfolio.varCalc.rlPercent) * totalValue
             varResults.append(-VaR)
         
         # Plotting the convergence of VaR

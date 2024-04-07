@@ -27,6 +27,7 @@ class Portfolio(Screen):
     sSTCheck = None
     returnButton = ObjectProperty(None)
     adjDeleteButton = ObjectProperty(None)
+    tempDownload = None
     
     logging.getLogger('yfinance').setLevel(logging.WARNING)
 
@@ -92,6 +93,7 @@ class Portfolio(Screen):
 
             start = time.time()
             stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
+            self.tempDownload = stocks
             end = time.time()
             print(f"Initial Stock Totals Speed: {end - start} seconds")
 
@@ -119,10 +121,6 @@ class Portfolio(Screen):
 
             self.loadStocks(stocks)
 
-            # Option to perform Monte Carlo Simulation visual convergence analysis below
-            # Clock.unschedule(self.iSTCheck)
-            # self.iSTCheck = None
-            # self.varCalc.monteCarloSimVisualisation(totalValue, stocks)
 
     def specificStockTotals(self, *args):
         if isinstance(self.iSTCheck, ClockEvent):
@@ -141,6 +139,7 @@ class Portfolio(Screen):
         
         store = JsonStore('holdings.json')
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
+        self.tempDownload = stocks
 
         currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
@@ -162,20 +161,19 @@ class Portfolio(Screen):
 
         self.loadStocks(stocks)
 
-    def getMonteCarloSimData(self):
-        store = JsonStore('holdings.json')
-        stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
-        totalValue = float(self.totalValue.text.split('£')[1].replace(',', '')[:-4])
-        return stocks, totalValue, store, self.varCalc.rlPercent, self.varCalc.timeHori
+
+
+
 
 
 
 class VaRCalculators:
-    rlPercent = 0.05
-    timeHori = 1
+    rlPercent = None
+    timeHori = None
 
     def __init__(self, *args):
-        pass
+        self.rlPercent = 0.05
+        self.timeHori = 1
     
     def convMonteCarloSim(self, totalValue, stocks):
         start = time.time()
@@ -213,48 +211,14 @@ class VaRCalculators:
         print(f"Monte Carlo Sim Speed: {end - start} seconds")
         return "{:,.2f}".format(currentVar * totalValue)
 
-    def monteCarloSimVisualisation(self, totalValue, stocks):
-        store = JsonStore('holdings.json')
-        weightings = np.zeros(len(stocks['Close'].columns))
 
-        for x, stockKey in enumerate(store):
-            stockData = store.get(stockKey)
-            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
-            currentValue = currentPrice * float(stockData['sharesOwned'])
-            weightings[x] = currentValue / totalValue
-
-        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
-        
-        checkpoints = list(range(500, 10500, 500)) # Iteration checkpoints to check for convergence 
-        varResults = []
-
-        for sim in checkpoints:
-            # Generate all simulations at once
-            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.timeHori, sim))
-            portfoReturns = np.zeros(sim)
-
-            for x in range(sim):
-                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
-
-            # Calculate VaR at this checkpoint
-            VaR = np.percentile(sorted(portfoReturns), 100 * self.rlPercent) * totalValue
-            varResults.append(-VaR)
-        
-
-        logging.getLogger('matplotlib').setLevel(logging.WARNING)
-        # Plotting the convergence of VaR
-        plt.plot(checkpoints, varResults, marker='o')
-        plt.xlabel('Number of Simulations')
-        plt.ylabel('Value at Risk (VaR)')
-        plt.title('Convergence Analysis of Monte Carlo Simulation')
-        plt.grid(True)
-        plt.show()
-
-    
     def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
         closeDiffs = stocks.pct_change(fill_method=None).dropna()
         return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
     
+
+
+
 
 
 class Stocks(GridLayout):
