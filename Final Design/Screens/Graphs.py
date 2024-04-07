@@ -32,7 +32,7 @@ class Graphs(Screen):
     def graph1(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
-    
+
         closePrices = stocks['Close'].tail(500)
     
         totalValues = []
@@ -43,11 +43,36 @@ class Graphs(Screen):
                 stockData = store.get(stockKey)
                 dailyTotal += row[stockData['ticker']] * float(stockData['sharesOwned'])
             totalValues.append(dailyTotal)
-    
+
+        # y values for total portfolio value every 15 days
         x = list(range(0, 500, 15))
         y = totalValues[::15]
-        # print(y)
-        self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time')
+
+        # Replace the nan values
+        for i in range(len(y)):
+            if np.isnan(y[i]):
+                if i == 0:
+                    # If the first value is nan, find the next two non-nan values
+                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                    nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
+                    if nextValue is not None and nextNextValue is not None:
+                        # Calculate their difference and subtract it from the second non-nan value to estimate the first value
+                        y[i] = nextValue - (nextNextValue - nextValue)
+                else:
+                    # If the value is nan, find the previous and next non-nan values
+                    prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
+                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                    if prevValue is not None and nextValue is not None:
+                        # Calculate their average
+                        y[i] = (prevValue + nextValue) / 2
+                    if np.isnan(y[-1]):
+                        lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)
+                        if lastNoneNan is not None:
+                            # Calculate the average of the last non-nan value and the final value of totalValues
+                            y[-1] = (lastNoneNan + totalValues[-1]) / 2
+            y[i] = round(y[i])
+        
+        self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time', '£')
 
 
     def graph2(self):
@@ -90,10 +115,10 @@ class Graphs(Screen):
             time.sleep(1) # Make it so i show that the graph is loading somehow.
         
         # Plotting the convergence of VaR
-        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio')
+        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
 
     @mainthread
-    def createGraph(self, x, y, xlabel, ylabel, title):
+    def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
         self.currentLine, = self.ax.plot(x, y, 'o-')
@@ -109,12 +134,13 @@ class Graphs(Screen):
         canvas.mpl_connect("motion_notify_event", self.mouse_hover)
 
         self.fig.tight_layout()
+        self.currentSymbol = currentSymbol
         
         canvas = FigureCanvasKivyAgg(self.fig)
         self.ids.graphSection.add_widget(canvas)
 
     def showPopup(self, x, y):
-        text = f"({y})"
+        text = f"{self.currentSymbol}{y:,}"
         self.infoPopup.set_text(text)
         self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
