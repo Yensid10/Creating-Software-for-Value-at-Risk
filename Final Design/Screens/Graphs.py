@@ -20,11 +20,15 @@ class Graphs(Screen):
         self.currentLine = None
         self.Graph1()
 
+    @property
+    def portfolio(self): # Used for self.portfolio possibly being used in other functions
+        return self.manager.get_screen('Portfolio') if self.manager else None
 
     def Graph1(self):
         x = list(range(1, 101))
         y = [random.randint(i, 1000) for i in x]
         self.createGraph(x, y, 'some random linear numbers', 'more random linear numbers', 'Random Graph 1')
+        # CHANGE THIS TO BE PAST PORTFOLIO DATA :))
 
 
     def Graph2(self):
@@ -37,10 +41,9 @@ class Graphs(Screen):
         threading.Thread(target=self.monteCarloConvSim).start()
 
     def monteCarloConvSim(self):
-        portfolio = self.manager.get_screen('Portfolio')
-        stocks = portfolio.tempDownload
+        stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
-        totalValue = float(portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
+        totalValue = float(self.portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
 
         weightings = np.zeros(len(stocks['Close'].columns))
         for x, stockKey in enumerate(store):
@@ -56,14 +59,14 @@ class Graphs(Screen):
 
         for sim in checkpoints:
             # Generate all simulations at once
-            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (portfolio.varCalc.timeHori, sim))
+            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.portfolio.varCalc.timeHori, sim))
             portfoReturns = np.zeros(sim)
 
             for x in range(sim):
                 portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
 
             # Calculate VaR at this checkpoint
-            VaR = np.percentile(sorted(portfoReturns), 100 * portfolio.varCalc.rlPercent) * totalValue
+            VaR = np.percentile(sorted(portfoReturns), 100 * self.portfolio.varCalc.rlPercent) * totalValue
             varResults.append(round(-VaR))
             time.sleep(1) # Make it so i show that the graph is loading somehow.
         
