@@ -110,7 +110,7 @@ class Portfolio(Screen):
             else: totalReturn = "{:.2f}".format(totalReturn)
 
             self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
-            self.totalValue.text = "Total Value: £[b]{:,.2f}".format(totalValue)+"[/b]"
+            self.totalValue.text = "Total Value: [b]£{:,.2f}".format(totalValue)+"[/b]"
             self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
