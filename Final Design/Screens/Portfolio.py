@@ -162,14 +162,17 @@ class Portfolio(Screen):
 
         self.loadStocks(stocks)
 
-
+    def getMonteCarloSimData(self):
+        store = JsonStore('holdings.json')
+        stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
+        totalValue = float(self.totalValue.text.split('£')[1].replace(',', '')[:-4])
+        return stocks, totalValue, store, self.varCalc.rlPercent, self.varCalc.timeHori
 
 
 
 class VaRCalculators:
     rlPercent = 0.05
     timeHori = 1
-    print(f"VaR Calculators Initialised: rlPercent = {rlPercent}, timeHori = {timeHori}")
 
     def __init__(self, *args):
         pass

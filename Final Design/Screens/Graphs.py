@@ -2,6 +2,8 @@ from kivy.uix.screenmanager import Screen
 import matplotlib.pyplot as plt
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import random
+import numpy as np
+from scipy.stats import norm
 
 import logging
 logging.getLogger('matplotlib').setLevel(logging.INFO)
@@ -13,7 +15,7 @@ class Graphs(Screen):
         self.infoPopup = None
         self.currentLine = None
         self.Graph1()
-        
+
 
     def Graph1(self):
         x = list(range(1, 101))
@@ -25,6 +27,37 @@ class Graphs(Screen):
         y = [i ** 2 for i in x]  # Example quadratic data
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
 
+    def Graph3(self):
+        portfolio = self.manager.get_screen('Portfolio') 
+        stocks, totalValue, store, rlPercent, timeHori = portfolio.getMonteCarloSimData()
+
+        weightings = np.zeros(len(stocks['Close'].columns))
+        for x, stockKey in enumerate(store):
+            stockData = store.get(stockKey)
+            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            currentValue = currentPrice * float(stockData['sharesOwned'])
+            weightings[x] = currentValue / totalValue
+
+        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+        
+        checkpoints = list(range(500, 10500, 500)) # Iteration checkpoints to check for convergence 
+        varResults = []
+
+        for sim in checkpoints:
+            # Generate all simulations at once
+            optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (timeHori, sim))
+            portfoReturns = np.zeros(sim)
+
+            for x in range(sim):
+                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+
+            # Calculate VaR at this checkpoint
+            VaR = np.percentile(sorted(portfoReturns), 100 * rlPercent) * totalValue
+            varResults.append(-VaR)
+        
+        # Plotting the convergence of VaR
+        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio')
+
 
     def createGraph(self, x, y, xlabel, ylabel, title):
         self.ids.graphSection.clear_widgets()
@@ -33,6 +66,7 @@ class Graphs(Screen):
         self.ax.set_xlabel(xlabel)
         self.ax.set_ylabel(ylabel)
         self.ax.set_title(title)
+        # self.ax.grid(True)
         
         self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points",bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)

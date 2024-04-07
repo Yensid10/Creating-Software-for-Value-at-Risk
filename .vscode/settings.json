@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
+        "arrowprops",
+        "arrowstyle",
         "binom",
         "boxlayout",
+        "boxstyle",
         "centered",
         "dropna",
         "figsize",
@@ -10,15 +13,18 @@
         "halign",
         "Hori",
         "iloc",
+        "inaxes",
         "jsonstore",
         "KHTML",
         "kivyagg",
         "numpy",
         "portfo",
         "screenmanager",
+        "textcoords",
         "togglebutton",
         "valign",
         "xlabel",
+        "xytext",
         "ylabel"
     ],
     "python.analysis.autoImportCompletions": true
