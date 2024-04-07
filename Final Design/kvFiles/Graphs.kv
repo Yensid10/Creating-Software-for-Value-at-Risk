@@ -4,16 +4,36 @@
 <Graphs>:
     BoxLayout:
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.2, 0.2, 0.2, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-            Color:
-                rgba: 0, 0, 0, 1 
-            Line:
-                rectangle: (self.x, self.y, self.width, self.height)
-                width: 1.5
-        Label:
-            text: 'Graphs'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.73
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: 0, 0, 0, 1 
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.5
+            Label:
+                text: 'Graphs'
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.27
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: 0, 0, 0, 1 
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.5
+            Label:
+                text: 'Options'
