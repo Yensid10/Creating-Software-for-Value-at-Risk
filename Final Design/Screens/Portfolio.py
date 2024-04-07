@@ -235,9 +235,9 @@ class Stocks(GridLayout):
             valign='middle',
             text_size=(300, None), 
             size_hint_x=None,
-            width=300,
+            width=310,
             color=(0, 0, 0, 1),
-            font_size="20sp"
+            font_size="21.5sp"
         )
         nameLabel.bind(size=nameLabel.setter('text_size'))
         

@@ -18,20 +18,39 @@ class Graphs(Screen):
         super().__init__(**kwargs)
         self.infoPopup = None
         self.currentLine = None
-        self.Graph1()
+        self.graph1Flag = False
+
+    def on_enter(self): # To run graph1 the first time you enter the screen, temporary solution
+        if not self.graph1Flag:
+            self.graph1()
+            self.graph1Flag = True
 
     @property
     def portfolio(self): # Used for self.portfolio possibly being used in other functions
         return self.manager.get_screen('Portfolio') if self.manager else None
 
-    def Graph1(self):
-        x = list(range(1, 101))
-        y = [random.randint(i, 1000) for i in x]
-        self.createGraph(x, y, 'some random linear numbers', 'more random linear numbers', 'Random Graph 1')
-        # CHANGE THIS TO BE PAST PORTFOLIO DATA :))
+    def graph1(self):
+        stocks = self.portfolio.tempDownload
+        store = JsonStore('holdings.json')
+    
+        closePrices = stocks['Close'].tail(500)
+    
+        totalValues = []
+        for i in range(len(closePrices)):
+            dailyTotal = 0
+            row = closePrices.iloc[i]
+            for stockKey in store:
+                stockData = store.get(stockKey)
+                dailyTotal += row[stockData['ticker']] * float(stockData['sharesOwned'])
+            totalValues.append(dailyTotal)
+    
+        x = list(range(0, 500, 15))
+        y = totalValues[::15]
+        # print(y)
+        self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time')
 
 
-    def Graph2(self):
+    def graph2(self):
         x = list(range(1, 101))
         y = [i ** 2 for i in x]  # Example quadratic data
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
