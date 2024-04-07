@@ -6,6 +6,7 @@
         "dropna",
         "figsize",
         "floatlayout",
+        "gridlayout",
         "halign",
         "Hori",
         "iloc",

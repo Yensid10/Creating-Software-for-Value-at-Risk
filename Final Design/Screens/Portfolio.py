@@ -105,10 +105,13 @@ class Portfolio(Screen):
 
             totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
             totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
+            if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01"
+            elif totalReturn > -0.01 and totalReturn < 0: totalReturn = "<-0.01"
+            else: totalReturn = "{:.2f}".format(totalReturn)
 
             self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
-            self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
-            self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn:.2f}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
+            self.totalValue.text = "Total Value: £[b]{:,.2f}".format(totalValue)+"[/b]"
+            self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
             VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
@@ -143,10 +146,14 @@ class Portfolio(Screen):
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
         totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
+
         totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
+        if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01"
+        elif totalReturn > -0.01 and totalReturn < 0: totalReturn = "<-0.01"
+        else: totalReturn = "{:.2f}".format(totalReturn)
 
         self.stockName.text = "[u][b]" + self.tempStockInfo['ticker'] + "[/u][/b]"
-        self.totalValue.text = "Current Price: £{:,.2f}".format(currentPrice)
+        self.totalValue.text = "Current Share Price: £{:,.2f}".format(currentPrice)
         self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn:.2f}% / £{totalReturnMoney:,.2f}[/color]"
         self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 

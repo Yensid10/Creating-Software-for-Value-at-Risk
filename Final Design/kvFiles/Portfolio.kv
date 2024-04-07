@@ -9,7 +9,6 @@
     totalShares: totalShares
     dailyVaR: dailyVaR
     returnButton: returnButton
-    # deleteButton: deleteButton
     adjDeleteButton: adjDeleteButton
     rightSide: rightSide
 
@@ -42,10 +41,15 @@
                     size_hint_x: 0.9
                     canvas.before:
                         Color:
-                            rgba: 0.9, 0.9, 0.9, 1
+                            rgba: 0, 0, 0.1, 1
                         Rectangle:
                             pos: self.pos
                             size: self.size
+                        Color:
+                            rgba: 0, 0, 0, 1 
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1.5
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
@@ -54,7 +58,7 @@
                             width: 1.3
                     Label:
                         text: '       OWNED STOCK[b]: HOLDING[/b]'
-                        color: 0, 0, 0, 1
+                        color: 1, 1, 1, 1
                         font_size: '25sp'
                         halign: 'center'
                         valign: 'bottom'
@@ -64,7 +68,7 @@
             ScrollView:
                 canvas.before:
                     Color:
-                        rgba: 0.95, 0.95, 1, 1
+                        rgba: 0, 0, 0.1, 1
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -129,6 +133,7 @@
                 padding: [30, 0, 0, 0]  
                 Label:
                     id: totalValue
+                    markup: True
                     font_size: '20sp'
                     halign: 'left'
                     text_size: self.size
