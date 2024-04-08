@@ -166,7 +166,7 @@ class Graphs(Screen):
     
         # # Update the position of the annotation text
         self.infoPopup.xy = (x, y)
-        self.infoPopup.set_position((-x + xOffset, -y + yOffset))
+        self.infoPopup.set_position((-x + xOffset, -y + yOffset)) # I think this overly complicates it, but it works
         self.infoPopup.set_text(f"Stock: {tickerName}")
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
@@ -265,38 +265,30 @@ class Graphs(Screen):
 
 
     def showPopup(self, x, y):
-        # Temporary solution for weird floating points being displayed
         if y.is_integer():
             text = f"{self.currentSymbol}{int(y):,}"
         else:
             text = f"{self.currentSymbol}{y:,.2f}"
 
-        # xlim = self.ax.get_xlim()
-        # ylim = self.ax.get_ylim()
+        xlim = self.ax.get_xlim()
+        ylim = self.ax.get_ylim()
+        x_rel = (x - xlim[0]) / (xlim[1] - xlim[0])
+        y_rel = (y - ylim[0]) / (ylim[1] - ylim[0])
+    
+        # Have self tested these, they are different to the last way but work perfect for this section
+        if x_rel < 0.5: # Left half
+            xOffset = 10
+        else: # Right half
+            xOffset = -40
 
-        # print(xlim, ylim)
-        # print(x, y)
+        if y_rel < 0.5: # Bottom half
+            yOffset = 20
+        else: # Top half
+            yOffset = -40
     
-        # # Calculate the relative position of the point within the axes
-        # x_rel = (x - xlim[0]) / (xlim[1] - xlim[0])
-        # y_rel = (y - ylim[0]) / (ylim[1] - ylim[0])
-    
-        # # Have self tested these, they appear to be perfect
-        # if x_rel < 0.5: # Left half
-        #     xOffset = -10
-        # else: # Right half
-        #     xOffset = -30
-
-        # if y_rel < 0.5: # Bottom half
-        #     yOffset = 60
-        # else: # Top half
-        #     yOffset = 0
-    
-        # # Update the position of the annotation text
         self.infoPopup.xy = (x, y)
-        # self.infoPopup.set_position((-x + xOffset, -y + yOffset))
+        self.infoPopup.set_position((xOffset, yOffset))
         self.infoPopup.set_text(text)
-        # self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
 
