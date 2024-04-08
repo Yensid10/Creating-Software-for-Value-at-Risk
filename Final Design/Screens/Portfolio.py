@@ -195,8 +195,8 @@ class VaRCalculators:
             portfoReturns = np.zeros(simNum)
             optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
 
-            for x in range(simNum):
-                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+            weightings = weightings.reshape(1, -1)
+            portfoReturns = np.sum(optimisedSim * weightings, axis=2)
 
             currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
 

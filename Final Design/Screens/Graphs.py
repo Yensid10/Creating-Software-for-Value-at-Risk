@@ -18,16 +18,24 @@ class Graphs(Screen):
         super().__init__(**kwargs)
         self.infoPopup = None
         self.currentLine = None
-        self.graph1Flag = False
+        self.graph1Flag = False # May change
+        self.threadRunning = False
+        self.stopThread = threading.Event()
 
     def on_enter(self): # To run graph1 the first time you enter the screen, temporary solution
         if not self.graph1Flag:
             self.graph1()
             self.graph1Flag = True
 
+
+            
+
     @property
     def portfolio(self): # Used for self.portfolio possibly being used in other functions
         return self.manager.get_screen('Portfolio') if self.manager else None
+    
+
+
 
     def graph1(self):
         stocks = self.portfolio.tempDownload
@@ -45,7 +53,7 @@ class Graphs(Screen):
             totalValues.append(dailyTotal)
 
         # y values for total portfolio value every 15 days
-        x = list(range(0, 500, 15))
+        x = list(range(500, 0, -15))  # adjust the range to match the length of y
         y = totalValues[::15]
 
         # Replace the nan values
@@ -75,14 +83,24 @@ class Graphs(Screen):
         self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time', '£')
 
 
-    def graph2(self):
-        x = list(range(1, 101))
+
+
+
+    def graph5(self):
+        x = list(range(0, 101))
         y = [i ** 2 for i in x]  # Example quadratic data
-        self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?')
+        self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?', "")
 
 
-    def graph3(self):
-        threading.Thread(target=self.monteCarloConvSim).start()
+
+
+
+
+
+    def graph6(self):
+        if not self.threadRunning:
+            self.threadRunning = True
+            threading.Thread(target=self.monteCarloConvSim).start()
 
     def monteCarloConvSim(self):
         stocks = self.portfolio.tempDownload
@@ -99,21 +117,23 @@ class Graphs(Screen):
         closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
         
         checkpoints = list(range(500, 25500, 500)) # Iteration checkpoints to check for convergence 
-        varResults = []
+        varResults = [np.nan]
 
         for sim in checkpoints:
+            if self.stopThread.is_set():
+                return
             # Generate all simulations at once
             optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.portfolio.varCalc.timeHori, sim))
             portfoReturns = np.zeros(sim)
 
-            for x in range(sim):
-                portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] * weightings, axis=1))
+            weightings = weightings.reshape(1, -1)
+            portfoReturns = np.sum(optimisedSim * weightings, axis=2)
 
-            # Calculate VaR at this checkpoint
             VaR = np.percentile(sorted(portfoReturns), 100 * self.portfolio.varCalc.rlPercent) * totalValue
             varResults.append(round(-VaR))
-            time.sleep(1) # Make it so i show that the graph is loading somehow.
         
+        self.threadRunning = False
+        checkpoints.insert(0, 0)
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
 
@@ -122,12 +142,26 @@ class Graphs(Screen):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
         self.currentLine, = self.ax.plot(x, y, 'o-')
+
+        if x[0] > x[-1]:
+            xTicks = np.arange(x[0], -1, -max(x[0] // 5, 20)) 
+            xTicks = np.append(xTicks, 0) 
+        else:
+            xTicks = np.linspace(start=min(x), stop=max(x), num=min(len(x), 5))
+
+        self.ax.set_xticks(xTicks)
+        self.ax.set_xticklabels([str(int(tick)) for tick in xTicks])
+
+        # Only invert the x-axis if the first values are in descending order
+        if x[0] > x[-1]:
+            self.ax.invert_xaxis()
+
         self.ax.set_xlabel(xlabel)
         self.ax.set_ylabel(ylabel)
         self.ax.set_title(title)
-        # self.ax.grid(True)
         
-        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points",bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points",
+                                        bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)
 
         canvas = FigureCanvasKivyAgg(self.fig)
@@ -136,8 +170,12 @@ class Graphs(Screen):
         self.fig.tight_layout()
         self.currentSymbol = currentSymbol
         
-        canvas = FigureCanvasKivyAgg(self.fig)
         self.ids.graphSection.add_widget(canvas)
+
+
+
+
+
 
     def showPopup(self, x, y):
         text = f"{self.currentSymbol}{y:,}"

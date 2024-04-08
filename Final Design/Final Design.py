@@ -34,6 +34,10 @@ class FDApp(App):
         layout.add_widget(sm)
 
         return layout
+    
+    def on_stop(self):
+        graphScreen = self.root.children[0].get_screen('Graphs')
+        graphScreen.stopThread.set()
 
 if __name__ == '__main__':
     FDApp().run()

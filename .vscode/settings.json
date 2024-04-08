@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "arange",
         "arrowprops",
         "arrowstyle",
         "binom",
@@ -17,13 +18,17 @@
         "jsonstore",
         "KHTML",
         "kivyagg",
+        "mainthread",
         "numpy",
         "portfo",
         "screenmanager",
         "textcoords",
         "togglebutton",
         "valign",
+        "xaxis",
         "xlabel",
+        "xticklabels",
+        "xticks",
         "xytext",
         "ylabel"
     ],

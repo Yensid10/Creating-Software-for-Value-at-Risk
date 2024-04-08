@@ -15,12 +15,6 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            canvas.after:
-                Color:
-                    rgba: 0, 0, 0, 1
-                Line:
-                    rectangle: self.x, self.y, self.width, self.height
-                    width: 1
             
         ScrollView:
             do_scroll_x: True
@@ -53,7 +47,7 @@
                     background_normal: 'graph reference.png'
                     size_hint_x: None
                     width: 250
-                    on_press: root.graph2()
+                    # on_press: root.graph2()
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
@@ -65,7 +59,7 @@
                     background_normal: 'graph reference.png'
                     size_hint_x: None
                     width: 250
-                    on_press: root.graph3()
+                    # on_press: root.graph3()
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
@@ -88,6 +82,7 @@
                     background_normal: 'graph reference.png'
                     size_hint_x: None
                     width: 250
+                    on_press: root.graph5()
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
@@ -99,6 +94,7 @@
                     background_normal: 'graph reference.png'
                     size_hint_x: None
                     width: 250
+                    on_press: root.graph6()
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
