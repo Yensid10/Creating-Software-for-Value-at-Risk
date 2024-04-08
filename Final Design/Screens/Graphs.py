@@ -107,7 +107,9 @@ class Graphs(Screen):
             VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])) #  company name is the key
     
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+        self.threadRunning = False
         self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
+        
 
     @mainthread
     def createFTSE100Graph(self, tickers, vars):
@@ -129,7 +131,6 @@ class Graphs(Screen):
         canvas.mpl_connect("motion_notify_event", self.FTSEonHover)
         self.fig.tight_layout()
         self.ids.graphSection.add_widget(canvas)
-        self.threadRunning = False
 
     def FTSEonHover(self, event):
         if event.inaxes == self.ax:
@@ -157,7 +158,7 @@ class Graphs(Screen):
         if x_rel < 0.5: # Left half
             xOffset = -10
         else: # Right half
-            xOffset = -30
+            xOffset = -95
 
         if y_rel < 0.5: # Bottom half
             yOffset = 60
@@ -179,9 +180,21 @@ class Graphs(Screen):
 
 
     def graph5(self):
-        x = list(range(0, 101))
-        y = [i ** 2 for i in x]  # Example quadratic data
-        self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?', "")
+        stocks = self.portfolio.tempDownload
+        store = JsonStore('holdings.json')
+
+        # Create a mapping between stock tickers and names
+        tickerToName = {stock: store.get(stock)['name'].split("(")[0].strip() for stock in stocks.columns.levels[1]}
+        # print(tickerToName)
+
+        VaRs = {}
+        for stock in stocks.columns.levels[1]:  # iterate over stock tickers
+            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stocks['Adj Close'][stock]))  # name is the key
+
+        sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+        print(sortedVar)
+        self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
+
 
 
 
@@ -256,7 +269,7 @@ class Graphs(Screen):
         self.infoPopup.set_visible(False)
 
         canvas = FigureCanvasKivyAgg(self.fig)
-        canvas.mpl_connect("motion_notify_event", self.mouse_hover)
+        canvas.mpl_connect("motion_notify_event", self.mouseHover)
 
         self.fig.tight_layout()
         self.currentSymbol = currentSymbol
@@ -296,7 +309,7 @@ class Graphs(Screen):
         self.infoPopup.set_visible(False)
         self.fig.canvas.draw_idle()
 
-    def mouse_hover(self, event):
+    def mouseHover(self, event):
         if event.inaxes == self.ax:
             cont, ind = self.currentLine.contains(event)
             if cont:
