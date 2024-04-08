@@ -65,7 +65,7 @@ class Portfolio(Screen):
         # Load existing stocks and display them
         for stockKeys in store:
             stockData = store.get(stockKeys)
-            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
             self.addStock(stockData, currentPrice)        
 
     def initialStockTotals(self, *args):
@@ -101,7 +101,7 @@ class Portfolio(Screen):
 
             for stockKeys in store:
                 stockData = store.get(stockKeys)
-                currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+                currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
                 totalValue += (currentPrice * float(stockData['sharesOwned']))
                 totalCurrentPrices += currentPrice * float(stockData['sharesOwned'])
                 totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])
@@ -144,6 +144,7 @@ class Portfolio(Screen):
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
         self.tempDownload = stocks
 
+
         currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
         self.tempCurrentPrice = currentPrice
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
@@ -183,14 +184,14 @@ class VaRCalculators:
         start = time.time()
 
         store = JsonStore('holdings.json')
-        weightings = np.zeros(len(stocks['Close'].columns))
+        weightings = np.zeros(len(stocks['Adj Close'].columns))
         for x, stockKey in enumerate(store):
             stockData = store.get(stockKey)
-            currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+            currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
             currentValue = currentPrice * float(stockData['sharesOwned'])
             weightings[x] = currentValue / totalValue
 
-        closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+        closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
         simNum = 10000
         convThreshold = 0.0075
         previousVar = float('inf')
@@ -218,7 +219,7 @@ class VaRCalculators:
 
     def modelSim(self, totalValue, stocks): # Needs some back-testing implemented
         closeDiffs = stocks.pct_change(fill_method=None).dropna()
-        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
+        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori)) # The /100 was ruining this whole thing :(((
     
 
 
@@ -317,7 +318,7 @@ class InputStock(Popup):
             sharesCheck = False
 
         try:
-            initialPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
+            initialPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
         except:
             self.inputTicker.text = ""
             self.inputTicker.hint_text = "Invalid Ticker"

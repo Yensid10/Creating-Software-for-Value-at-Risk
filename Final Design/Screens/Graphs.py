@@ -92,8 +92,18 @@ class Graphs(Screen):
     def graph3(self):
         ftse100 = [ticker + ".L" for ticker in self.manager.get_screen('VaRChecker').ftse100['Ticker'].tolist()]
         # print(ftse100)
-        stockData = yf.download(ftse100, period="500d")['Adj Close']
-        print(stockData)
+        # stockData = yf.download(ftse100, period="500d")['Adj Close']
+        # print(stockData)
+
+        # stockData = yf.download(ftse100, period="500d")
+        # VaRs = {}
+        # for stock in stockData.columns.levels[1]:  # iterate over stock tickers
+        #     VaRs[stock] = self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])
+        # print(VaRs)
+        
+    # def modelSim(self, totalValue, stocks):
+    #     closeDiffs = stocks.pct_change(fill_method=None).dropna()
+    #     return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
 
 
 

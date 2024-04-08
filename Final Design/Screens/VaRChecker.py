@@ -74,20 +74,8 @@ class VaRChecker(Screen):
             return
         endDate = dt.datetime.now()
         startDate = endDate - dt.timedelta(days=1000)
-        stock = yf.download(self.currentTicker + ".L", startDate, endDate).tail(500) #I chose to default it to 500 days, I may include a slider for days in the future.
-        try:
-            closeDiffs = stock['Adj Close'].pct_change().dropna()
-        except:
-            try:
-                stock = yf.download(self.currentTicker + ".L", startDate, endDate).tail(500) #Fixed an issue where it would not work for stocks with .L at the end
-                closeDiffs = stock['Adj Close'].pct_change().dropna()
-            except:
-                setattr(self.valAtRisk, 'text', " Stock not found")
-                return
-        #There were two errors, one where there was only 1 value given from stock, so closeDiffs would be empty, and another one where all the values were the same for all bits of stock data, so all of closeDiffs would be 0, this fixes both.
-        if closeDiffs.empty or (closeDiffs == 0).all(): 
-            setattr(self.valAtRisk, 'text', " STOCK ERROR")
-            return
+        stock = yf.download(self.currentTicker + ".L", period="1000d").tail(500) # I chose to default it to 500 days, I may include a slider for days in the future.
+        closeDiffs = stock['Adj Close'].pct_change(fill_method=None).dropna()
         if self.simMethod == "Historical":
             # Assuming that N-days VaR = 1-day VaR * sqrt(N)
             VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)*self.portfolio*-1*np.sqrt(self.timeHori), 0)))) #Returns a negative value, so needs to be multiplied by -1
