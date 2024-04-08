@@ -13,6 +13,11 @@ logging.getLogger('matplotlib').setLevel(logging.INFO)
 
 # Contains code inspired by: https://stackoverflow.com/a/55184676
 class Graphs(Screen):
+
+    @property
+    def portfolio(self): # Used for self.portfolio possibly being used in other functions
+        return self.manager.get_screen('Portfolio') if self.manager else None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.infoPopup = None
@@ -25,14 +30,6 @@ class Graphs(Screen):
         if not self.graph1Flag:
             self.graph1()
             self.graph1Flag = True
-
-
-            
-
-    @property
-    def portfolio(self): # Used for self.portfolio possibly being used in other functions
-        return self.manager.get_screen('Portfolio') if self.manager else None
-    
 
 
 
@@ -61,6 +58,7 @@ class Graphs(Screen):
         self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£')
 
 
+
     def graph2(self):
         tempStockInfo = self.portfolio.tempStockInfo
         if tempStockInfo is not None:
@@ -79,35 +77,76 @@ class Graphs(Screen):
                         dailyTotal += row
                 totalValues.append(dailyTotal)
 
-            # y values for total portfolio value every 15 days
-            x = list(range(500, 0, -15))  # adjust the range to match the length of y
+            x = list(range(500, 0, -15))
             y = totalValues[::15]
             y = self.replaceNan(y)
             y = [round(num, 2) for num in y]
             y[-1] = round(self.portfolio.tempCurrentPrice, 2)
 
-            
             self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£')
 
-    def graph3(self):
+
+
+    def graph3(self): # I added all the methods for this here, since it was harder to get to work then everything else, so I want to keep it as it's own section
+        if not self.threadRunning:
+            self.threadRunning = True
+            threading.Thread(target=self.ftse100Ranking).start()
+    
+    def ftse100Ranking(self):
         ftse100 = [ticker + ".L" for ticker in self.manager.get_screen('VaRChecker').ftse100['Ticker'].tolist()]
-        # print(ftse100)
-        # stockData = yf.download(ftse100, period="500d")['Adj Close']
-        # print(stockData)
+        stockData = yf.download(ftse100, period="500d")
+        VaRs = {}
+        for stock in stockData.columns.levels[1]:  # iterate over stock tickers
+            VaRs[stock] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))
+        sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+    
+        tickers = list(sortedVar.keys()) # I thought that displaying them all as their full names would be too hard to see, with so many stocks being displayed, plus you can see the stock names on the next page or add it to your list ig?
+        vars = list(sortedVar.values())
+        self.createFTSE100Graph(tickers, vars)
 
-        # stockData = yf.download(ftse100, period="500d")
-        # VaRs = {}
-        # for stock in stockData.columns.levels[1]:  # iterate over stock tickers
-        #     VaRs[stock] = self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])
-        # print(VaRs)
-        
-    # def modelSim(self, totalValue, stocks):
-    #     closeDiffs = stocks.pct_change(fill_method=None).dropna()
-    #     return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
+    @mainthread
+    def createFTSE100Graph(self, tickers, vars):
+        self.ids.graphSection.clear_widgets()
+        self.fig, self.ax = plt.subplots()
+        self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-')
+    
+        self.ax.get_xaxis().set_ticks([])
+        self.ax.set_xlabel('FTSE100 Stocks Ranked by VaR') 
+        self.ax.set_ylabel('Value at Risk for £1000 holding of Stock')
+        self.ax.set_title('Ranking FSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
+    
+        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+        self.infoPopup.set_visible(False)
+    
+        self.tickerHover = tickers # Save the tickers for the hover function
+    
+        canvas = FigureCanvasKivyAgg(self.fig)
+        canvas.mpl_connect("motion_notify_event", self.FTSEonHover)
+        self.fig.tight_layout()
+        self.ids.graphSection.add_widget(canvas)
+        self.threadRunning = False
+
+    def FTSEonHover(self, event):
+        if event.inaxes == self.ax:
+            cont, ind = self.currentLine.contains(event)
+            if cont:
+                pos = ind['ind'][0]
+                tickerName = self.tickerHover[pos]  # Access the corresponding ticker value
+                self.showFTSE(tickerName, event.xdata, event.ydata)
+            else:
+                self.hidePopup() # Can still use the previous hidePopup function
+
+    def showFTSE(self, tickerName, x, y): 
+        text = f"Stock: {tickerName}"
+        self.infoPopup.set_text(text)
+        self.infoPopup.xy = (x, y) 
+        self.infoPopup.set_visible(True)
+        self.fig.canvas.draw_idle()
 
 
 
-
+    def graph4(self):
+        pass
 
 
 
@@ -115,10 +154,6 @@ class Graphs(Screen):
         x = list(range(0, 101))
         y = [i ** 2 for i in x]  # Example quadratic data
         self.createGraph(x, y, 'numbers', 'more numbers', 'Quadratic?', "")
-
-
-
-
 
 
 
@@ -162,6 +197,9 @@ class Graphs(Screen):
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
 
+
+
+
     @mainthread
     def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
         print(y)
@@ -198,9 +236,6 @@ class Graphs(Screen):
         self.ids.graphSection.add_widget(canvas)
 
 
-
-
-
     def showPopup(self, x, y):
         # Temporary solution for weird floating points being displayed
         if y.is_integer():
@@ -211,7 +246,6 @@ class Graphs(Screen):
         self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
-
 
     def hidePopup(self):
         self.infoPopup.set_visible(False)
@@ -226,6 +260,7 @@ class Graphs(Screen):
                 self.showPopup(x[pos], y[pos])
             else:
                 self.hidePopup()
+                
 
     def replaceNan(self, y):
         for i in range(len(y)):

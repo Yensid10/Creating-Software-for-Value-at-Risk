@@ -28,10 +28,12 @@
         "togglebutton",
         "valign",
         "xaxis",
+        "xdata",
         "xlabel",
         "xticklabels",
         "xticks",
         "xytext",
+        "ydata",
         "ylabel"
     ],
     "python.analysis.autoImportCompletions": true
