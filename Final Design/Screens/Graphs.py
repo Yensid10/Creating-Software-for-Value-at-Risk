@@ -53,32 +53,10 @@ class Graphs(Screen):
         # y values for total portfolio value every 15 days
         x = list(range(500, 0, -15))  # adjust the range to match the length of y
         y = totalValues[::15]
-
-        # Replace the nan values
-        for i in range(len(y)):
-            if np.isnan(y[i]):
-                if i == 0:
-                    # If the first value is nan, find the next two non-nan values
-                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
-                    nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
-                    if nextValue is not None and nextNextValue is not None:
-                        # Calculate their difference and subtract it from the second non-nan value to estimate the first value
-                        y[i] = nextValue - (nextNextValue - nextValue)
-                else:
-                    # If the value is nan, find the previous and next non-nan values
-                    prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
-                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
-                    if prevValue is not None and nextValue is not None:
-                        # Calculate their average
-                        y[i] = (prevValue + nextValue) / 2
-                    if np.isnan(y[-1]):
-                        lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)
-                        if lastNoneNan is not None:
-                            # Calculate the average of the last non-nan value and the final value of totalValues
-                            y[-1] = (lastNoneNan + totalValues[-1]) / 2
-            y[i] = round(y[i])
-
+        y = self.replaceNan(y)
+        y = [round(num) for num in y]
         y[-1] = round(self.portfolio.tempTotalValue)
+
         self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£')
 
 
@@ -103,27 +81,11 @@ class Graphs(Screen):
             # y values for total portfolio value every 15 days
             x = list(range(500, 0, -15))  # adjust the range to match the length of y
             y = totalValues[::15]
-
-            # Replace the nan values
-            for i in range(len(y)):
-                if np.isnan(y[i]):
-                    if i == 0:
-                        nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
-                        nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
-                        if nextValue is not None and nextNextValue is not None:
-                            y[i] = nextValue - (nextNextValue - nextValue)
-                    else:
-                        prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
-                        nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
-                        if prevValue is not None and nextValue is not None:
-                            y[i] = (prevValue + nextValue) / 2
-                        if np.isnan(y[-1]):
-                            lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)
-                            if lastNoneNan is not None:
-                                y[-1] = (lastNoneNan + totalValues[-1]) / 2
-                y[i] = round(y[i], 2)
-
+            y = self.replaceNan(y)
+            y = [round(num, 2) for num in y]
             y[-1] = round(self.portfolio.tempCurrentPrice, 2)
+
+            
             self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£')
 
 
@@ -181,6 +143,7 @@ class Graphs(Screen):
 
     @mainthread
     def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
+        print(y)
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
         self.currentLine, = self.ax.plot(x, y, 'o-')
@@ -219,11 +182,16 @@ class Graphs(Screen):
 
 
     def showPopup(self, x, y):
-        text = f"{self.currentSymbol}{y:,}"
+        # Temporary solution for weird floating points being displayed
+        if y.is_integer():
+            text = f"{self.currentSymbol}{int(y):,}"
+        else:
+            text = f"{self.currentSymbol}{y:,.2f}"
         self.infoPopup.set_text(text)
         self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
+
 
     def hidePopup(self):
         self.infoPopup.set_visible(False)
@@ -238,3 +206,22 @@ class Graphs(Screen):
                 self.showPopup(x[pos], y[pos])
             else:
                 self.hidePopup()
+
+    def replaceNan(self, y):
+        for i in range(len(y)):
+            if np.isnan(y[i]):
+                if i == 0:
+                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                    nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
+                    if nextValue is not None and nextNextValue is not None:
+                        y[i] = nextValue - (nextNextValue - nextValue)
+                else:
+                    prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
+                    nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                    if prevValue is not None and nextValue is not None:
+                        y[i] = (prevValue + nextValue) / 2
+                    if np.isnan(y[-1]):
+                        lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)
+                        if lastNoneNan is not None:
+                            y[-1] = (lastNoneNan + y[-1]) / 2
+        return y
