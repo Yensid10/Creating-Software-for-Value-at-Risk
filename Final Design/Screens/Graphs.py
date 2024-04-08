@@ -108,19 +108,18 @@ class Graphs(Screen):
     
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
         self.threadRunning = False
-        self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking FTSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
         
 
     @mainthread
-    def createFTSE100Graph(self, tickers, vars):
+    def createRankingGraph(self, tickers, vars, xlabel, ylabel, title):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
         self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-')
     
-        self.ax.get_xaxis().set_ticks([])
-        self.ax.set_xlabel('FTSE100 Stocks Ranked by VaR') 
-        self.ax.set_ylabel('Value at Risk for £1000 holding of Stock')
-        self.ax.set_title('Ranking FTSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.title(title)
     
         self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)
@@ -193,7 +192,7 @@ class Graphs(Screen):
 
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
         print(sortedVar)
-        self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking Portfolio Stocks based on their Value at Risk for £1000 holding of Stock')
 
 
 
