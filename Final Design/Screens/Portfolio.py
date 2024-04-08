@@ -27,6 +27,8 @@ class Portfolio(Screen):
     returnButton = ObjectProperty(None)
     adjDeleteButton = ObjectProperty(None)
     tempDownload = None
+    tempTotalValue = None
+    tempCurrentPrice = None
     
     logging.getLogger('yfinance').setLevel(logging.WARNING)
 
@@ -78,6 +80,7 @@ class Portfolio(Screen):
         self.returnButton.opacity = 0
         self.returnButton.disabled = True
         self.adjDeleteButton.text = "Adjust VaR"
+        self.tempStockInfo = None
 
 
         anime = Animation(rgba=[0.25, 0.25, 0.25, 1], duration=0.5)
@@ -104,6 +107,7 @@ class Portfolio(Screen):
                 totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])
                 totalShares += int(stockData['sharesOwned'])
 
+            self.tempTotalValue = totalValue
             totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
             totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
             if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01"
@@ -141,6 +145,7 @@ class Portfolio(Screen):
         self.tempDownload = stocks
 
         currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
+        self.tempCurrentPrice = currentPrice
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
         totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))

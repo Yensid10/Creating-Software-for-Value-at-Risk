@@ -1,8 +1,6 @@
-import time
 from kivy.uix.screenmanager import Screen
 import matplotlib.pyplot as plt
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-import random
 import numpy as np
 from kivy.storage.jsonstore import JsonStore
 
@@ -79,10 +77,54 @@ class Graphs(Screen):
                             # Calculate the average of the last non-nan value and the final value of totalValues
                             y[-1] = (lastNoneNan + totalValues[-1]) / 2
             y[i] = round(y[i])
-        
-        self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time', '£')
+
+        y[-1] = round(self.portfolio.tempTotalValue)
+        self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£')
 
 
+    def graph2(self):
+        tempStockInfo = self.portfolio.tempStockInfo
+        if tempStockInfo is not None:
+            stocks = self.portfolio.tempDownload
+            store = JsonStore('holdings.json')
+
+            closePrices = stocks['Close'][tempStockInfo['ticker']].tail(500)
+
+            totalValues = []
+            for i in range(len(closePrices)):
+                dailyTotal = 0
+                row = closePrices.iloc[i]
+                for stockKey in store:
+                    stockData = store.get(stockKey)
+                    if stockData['ticker'] == tempStockInfo['ticker']:
+                        dailyTotal += row
+                totalValues.append(dailyTotal)
+
+            # y values for total portfolio value every 15 days
+            x = list(range(500, 0, -15))  # adjust the range to match the length of y
+            y = totalValues[::15]
+
+            # Replace the nan values
+            for i in range(len(y)):
+                if np.isnan(y[i]):
+                    if i == 0:
+                        nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                        nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
+                        if nextValue is not None and nextNextValue is not None:
+                            y[i] = nextValue - (nextNextValue - nextValue)
+                    else:
+                        prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
+                        nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                        if prevValue is not None and nextValue is not None:
+                            y[i] = (prevValue + nextValue) / 2
+                        if np.isnan(y[-1]):
+                            lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)
+                            if lastNoneNan is not None:
+                                y[-1] = (lastNoneNan + totalValues[-1]) / 2
+                y[i] = round(y[i], 2)
+
+            y[-1] = round(self.portfolio.tempCurrentPrice, 2)
+            self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£')
 
 
 
@@ -135,7 +177,7 @@ class Graphs(Screen):
         self.threadRunning = False
         checkpoints.insert(0, 0)
         # Plotting the convergence of VaR
-        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (VaR)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
+        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
 
     @mainthread
     def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
@@ -160,8 +202,7 @@ class Graphs(Screen):
         self.ax.set_ylabel(ylabel)
         self.ax.set_title(title)
         
-        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points",
-                                        bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)
 
         canvas = FigureCanvasKivyAgg(self.fig)
