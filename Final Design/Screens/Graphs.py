@@ -17,6 +17,10 @@ class Graphs(Screen):
     @property
     def portfolio(self): # Used for self.portfolio possibly being used in other functions
         return self.manager.get_screen('Portfolio') if self.manager else None
+    
+    @property
+    def varChecker(self):  # Used for self.varChecker possibly being used in other functions
+        return self.manager.get_screen('VaRChecker') if self.manager else None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -93,16 +97,17 @@ class Graphs(Screen):
             threading.Thread(target=self.ftse100Ranking).start()
     
     def ftse100Ranking(self):
-        ftse100 = [ticker + ".L" for ticker in self.manager.get_screen('VaRChecker').ftse100['Ticker'].tolist()]
+        ftse100 = [ticker + ".L" for ticker in self.varChecker.ftse100['Ticker'].tolist()]
+        ftse100Names = self.varChecker.ftse100['Company'].tolist()
+        tickerToName = dict(zip(ftse100, ftse100Names))  # mapping between tickers and names
+    
         stockData = yf.download(ftse100, period="500d")
         VaRs = {}
         for stock in stockData.columns.levels[1]:  # iterate over stock tickers
-            VaRs[stock] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))
-        sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))  #  company name is the key
     
-        tickers = list(sortedVar.keys()) # I thought that displaying them all as their full names would be too hard to see, with so many stocks being displayed, plus you can see the stock names on the next page or add it to your list ig?
-        vars = list(sortedVar.values())
-        self.createFTSE100Graph(tickers, vars)
+        sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+        self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
 
     @mainthread
     def createFTSE100Graph(self, tickers, vars):
@@ -113,7 +118,7 @@ class Graphs(Screen):
         self.ax.get_xaxis().set_ticks([])
         self.ax.set_xlabel('FTSE100 Stocks Ranked by VaR') 
         self.ax.set_ylabel('Value at Risk for £1000 holding of Stock')
-        self.ax.set_title('Ranking FSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
+        self.ax.set_title('Ranking FTSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
     
         self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)
@@ -146,7 +151,7 @@ class Graphs(Screen):
 
 
     def graph4(self):
-        pass
+        test = self.varChecker.currentStock.text
 
 
 
@@ -260,7 +265,7 @@ class Graphs(Screen):
                 self.showPopup(x[pos], y[pos])
             else:
                 self.hidePopup()
-                
+
 
     def replaceNan(self, y):
         for i in range(len(y)):

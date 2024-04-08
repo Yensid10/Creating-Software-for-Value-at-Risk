@@ -36,7 +36,7 @@ class VaRChecker(Screen):
         for i in range(len(self.ftse100)):
             button = Button(text=self.ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")
             #Set the currentStock to the stock ticker that is clicked, and save it to the variable
-            button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + self.ftse100['Ticker'][i]), setattr(self, 'currentTicker', str(self.ftse100['Ticker'][i])))) 
+            button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + self.ftse100['Ticker'][i] + ".L"), setattr(self, 'currentTicker', str(self.ftse100['Ticker'][i])))) 
             self.stockList.add_widget(button)
 
     def simMethodPressed(self, current):
