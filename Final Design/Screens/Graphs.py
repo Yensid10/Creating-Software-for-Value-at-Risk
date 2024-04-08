@@ -104,7 +104,7 @@ class Graphs(Screen):
         stockData = yf.download(ftse100, period="500d")
         VaRs = {}
         for stock in stockData.columns.levels[1]:  # iterate over stock tickers
-            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))  #  company name is the key
+            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])) #  company name is the key
     
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
         self.createFTSE100Graph(list(sortedVar.keys()), list(sortedVar.values()))
@@ -142,9 +142,32 @@ class Graphs(Screen):
                 self.hidePopup() # Can still use the previous hidePopup function
 
     def showFTSE(self, tickerName, x, y): 
-        text = f"Stock: {tickerName}"
-        self.infoPopup.set_text(text)
-        self.infoPopup.xy = (x, y) 
+        # Get the limits of the axes
+        xlim = self.ax.get_xlim()
+        ylim = self.ax.get_ylim()
+
+        print(xlim, ylim)
+        print(x, y)
+    
+        # Calculate the relative position of the point within the axes
+        x_rel = (x - xlim[0]) / (xlim[1] - xlim[0])
+        y_rel = (y - ylim[0]) / (ylim[1] - ylim[0])
+    
+        # Have self tested these, they appear to be perfect
+        if x_rel < 0.5: # Left half
+            xOffset = -10
+        else: # Right half
+            xOffset = -30
+
+        if y_rel < 0.5: # Bottom half
+            yOffset = 60
+        else: # Top half
+            yOffset = 0
+    
+        # # Update the position of the annotation text
+        self.infoPopup.xy = (x, y)
+        self.infoPopup.set_position((-x + xOffset, -y + yOffset))
+        self.infoPopup.set_text(f"Stock: {tickerName}")
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
 
@@ -247,8 +270,33 @@ class Graphs(Screen):
             text = f"{self.currentSymbol}{int(y):,}"
         else:
             text = f"{self.currentSymbol}{y:,.2f}"
-        self.infoPopup.set_text(text)
+
+        # xlim = self.ax.get_xlim()
+        # ylim = self.ax.get_ylim()
+
+        # print(xlim, ylim)
+        # print(x, y)
+    
+        # # Calculate the relative position of the point within the axes
+        # x_rel = (x - xlim[0]) / (xlim[1] - xlim[0])
+        # y_rel = (y - ylim[0]) / (ylim[1] - ylim[0])
+    
+        # # Have self tested these, they appear to be perfect
+        # if x_rel < 0.5: # Left half
+        #     xOffset = -10
+        # else: # Right half
+        #     xOffset = -30
+
+        # if y_rel < 0.5: # Bottom half
+        #     yOffset = 60
+        # else: # Top half
+        #     yOffset = 0
+    
+        # # Update the position of the annotation text
         self.infoPopup.xy = (x, y)
+        # self.infoPopup.set_position((-x + xOffset, -y + yOffset))
+        self.infoPopup.set_text(text)
+        # self.infoPopup.xy = (x, y)
         self.infoPopup.set_visible(True)
         self.fig.canvas.draw_idle()
 
