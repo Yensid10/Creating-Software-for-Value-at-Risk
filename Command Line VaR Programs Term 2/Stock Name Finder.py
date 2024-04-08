@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import pandas as pd
 import requests
 
 def findCompanyName(ticker):
@@ -17,8 +18,8 @@ def findCompanyName(ticker):
     return None
 
 
-
+ftse100 = pd.read_html('https://en.wikipedia.org/wiki/FTSE_100_Index')[4]['Ticker'].tolist()
 tickers = ["AAPL", "NKE", "UAA", "ADS.DE", "TSLA", "AAL.L"]
 
-for ticker in tickers:
+for ticker in ftse100:
     print(f"The company name for ticker {ticker} is {findCompanyName(ticker)}.")

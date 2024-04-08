@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import numpy as np
 from kivy.storage.jsonstore import JsonStore
+import yfinance as yf
 
 import threading
 from kivy.clock import mainthread
@@ -87,6 +88,16 @@ class Graphs(Screen):
 
             
             self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£')
+
+    def graph3(self):
+        ftse100 = [ticker + ".L" for ticker in self.manager.get_screen('VaRChecker').ftse100['Ticker'].tolist()]
+        # print(ftse100)
+        stockData = yf.download(ftse100, period="500d")['Adj Close']
+        print(stockData)
+
+
+
+
 
 
 
@@ -175,7 +186,6 @@ class Graphs(Screen):
         self.currentSymbol = currentSymbol
         
         self.ids.graphSection.add_widget(canvas)
-
 
 
 

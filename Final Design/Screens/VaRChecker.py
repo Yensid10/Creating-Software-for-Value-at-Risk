@@ -12,8 +12,7 @@ from scipy.stats import norm, binom
 import yfinance as yf
 import pandas as pd
 
-#Importing the FTSE100 list from Wikipedia
-ftse100 = pd.read_html('https://en.wikipedia.org/wiki/FTSE_100_Index')[4]
+
 
 class VaRChecker(Screen):
     # Declare ObjectProperty variables for the stock list and user inputs, as well as all other variables
@@ -24,6 +23,8 @@ class VaRChecker(Screen):
     timeHori = 1
     simMethod = "Historical"
     currentTicker = ""
+    #Importing the FTSE100 list from Wikipedia
+    ftse100 = pd.read_html('https://en.wikipedia.org/wiki/FTSE_100_Index')[4]
 
     def __init__(self, **kwargs):
         # Call the parent class's constructor
@@ -32,10 +33,10 @@ class VaRChecker(Screen):
         self.populateInputs()
 
     def populateList(self):
-        for i in range(len(ftse100)):
-            button = Button(text=ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")
+        for i in range(len(self.ftse100)):
+            button = Button(text=self.ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")
             #Set the currentStock to the stock ticker that is clicked, and save it to the variable
-            button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + ftse100['Ticker'][i]), setattr(self, 'currentTicker', str(ftse100['Ticker'][i])))) 
+            button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + self.ftse100['Ticker'][i]), setattr(self, 'currentTicker', str(self.ftse100['Ticker'][i])))) 
             self.stockList.add_widget(button)
 
     def simMethodPressed(self, current):
@@ -73,7 +74,7 @@ class VaRChecker(Screen):
             return
         endDate = dt.datetime.now()
         startDate = endDate - dt.timedelta(days=1000)
-        stock = yf.download(self.currentTicker, startDate, endDate).tail(500) #I chose to default it to 500 days, I may include a slider for days in the future.
+        stock = yf.download(self.currentTicker + ".L", startDate, endDate).tail(500) #I chose to default it to 500 days, I may include a slider for days in the future.
         try:
             closeDiffs = stock['Adj Close'].pct_change().dropna()
         except:
