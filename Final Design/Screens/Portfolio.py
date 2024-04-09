@@ -46,7 +46,10 @@ class Portfolio(Screen):
         self.ids.stockCards.add_widget(stockCard)
 
     def loadStocks(self, stocks):
+        
+        # Some important stuff to specify for this file, it will generate in the directory that you are calling the main Final Design file from, so if you are calling that file from another folder, it will store it in the outer folder you are calling from. So make sure in the future you call the Final Design file from the same directory as you used last time, or it won't be able to access the holdings. I advise to just use the same directory as the program is being stored in when its compiled, since I assume that will work.
         store = JsonStore('holdings.json')
+
         # Clear existing stock widgets
         self.ids.stockCards.clear_widgets()
 
