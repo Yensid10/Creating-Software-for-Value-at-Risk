@@ -124,7 +124,7 @@ class Graphs(Screen):
             y = [round(num, 2) for num in y]
             y[-1] = round(self.portfolio.tempCurrentPrice, 2) 
 
-            self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£', '#F4743B')
+            self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + '\nIndividual Share Pricing Over Time', '£', '#F4743B')
 
 
 
@@ -281,7 +281,7 @@ class Graphs(Screen):
             print("FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
         # I know this is not displayed in a graph, but I wanted to still check, and due to the nature of Monte Carlo sim, it does not pass backtesting when the portfolio is too diverse, so even though smaller portfolio's and backtesting for single stock, I don't think its worth showing that it fails backtesting, as it is expected for well diversified ones
         self.graph6Running = False
-        self.backTestGraph(range(462, 0, -1), VaRs, pDifferences, 'Last 450 Days', 'Value at Risk vs Percentage Difference (%)', 'Monte Carlo Simulation Back-Test Comparing 50 Day Rolling Window of VaR to Daily Percentage Difference')
+        self.backTestGraph(range(len(VaRs), 0, -1), VaRs, pDifferences, 'Last 450 Days', 'Value at Risk vs Percentage Difference (%)', 'Monte Carlo Simulation Back-Testing Comparing\n 50 Day Rolling Window of VaR to Daily Adjusted Close Percentage Difference')
 
 
 

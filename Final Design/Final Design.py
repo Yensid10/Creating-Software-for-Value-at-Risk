@@ -13,7 +13,23 @@ from Screens.Portfolio import Portfolio
 from Screens.Graphs import Graphs
 from Screens.VaRChecker import VaRChecker
 
+from kivy.lang import Builder
+import os
+import sys
+
+def createPathToResource(relativePath): # Converts the relative path to an absolute path, since that's what needed to work with pyinstaller, my packager
+    originalPath = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))) # If the program is run as an executable, the path is different
+    return os.path.join(originalPath, relativePath) # Joining the original path with the relative path to get the absolute path
+
+global PATH_TO_RESOURCE # Need to do with caps and global so that it can be used as a path reference
+PATH_TO_RESOURCE = createPathToResource('')
+
+Builder.load_file(createPathToResource('kvFiles/Portfolio.kv'))
+Builder.load_file(createPathToResource('kvFiles/Graphs.kv'))
+Builder.load_file(createPathToResource('kvFiles/VaRChecker.kv'))
+
 class FDApp(App):
+    PATH_TO_RESOURCE = PATH_TO_RESOURCE
     def build(self):
         sm = ScreenManager()        
         sm.add_widget(Portfolio(name='Portfolio'))
