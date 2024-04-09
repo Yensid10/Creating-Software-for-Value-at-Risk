@@ -186,10 +186,6 @@ class Graphs(Screen):
 
 
 
-    def graph4(self):
-        test = self.varChecker.currentStock.text
-
-
     @checkForStocks
     def graph5(self):
         stocks = self.portfolio.tempDownload
@@ -257,19 +253,20 @@ class Graphs(Screen):
 
 
     @checkForStocks
-    def graph7(self):
+    def graph4(self):
         if not self.threadRunning:
             self.threadRunning = True
             threading.Thread(target=self.monteCarloSimBackTest).start()
 
 
     def monteCarloSimBackTest(self):
+        print("Back-Test Started!!!")
         stocks = self.portfolio.tempDownload
         totalValue = float(self.portfolio.tempTotalValue)
         count = 0
         adjust = int(len(stocks)/10)
         VaRs = []
-        nextDays = []
+        pDifferences = []
         store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Adj Close'].columns))
         for x, stockKey in enumerate(store):
@@ -279,7 +276,7 @@ class Graphs(Screen):
             weightings[x] = currentValue / totalValue
         
 
-        for i in range(1, len(stocks) - adjust - 1):            
+        for i in range(1, len(stocks) - adjust - 1): # Maybe change this so it does it in increments of 15, to make it faster...
             # Monte Carlo Simulation VaR calculation
             closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
             simNum = 10000
@@ -322,15 +319,61 @@ class Graphs(Screen):
             
             # Calculate the percentage difference between the two days
             percentageDifference = (((totalValueNextDay - totalValue) / totalValue) * 100)*np.sqrt(self.portfolio.varCalc.timeHori)
-            nextDays.append(percentageDifference)
+            pDifferences.append(percentageDifference)
             # print(percentageDifference)
     
             if not np.isnan(percentageDifference) and VaR > percentageDifference:
                 count += 1
-        print(count)
-        print(VaRs)
-        print(nextDays)
+        
+        # print(count)
+        # print(VaRs)
+        # print(pDifferences)
         self.threadRunning = False
+        self.backTestGraph(range(1, len(VaRs) + 1), VaRs, pDifferences, 'Days', 'Value at Risk (%) & Percentage Difference (%)', 'Monte Carlo Simulation Backtesting Test', '£') # Need to get the axis to flip like one of the above graphs
+
+    @mainthread # Maybe I could get it so this displays a pvalue in the graphs top corner or something?
+    def backTestGraph(self, x, y1, y2, xlabel, ylabel, title, currentSymbol):
+        self.ids.graphSection.clear_widgets()
+        self.fig, self.ax = plt.subplots()
+        self.ax.plot(x, y1, 'o-', color='blue', label='VaR')
+        self.ax.plot(x, y2, 'o-', color='red', label='pDifference')
+
+        if x[0] > x[-1]:
+            xTicks = np.arange(x[0], -1, -max(x[0] // 5, 20)) 
+            xTicks = np.append(xTicks, 0) 
+        else:
+            xTicks = np.linspace(start=min(x), stop=max(x), num=min(len(x), 5))
+
+        self.ax.set_xticks(xTicks)
+        self.ax.set_xticklabels([str(int(tick)) for tick in xTicks])
+
+        # Only invert the x-axis if the first values are in descending order
+        if x[0] > x[-1]:
+            self.ax.invert_xaxis()
+
+        self.ax.set_xlabel(xlabel)
+        self.ax.set_ylabel(ylabel)
+        self.ax.set_title(title)
+        self.ax.legend()
+
+        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+        self.infoPopup.set_visible(False)
+
+        canvas = FigureCanvasKivyAgg(self.fig)
+        canvas.mpl_connect("motion_notify_event", self.mouseHover) # I don't think any of this will work for this graph but thats okay, it doesn't really need to...
+
+        self.fig.tight_layout()
+        self.currentSymbol = currentSymbol
+        
+        self.ids.graphSection.add_widget(canvas)
+
+
+
+
+
+
+
+
     
 
 
