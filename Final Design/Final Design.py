@@ -1,3 +1,12 @@
+#MCaT - Stands for Money Can Always Triumph
+import sys
+
+# Check if this is running in a PyInstaller bundle or in a development environment
+if getattr(sys, 'frozen', False):
+    # Set up logging to a file, otherwise the app needs a console
+    sys.stdout = open('Bin.log', 'w')
+    sys.stderr = open('Bin.log', 'w')
+
 #Adjusting window size to be perfect for the tabs and different screens
 from kivy.core.window import Window
 Window.size = (800, 550)
@@ -15,7 +24,6 @@ from Screens.VaRChecker import VaRChecker
 
 from kivy.lang import Builder
 import os
-import sys
 
 def createPathToResource(relativePath): # Converts the relative path to an absolute path, since that's what needed to work with pyinstaller, my packager
     originalPath = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))) # If the program is run as an executable, the path is different

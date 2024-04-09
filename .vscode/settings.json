@@ -22,6 +22,7 @@
         "KHTML",
         "kivyagg",
         "mainthread",
+        "MEIPASS",
         "numpy",
         "portfo",
         "pyinstaller",
