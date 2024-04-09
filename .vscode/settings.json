@@ -36,5 +36,5 @@
         "ydata",
         "ylabel"
     ],
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": false
 }

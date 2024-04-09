@@ -205,7 +205,7 @@ class Graphs(Screen):
     def monteCarloConvSim(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
-        totalValue = float(self.portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
+        totalValue = float(self.portfolio.tempTotalValue)
 
         weightings = np.zeros(len(stocks['Close'].columns))
         for x, stockKey in enumerate(store):
@@ -236,6 +236,144 @@ class Graphs(Screen):
         checkpoints.insert(0, 0)
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
+
+
+
+
+
+    def graph7(self):
+        stocks = self.portfolio.tempDownload
+        totalValue = float(self.portfolio.tempTotalValue)
+        count = 0
+        adjust = int(len(stocks)/10)
+        VaRs = []
+        nextDays = []
+        store = JsonStore('holdings.json')
+        weightings = np.zeros(len(stocks['Adj Close'].columns))
+        for x, stockKey in enumerate(store):
+            stockData = store.get(stockKey)
+            currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+            currentValue = currentPrice * float(stockData['sharesOwned'])
+            weightings[x] = currentValue / totalValue
+        
+
+        for i in range(1, len(stocks) - adjust - 1):            
+            # Monte Carlo Simulation VaR calculation
+            closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
+            simNum = 10000
+            convThreshold = 0.001
+            previousVar = float('inf')
+            converged = False
+    
+            while not converged and simNum <= 100000:            
+                portfoReturns = np.zeros(simNum)
+                optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.portfolio.varCalc.timeHori, simNum))
+    
+                weightings = weightings.reshape(1, -1)
+                portfoReturns = np.sum(optimisedSim * weightings, axis=2)
+    
+                currentVar = -np.percentile(sorted(portfoReturns), 100 * self.portfolio.varCalc.rlPercent)
+    
+                if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
+                    converged = True
+                else:
+                    previousVar = currentVar
+                    simNum += 5000
+    
+            VaR = -currentVar*100 # Not currently multiplied by totalValue
+            VaRs.append(VaR)
+            # print(VaR)
+
+            # Calculate total value for the day specified (i+adjust)
+            totalValue = 0
+            for stockKeys in store:
+                stockData = store.get(stockKeys)
+                currentPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust]
+                totalValue += (currentPrice * float(stockData['sharesOwned']))
+            
+            # Calculate total value for the next day (i+adjust+1)
+            totalValueNextDay = 0
+            for stockKeys in store:
+                stockData = store.get(stockKeys)
+                nextDayPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust+1]
+                totalValueNextDay += (nextDayPrice * float(stockData['sharesOwned']))
+            
+            # Calculate the percentage difference between the two days
+            percentageDifference = (((totalValueNextDay - totalValue) / totalValue) * 100)*np.sqrt(self.portfolio.varCalc.timeHori)
+            nextDays.append(percentageDifference)
+            # print(percentageDifference)
+    
+            if not np.isnan(percentageDifference) and VaR > percentageDifference:
+                count += 1
+        print(count)
+        print(VaRs)
+        print(nextDays)
+    
+    #     # ... existing code ...
+
+
+
+
+        # def backTest(self, stock):
+        #     #Taken from Single Stock VaR.py
+        #     count = 0
+        #     adjust = int(len(stock)/10)
+        #     for i in range(1, len(stock) - adjust - 1):
+        #         backTest = stock['Adj Close'].pct_change()[i:i+adjust]
+        #         if self.simMethod == "Historical":
+        #             VaR = np.percentile(backTest, self.rlPercent)*np.sqrt(self.timeHori)*self.portfolio
+        #         else:
+        #             VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(backTest), np.std(backTest)))*np.sqrt(self.timeHori)*-1 #Always returns a positive value with model simulation, so needs to be multiplied by -1
+        #         nextDay = stock['Adj Close'].pct_change()[i+adjust:i+adjust+1].values[0]*np.sqrt(self.timeHori)*self.portfolio
+        #         if VaR > nextDay:
+        #             count += 1
+        #     pValue = binom.cdf((len(stock)-adjust)-count,len(stock)-adjust,1-self.rlPercent/100)
+        #     #I know this doesn't provide enough statistical analysis, I will improve on it more in the future
+        #     if pValue > self.rlPercent/100:
+        #         setattr(self.backTestCheck, 'color', (0, 1, 0, 1)) #Green
+        #         setattr(self.backTestCheck, 'text', "PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")
+        #     else:
+        #         setattr(self.backTestCheck, 'color', (1, 0, 0, 1)) #Red
+        #         setattr(self.backTestCheck, 'text', "FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
+
+#       def convMonteCarloSim(self, totalValue, stocks):
+            # start = time.time()
+
+            # store = JsonStore('holdings.json')
+            # weightings = np.zeros(len(stocks['Adj Close'].columns))
+            # for x, stockKey in enumerate(store):
+            #     stockData = store.get(stockKey)
+            #     currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+            #     currentValue = currentPrice * float(stockData['sharesOwned'])
+            #     weightings[x] = currentValue / totalValue
+
+            # closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
+            # simNum = 10000
+            # convThreshold = 0.0075
+            # previousVar = float('inf')
+            # converged = False
+
+            # while not converged and simNum <= 100000:            
+            #     portfoReturns = np.zeros(simNum)
+            #     optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
+
+            #     weightings = weightings.reshape(1, -1)
+            #     portfoReturns = np.sum(optimisedSim * weightings, axis=2)
+
+            #     currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
+
+            #     if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
+            #         converged = True
+            #     else:
+            #         previousVar = currentVar
+            #         simNum += 5000
+
+            # end = time.time()
+            # print(f"Monte Carlo Sim Speed: {end - start} seconds")
+            # return "{:,.2f}".format(currentVar * totalValue)
+
+        
+
 
 
 

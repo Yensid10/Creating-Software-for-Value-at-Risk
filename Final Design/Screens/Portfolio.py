@@ -65,7 +65,10 @@ class Portfolio(Screen):
         # Load existing stocks and display them
         for stockKeys in store:
             stockData = store.get(stockKeys)
-            currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+            if len(store) != 1:
+                currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+            else:
+                currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
             self.addStock(stockData, currentPrice)        
 
     def initialStockTotals(self, *args):
@@ -99,9 +102,14 @@ class Portfolio(Screen):
             end = time.time()
             print(f"Initial Stock Totals Speed: {end - start} seconds")
 
+            print(len(store))
             for stockKeys in store:
                 stockData = store.get(stockKeys)
-                currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+                # print(len(stocks.columns))
+                if len(store) != 1:
+                    currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+                else:
+                    currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
                 totalValue += (currentPrice * float(stockData['sharesOwned']))
                 totalCurrentPrices += currentPrice * float(stockData['sharesOwned'])
                 totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])
@@ -119,7 +127,11 @@ class Portfolio(Screen):
             self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
             self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
 
-            VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
+
+            if len(store) != 1:
+                VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
+            else:
+                VaR = self.varCalc.modelSim(totalValue, stocks['Close'])
             self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
 
             self.loadStocks(stocks)
@@ -144,8 +156,10 @@ class Portfolio(Screen):
         stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
         self.tempDownload = stocks
 
-
-        currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
+        if len(store) != 1:
+            currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
+        else:
+            currentPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
         self.tempCurrentPrice = currentPrice
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
@@ -161,7 +175,10 @@ class Portfolio(Screen):
         self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalReturnMoney:,.2f}[/color]"
         self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
 
-        VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
+        if len(store) != 1:            
+            VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']])
+        else:
+            VaR = self.varCalc.modelSim(totalValue, stocks['Close'])
         self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
 
         self.loadStocks(stocks)
@@ -193,7 +210,7 @@ class VaRCalculators:
 
         closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
         simNum = 10000
-        convThreshold = 0.0075
+        convThreshold = 0.001
         previousVar = float('inf')
         converged = False
 
@@ -202,9 +219,11 @@ class VaRCalculators:
             optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
 
             weightings = weightings.reshape(1, -1)
-            portfoReturns = np.sum(optimisedSim * weightings, axis=2)
+            portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
 
-            currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
+            print(self.rlPercent)
+            print(portfoReturns)
+            currentVar = -np.percentile(portfoReturns, 100 * self.rlPercent)
 
             if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
                 converged = True
