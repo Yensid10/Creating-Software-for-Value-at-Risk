@@ -64,11 +64,11 @@ class Graphs(Screen):
         y = [round(num) for num in y]
         y[-1] = round(self.portfolio.tempTotalValue)
 
-        self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£')
+        self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£', 'red')
 
 
     @checkForStocks
-    def graph2(self):
+    def graph3(self):
         tempStockInfo = self.portfolio.tempStockInfo
         if tempStockInfo is not None:
             stocks = self.portfolio.tempDownload
@@ -95,11 +95,11 @@ class Graphs(Screen):
             y = [round(num, 2) for num in y]
             y[-1] = round(self.portfolio.tempCurrentPrice, 2)
 
-            self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£')
+            self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + 'Individual Share Pricing Over Time', '£', '#F4743B')
 
 
 
-    def graph3(self): # I added all the methods for this here, since it was harder to get to work then everything else, so I want to keep it as it's own section
+    def graph5(self): # I added all the methods for this here, since it was harder to get to work then everything else, so I want to keep it as it's own section
         if not self.threadRunning:
             self.threadRunning = True
             threading.Thread(target=self.ftse100Ranking).start()
@@ -112,27 +112,29 @@ class Graphs(Screen):
         stockData = yf.download(ftse100, period="500d")
         VaRs = {}
         for stock in stockData.columns.levels[1]:  # iterate over stock tickers
-            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])) #  company name is the key
+            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))/10 #  company name is the key
     
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
         self.threadRunning = False
-        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking FTSE100 Stocks based on their Value at Risk for £1000 holding of Stock')
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking FTSE100 Stocks based on their Value at Risk for £1000 holding of Stock', 'black')
         
 
     @mainthread
-    def createRankingGraph(self, tickers, vars, xlabel, ylabel, title):
+    def createRankingGraph(self, tickers, vars, xlabel, ylabel, title, colour):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
-        self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-')
+        self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-', color=colour)
     
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.title(title)
     
+        self.ax.set_xticks([])  # Hide x-axis ticks and labels
+    
         self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
         self.infoPopup.set_visible(False)
     
-        self.tickerHover = tickers # Save the tickers for the hover function
+        self.tickerHover = tickers  # Save the tickers for the hover function
     
         canvas = FigureCanvasKivyAgg(self.fig)
         canvas.mpl_connect("motion_notify_event", self.FTSEonHover)
@@ -167,7 +169,7 @@ class Graphs(Screen):
         if y_rel < 0.5: # Bottom half
             yOffset = 60
         else: # Top half
-            yOffset = 0
+            yOffset = -30
     
         # # Update the position of the annotation text
         self.infoPopup.xy = (x, y)
@@ -179,7 +181,7 @@ class Graphs(Screen):
 
 
     @checkForStocks
-    def graph5(self):
+    def graph2(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
         if len(store) == 1:
@@ -191,15 +193,15 @@ class Graphs(Screen):
 
         VaRs = {}
         for stock in stocks.columns.levels[1]:  # iterate over stock tickers
-            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stocks['Adj Close'][stock]))  # name is the key
+            VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stocks['Adj Close'][stock]))/10  # name is the key
 
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
-        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking Portfolio Stocks based on their Value at Risk for £1000 holding of Stock')
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking Portfolio Stocks based on their Value at Risk for £1000 holding of Stock', 'blue')
 
 
 
     @checkForStocks
-    def graph6(self):
+    def graph4(self):
         self.monteCarloConvSim()
 
     def monteCarloConvSim(self):
@@ -237,11 +239,11 @@ class Graphs(Screen):
         # self.threadRunning = False
         checkpoints.insert(0, 0)
         # Plotting the convergence of VaR
-        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
+        self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£", 'purple')
 
 
     @checkForStocks
-    def graph4(self):
+    def graph6(self):
         if not self.threadRunning:
             self.threadRunning = True
             thread = threading.Thread(target=self.monteCarloSimBackTest)
@@ -291,7 +293,6 @@ class Graphs(Screen):
     
             VaR = -currentVar*100 # Not currently multiplied by totalValue
             VaRs.append(VaR)
-            # print(VaR)
 
             # Calculate total value for the day specified (i+adjust)
             totalValue = 0
@@ -310,15 +311,10 @@ class Graphs(Screen):
             # Calculate the percentage difference between the two days
             percentageDifference = (((totalValueNextDay - totalValue) / totalValue) * 100)*np.sqrt(self.portfolio.varCalc.timeHori)
             pDifferences.append(percentageDifference)
-            # print(percentageDifference)
     
             if not np.isnan(percentageDifference) and VaR > percentageDifference:
                 count += 1
             
-        
-        # print(count)
-        # print(VaRs)
-        # print(pDifferences)
         self.threadRunning = False
         self.backTestGraph(range(462, 0, -1), VaRs, pDifferences, 'Days', 'Value at Risk (%) & Percentage Difference (%)', 'Monte Carlo Simulation Backtesting') # Need to get the axis to flip like one of the above graphs
 
@@ -357,10 +353,10 @@ class Graphs(Screen):
 
 
     @mainthread
-    def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
+    def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol, colour):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
-        self.currentLine, = self.ax.plot(x, y, 'o-')
+        self.currentLine, = self.ax.plot(x, y, 'o-', color=colour)
 
         if x[0] > x[-1]:
             xTicks = np.arange(x[0], -1, -max(x[0] // 5, 20)) 

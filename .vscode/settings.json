@@ -30,11 +30,13 @@
         "xaxis",
         "xdata",
         "xlabel",
+        "xlim",
         "xticklabels",
         "xticks",
         "xytext",
         "ydata",
-        "ylabel"
+        "ylabel",
+        "ylim"
     ],
     "python.analysis.autoImportCompletions": false
 }
