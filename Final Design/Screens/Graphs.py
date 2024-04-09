@@ -34,7 +34,9 @@ class Graphs(Screen):
         super().__init__(**kwargs)
         self.infoPopup = None 
         self.currentLine = None
-        self.threadRunning = False # Used to check if a thread is currently running
+        self.graph4Running = False # Used to check if the respective threads for each graph is already being ran
+        self.graph5Running = False 
+        self.graph6Running = False 
         Clock.schedule_once(lambda dt: self.graph1(), 0) # This is used to run the first graph as soon as the portfolio screen is loaded
 
 
@@ -86,14 +88,17 @@ class Graphs(Screen):
             VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stocks['Adj Close'][stock]))  # name is the key
 
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value
-        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR', 'Value at Risk Percentage (%)', 'Ranking Portfolio Stocks based on their Value at Risk', 'blue')
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking Portfolio Stocks based on their Value at Risk', 'blue')
 
 
 
     @checkForStocks
     def graph3(self): # Individual Share Pricing Over Time
         tempStockInfo = self.portfolio.tempStockInfo
-        if tempStockInfo is not None: # Makes sure a stock is selected on the portfolio screen
+        if tempStockInfo is None: # Makes sure a stock is selected on the portfolio screen
+            self.graph3Ref.text = "[color=ff0000]Please [u]Select a Stock[/u] on the [b]Portfolio Screen[/b] First![/color]"
+            Clock.schedule_once(lambda dt: setattr(self.graph3Ref, 'text', "[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]"), 3)
+        else:
             stocks = self.portfolio.tempDownload
             store = JsonStore('holdings.json')
 
@@ -125,6 +130,13 @@ class Graphs(Screen):
 
     @checkForStocks
     def graph4(self): # Monte Carlo Simulation Convergence Analysis
+        if not self.graph4Running:
+            self.graph4Running = True
+            thread = threading.Thread(target=self.monteCarloSimConvAnalysis)
+            thread.daemon = True
+            thread.start()
+
+    def monteCarloSimConvAnalysis(self): 
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
         if len(store) == 1: # Monte Carlo Simulation doesn't work with 1 stock
@@ -157,13 +169,14 @@ class Graphs(Screen):
             varResults.append(round(-VaR))
         
         checkpoints.insert(0, 0) # x-axis starts at 0
+        self.graph4Running = False
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£", 'purple')
 
 
 
     def graph5(self): # FTSE100 Stocks Ranked by VaR
-        if not self.threadRunning:
-            self.threadRunning = True
+        if not self.graph5Running:
+            self.graph5Running = True
             thread = threading.Thread(target=self.ftse100Ranking) # Needs threading since it takes time to download the stock information for 100 stocks
             thread.daemon = True
             thread.start()
@@ -179,20 +192,24 @@ class Graphs(Screen):
             VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stockData['Adj Close'][stock])) # If you use 100, it will just generate a standard percentage
     
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value
-        self.threadRunning = False
-        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR', 'Value at Risk Percentage (%)', 'Ranking FTSE100 Stocks based on their Value at Risk', 'black')
+        self.graph5Running = False
+        self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking FTSE100 Stocks based on their Value at Risk', 'black')
 
 
 
     @checkForStocks
     def graph6(self): # Monte Carlo Simulation Backtesting
-        if not self.threadRunning:
-            self.threadRunning = True # Done to check that it doesn't run this same code again when pressed and create multiple instances, it also stops other threads from running at the same time as well
+        if not self.graph6Running:
+            self.graph6Running = True # Done to check that it doesn't run this same code again when pressed and create multiple instances, it also stops other threads from running at the same time as well
             thread = threading.Thread(target=self.monteCarloSimBackTest)
             thread.daemon = True
             thread.start()
 
     def monteCarloSimBackTest(self):
+        store = JsonStore('holdings.json')
+        if len(store) == 1: # Monte Carlo Simulation doesn't work with 1 stock
+            print("Cannot create rankings graph due to lack of stocks in portfolio.")
+            return
         print("Back-Test Started!")
         stocks = self.portfolio.tempDownload
         totalValue = float(self.portfolio.tempTotalValue)
@@ -200,7 +217,6 @@ class Graphs(Screen):
         adjust = int(len(stocks)/10) # Works the same way as it did for my VaR checker
         VaRs = []
         pDifferences = []
-        store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Adj Close'].columns))
         for x, stockKey in enumerate(store):
             stockData = store.get(stockKey)
@@ -264,7 +280,7 @@ class Graphs(Screen):
         else:
             print("FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
         # I know this is not displayed in a graph, but I wanted to still check, and due to the nature of Monte Carlo sim, it does not pass backtesting when the portfolio is too diverse, so even though smaller portfolio's and backtesting for single stock, I don't think its worth showing that it fails backtesting, as it is expected for well diversified ones
-        self.threadRunning = False
+        self.graph6Running = False
         self.backTestGraph(range(462, 0, -1), VaRs, pDifferences, 'Last 450 Days', 'Value at Risk vs Percentage Difference (%)', 'Monte Carlo Simulation Back-Test Comparing 50 Day Rolling Window of VaR to Daily Percentage Difference')
 
 

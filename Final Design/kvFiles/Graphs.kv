@@ -2,6 +2,7 @@
 # File name: Graphs.kv
 
 <Graphs>:
+    graph3Ref: graph3Ref
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -29,11 +30,15 @@
                 size_hint_x: None
                 width: self.minimum_width
                 Button:
-                    text: 'Option 1'
+                    text: '[b][u]Portfolio Over Time[/u][/b]\nBased on Current Shares'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph1Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph1()
                     canvas.after:
                         Color:
@@ -42,11 +47,15 @@
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
                 Button:
-                    text: 'Option 2'
+                    text: '[b][u]Portfolio VaR Ranking[/u][/b]\nNeeds 2+ Stocks'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph2Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph2()
                     canvas.after:
                         Color:
@@ -54,25 +63,36 @@
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
+
                 Button:
-                    text: 'Option 3'
+                    text: '[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph3Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph3()
+                    id: graph3Ref
                     canvas.after:
                         Color:
                             rgba: 0, 0, 0, 1
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
+
                 Button:
-                    text: 'Option 4'
+                    text: '[b][u]Monte Carlo Convergence[/u][/b]\n Load Time: 0.5s'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph4Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph4()
                     canvas.after:
                         Color:
@@ -80,12 +100,17 @@
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
+
                 Button:
-                    text: 'Option 5'
+                    text: '[b][u]FTSE100 VaR Ranking[/u][/b]\n Load Time: 3s'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph5Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph5()
                     canvas.after:
                         Color:
@@ -93,12 +118,17 @@
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
+
                 Button:
-                    text: 'Option 6'
+                    text: '[b][u]Monte Carlo Back-Testing[/u][/b]\n Load Time: 75s'
+                    markup: True
                     color: 0, 0, 0, 1
-                    background_normal: 'graph reference.png'
+                    background_normal: 'BlurredGraphs/Graph6Blurred.png'
                     size_hint_x: None
                     width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
                     on_press: root.graph6()
                     canvas.after:
                         Color:
