@@ -20,12 +20,12 @@ class FDApp(App):
         sm.add_widget(Graphs(name='Graphs'))
         sm.add_widget(VaRChecker(name='VaRChecker'))
 
-        def screenSwitch(instance):
+        def screenSwitch(instance): # Function to switch between screens depending on which tab is clicked
             sm.current = instance.text
 
-        tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1})
+        tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1}) # Creating the tabs, takes up 10% of the screen space at the top
         for screen in sm.screens:
-            tabButton = Button(text=screen.name, size_hint=(0.33, 1))
+            tabButton = Button(text=screen.name, size_hint=(0.33, 1)) # There are 3, so they take up the available space
             tabButton.bind(on_release=screenSwitch)
             tabs.add_widget(tabButton)
 
@@ -36,4 +36,4 @@ class FDApp(App):
         return layout
 
 if __name__ == '__main__':
-    FDApp().run()
+    FDApp().run() # Runs the App

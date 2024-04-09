@@ -6,20 +6,17 @@ from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.screenmanager import Screen
-import datetime as dt
 import numpy as np
 from scipy.stats import norm, binom
 import yfinance as yf
 import pandas as pd
-
-
 
 class VaRChecker(Screen):
     # Declare ObjectProperty variables for the stock list and user inputs, as well as all other variables
     stockList = ObjectProperty(None)
     userInputs = ObjectProperty(None)
     portfolio = 100000000
-    rlPercent = 5 #Maybe change to be a slider and change to be certainty level in the future
+    rlPercent = 5
     timeHori = 1
     simMethod = "Historical"
     currentTicker = ""
@@ -59,7 +56,6 @@ class VaRChecker(Screen):
             if VaR > nextDay:
                 count += 1
         pValue = binom.cdf((len(stock)-adjust)-count,len(stock)-adjust,1-self.rlPercent/100)
-        #I know this doesn't provide enough statistical analysis, I will improve on it more in the future
         if pValue > self.rlPercent/100:
             setattr(self.backTestCheck, 'color', (0, 1, 0, 1)) #Green
             setattr(self.backTestCheck, 'text', "PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")
@@ -72,10 +68,8 @@ class VaRChecker(Screen):
         if self.currentTicker == "":
             setattr(self.valAtRisk, 'text', " VaR: Select a stock")
             return
-        endDate = dt.datetime.now()
-        startDate = endDate - dt.timedelta(days=1000)
-        stock = yf.download(self.currentTicker + ".L", period="1000d").tail(500) # I chose to default it to 500 days, I may include a slider for days in the future.
-        closeDiffs = stock['Adj Close'].pct_change(fill_method=None).dropna()
+        stock = yf.download(self.currentTicker + ".L", period="1000d").tail(500) # I chose to default it to 500 days, also turns out all the FTSE100 stocks use .L so that is included
+        closeDiffs = stock['Adj Close'].pct_change(fill_method=None).dropna() # fill_method=None is used to make sure that the NaN values are not filled in, as this would skew the data
         if self.simMethod == "Historical":
             # Assuming that N-days VaR = 1-day VaR * sqrt(N)
             VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)*self.portfolio*-1*np.sqrt(self.timeHori), 0)))) #Returns a negative value, so needs to be multiplied by -1
@@ -112,7 +106,7 @@ class VaRChecker(Screen):
     def validateInput(self, current, varName, maxVal):
         try:
             if current.text == "" or int(current.text) < 0:
-                raise Exception #This will be caught by the except statement below, defaulting any incorrect values
+                raise Exception # This will be caught by the except statement below, defaulting any wrong values
             if int(current.text) > maxVal:
                 setattr(self, varName, maxVal)
             else:            
@@ -127,7 +121,7 @@ class VaRChecker(Screen):
         self.populateInputs()
 
     def populateInputs(self):
-        self.userInputs.clear_widgets() #Clears all the widgets in the layout, or they will duplicate
+        self.userInputs.clear_widgets() # Clears all the widgets in the layout, or they will duplicate
         self.userInputs.add_widget(Label(text="\n", size_hint_y=None, height="5sp", font_size="20sp"))
         # Create a dictionary of variable names and their corresponding displayed texts and max values
         variables = {
@@ -137,10 +131,10 @@ class VaRChecker(Screen):
         }
         for varName, (label, maxVal) in variables.items():
             self.userInputs.add_widget(Label(text=label, size_hint_y=None, height="30sp", font_size="20sp"))
-            centeredLayout = BoxLayout(size_hint_y=None, height="30sp", padding=["85sp", 0]) #Padding used to center the text input
-            #Needs to set multiline to false or it won't let you use enter to validate         
+            centeredLayout = BoxLayout(size_hint_y=None, height="30sp", padding=["85sp", 0]) # Padding used to center the text input
+            # Needs to set multiline to false or it won't let you use enter to validate         
             text = TextInput(size_hint_x=None, width="275sp", font_size="15sp", multiline=False)
-            # text.bind(on_focus=self.onFocus) #Was not working, so will maybe try again in the future
+            # text.bind(on_focus=self.onFocus) #Was not working, so will maybe try again in the future, in the future it still did not work D:
             text.bind(on_text_validate=lambda current, varName=varName, maxVal=int(maxVal): self.validateInput(current, varName, maxVal))
             centeredLayout.add_widget(text)
             self.userInputs.add_widget(centeredLayout)
@@ -152,10 +146,12 @@ class VaRChecker(Screen):
         else:
             self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
 
-        #Adding back-testing title
+        # Adding back-testing title
         floatLayout = FloatLayout()
         label = Label(text='[u]Back-Testing[/u]', pos_hint={'center_x': 0.9, 'center_y': 0.1}, font_size="14sp", markup=True, color=(0, 0, 0, 1))#Using the pos_hint to make sure its in the right place, which it now always is
         floatLayout.add_widget(label)
 
         # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time
         self.userInputs.add_widget(floatLayout)
+
+        # After going through this in the future, I don't know why I created so much stuff in the python, rather than in the kv file and just referencing it and adapting it as needed. I also needed to use more classes, but I am still happy with its presentation and functionality, so it is good to still keep as a tab within my program.

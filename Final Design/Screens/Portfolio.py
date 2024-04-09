@@ -124,7 +124,7 @@ class Portfolio(Screen):
             if len(store) != 1: # You can't run Monte Carlo simulations on a single stock, so this helps to determine which method to use
                 VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
             else:
-                VaR = self.varCalc.modelSim(totalValue, stocks['Close'])
+                VaR = self.varCalc.modelSim(totalValue, stocks['Adj Close'])
             self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
 
             self.loadStocks(stocks)
@@ -150,9 +150,9 @@ class Portfolio(Screen):
         self.tempDownload = stocks
 
         if len(store) != 1:
-            currentPrice = stocks['Close'][self.tempStockInfo['ticker']].loc[stocks['Close'][self.tempStockInfo['ticker']].last_valid_index()]
+            currentPrice = stocks['Adj Close'][self.tempStockInfo['ticker']].loc[stocks['Adj Close'][self.tempStockInfo['ticker']].last_valid_index()]
         else:
-            currentPrice = stocks['Close'].loc[stocks['Close'].last_valid_index()]
+            currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
         self.tempCurrentPrice = currentPrice
         totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
         totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
@@ -223,7 +223,7 @@ class VaRCalculators:
 
     def modelSim(self, totalValue, stocks):
         closeDiffs = stocks.pct_change(fill_method=None).dropna()
-        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori)) # I had an 100 in this from my VaRChecker producing bad results, but it is working now
+        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori)) # I had an 100 in this from my VaRChecker producing bad results, but it is working now, also needs to be multiplied by square root of time horizon to get the correct value if time horizon has been adjusted
     
 
 
