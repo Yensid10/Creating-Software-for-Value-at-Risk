@@ -4,7 +4,6 @@
 <Graphs>:
     BoxLayout:
         orientation: 'vertical'
-
         BoxLayout:
             id: graphSection
             orientation: 'vertical'
@@ -15,8 +14,7 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            
-        MyCustomScrollView2:
+        BlackScroll:
             do_scroll_x: True
             do_scroll_y: False
             size_hint_y: 0.25
@@ -109,7 +107,7 @@
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
 
-<MyCustomScrollView2@ScrollView>:
+<BlackScroll@ScrollView>:
     bar_width: 5
     bar_color:  0, 0, 0.05, 1
     bar_inactive_color:  0, 0, 0, 0.3
