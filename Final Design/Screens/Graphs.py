@@ -4,10 +4,8 @@ from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import numpy as np
 from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
-
 import threading
-from kivy.clock import mainthread
-
+from kivy.clock import mainthread, Clock
 import logging
 logging.getLogger('matplotlib').setLevel(logging.INFO)
 
@@ -35,14 +33,8 @@ class Graphs(Screen):
         super().__init__(**kwargs)
         self.infoPopup = None
         self.currentLine = None
-        self.graph1Flag = False # May change
         self.threadRunning = False
-        self.stopThread = threading.Event()
-
-    def on_enter(self): # To run graph1 the first time you enter the screen, temporary solution
-        if not self.graph1Flag:
-            self.graph1()
-            self.graph1Flag = True
+        Clock.schedule_once(lambda dt: self.graph1(), 0)
 
 
     @checkForStocks
@@ -208,9 +200,7 @@ class Graphs(Screen):
 
     @checkForStocks
     def graph6(self):
-        if not self.threadRunning:
-            self.threadRunning = True
-            threading.Thread(target=self.monteCarloConvSim).start()
+        self.monteCarloConvSim()
 
     def monteCarloConvSim(self):
         stocks = self.portfolio.tempDownload
@@ -233,8 +223,6 @@ class Graphs(Screen):
         varResults = [np.nan]
 
         for sim in checkpoints:
-            if self.stopThread.is_set():
-                return
             # Generate all simulations at once
             optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.portfolio.varCalc.timeHori, sim))
             portfoReturns = np.zeros(sim)
@@ -246,7 +234,7 @@ class Graphs(Screen):
             VaR = np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent) * totalValue
             varResults.append(round(-VaR))
         
-        self.threadRunning = False
+        # self.threadRunning = False
         checkpoints.insert(0, 0)
         # Plotting the convergence of VaR
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
@@ -256,7 +244,9 @@ class Graphs(Screen):
     def graph4(self):
         if not self.threadRunning:
             self.threadRunning = True
-            threading.Thread(target=self.monteCarloSimBackTest).start()
+            thread = threading.Thread(target=self.monteCarloSimBackTest)
+            thread.daemon = True
+            thread.start()
 
 
     def monteCarloSimBackTest(self):
@@ -324,26 +314,22 @@ class Graphs(Screen):
     
             if not np.isnan(percentageDifference) and VaR > percentageDifference:
                 count += 1
+            
         
         # print(count)
         # print(VaRs)
         # print(pDifferences)
         self.threadRunning = False
-        self.backTestGraph(range(1, len(VaRs) + 1), VaRs, pDifferences, 'Days', 'Value at Risk (%) & Percentage Difference (%)', 'Monte Carlo Simulation Backtesting Test', '£') # Need to get the axis to flip like one of the above graphs
+        self.backTestGraph(range(462, 0, -1), VaRs, pDifferences, 'Days', 'Value at Risk (%) & Percentage Difference (%)', 'Monte Carlo Simulation Backtesting') # Need to get the axis to flip like one of the above graphs
 
     @mainthread # Maybe I could get it so this displays a pvalue in the graphs top corner or something?
-    def backTestGraph(self, x, y1, y2, xlabel, ylabel, title, currentSymbol):
+    def backTestGraph(self, x, y1, y2, xlabel, ylabel, title):
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
-        self.ax.plot(x, y1, 'o-', color='blue', label='VaR')
-        self.ax.plot(x, y2, 'o-', color='red', label='pDifference')
+        self.ax.plot(x, y1, 'o-', color='blue', label='Value at Risk')
+        self.ax.plot(x, y2, 'o-', color='red', label='Daily Percentage Difference')
 
-        if x[0] > x[-1]:
-            xTicks = np.arange(x[0], -1, -max(x[0] // 5, 20)) 
-            xTicks = np.append(xTicks, 0) 
-        else:
-            xTicks = np.linspace(start=min(x), stop=max(x), num=min(len(x), 5))
-
+        xTicks = np.arange(450, -1, -50)
         self.ax.set_xticks(xTicks)
         self.ax.set_xticklabels([str(int(tick)) for tick in xTicks])
 
@@ -356,15 +342,8 @@ class Graphs(Screen):
         self.ax.set_title(title)
         self.ax.legend()
 
-        self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
-        self.infoPopup.set_visible(False)
-
         canvas = FigureCanvasKivyAgg(self.fig)
-        canvas.mpl_connect("motion_notify_event", self.mouseHover) # I don't think any of this will work for this graph but thats okay, it doesn't really need to...
-
-        self.fig.tight_layout()
-        self.currentSymbol = currentSymbol
-        
+        self.fig.tight_layout()        
         self.ids.graphSection.add_widget(canvas)
 
 

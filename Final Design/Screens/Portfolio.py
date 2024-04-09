@@ -2,30 +2,20 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.properties import ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 import yfinance as yf
 from kivy.clock import Clock, ClockEvent
 import numpy as np
 from scipy.stats import norm
-import time
 import logging
 from bs4 import BeautifulSoup
 import requests
 from kivy.animation import Animation
 
 class Portfolio(Screen):
-    stockCards = ObjectProperty(None)
-    stockName = ObjectProperty(None)
-    totalValue = ObjectProperty(None)
-    totalReturn = ObjectProperty(None)
-    totalShares = ObjectProperty(None)
-    dailyVaR = ObjectProperty(None)
     tempStockInfo = None
     iSTCheck = None
     sSTCheck = None
-    returnButton = ObjectProperty(None)
-    adjDeleteButton = ObjectProperty(None)
     tempDownload = None
     tempTotalValue = None
     tempCurrentPrice = None
@@ -104,11 +94,8 @@ class Portfolio(Screen):
             totalInitialPrices = 0
             totalShares = 0
 
-            start = time.time()
             stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
             self.tempDownload = stocks
-            end = time.time()
-            # print(f"Initial Stock Totals Speed: {end - start} seconds")
 
             for stockKeys in store:
                 stockData = store.get(stockKeys)
@@ -204,8 +191,6 @@ class VaRCalculators:
         self.timeHori = 1
     
     def convMonteCarloSim(self, totalValue, stocks):
-        start = time.time()
-
         store = JsonStore('holdings.json')
         weightings = np.zeros(len(stocks['Adj Close'].columns))
         for x, stockKey in enumerate(store):
@@ -235,8 +220,6 @@ class VaRCalculators:
                 previousVar = currentVar
                 simNum += 5000
 
-        end = time.time()
-        # print(f"Monte Carlo Sim Speed: {end - start} seconds")
         return "{:,.2f}".format(currentVar * totalValue)
 
 
@@ -262,9 +245,9 @@ class Stocks(GridLayout):
             markup=True,
             halign='right',
             valign='middle',
-            text_size=(300, None), 
+            text_size=("300sp", None), 
             size_hint_x=None,
-            width=310,
+            width="303sp",
             color=(0, 0, 0, 1),
             font_size="21.5sp"
         )
@@ -274,9 +257,9 @@ class Stocks(GridLayout):
             text=f"[b]: £{currentPrice*float(sharesOwned):,.2f}[/b]",
             halign='left',
             valign='middle',
-            text_size=(200, None),
+            text_size=("200sp", None),
             size_hint_x=None,
-            width=200,
+            width="200sp",
             markup=True,
             color=(0, 0, 0, 1),
             font_size="20sp"

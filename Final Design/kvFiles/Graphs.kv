@@ -16,7 +16,7 @@
                     pos: self.pos
                     size: self.size
             
-        ScrollView:
+        MyCustomScrollView2:
             do_scroll_x: True
             do_scroll_y: False
             size_hint_y: 0.25
@@ -108,3 +108,15 @@
                         Line:
                             rectangle: self.x, self.y, self.width, self.height
                             width: 2
+
+<MyCustomScrollView2@ScrollView>:
+    bar_width: 5
+    bar_color:  0, 0, 0.05, 1
+    bar_inactive_color:  0, 0, 0, 0.3
+    bar_margin: "3.5dp"
+    canvas.before:
+        Color:
+            rgba: self.bar_color if self.scroll_y else self.bar_inactive_color
+        Rectangle:
+            pos: self.x + self.width - self.bar_width, self.y
+            size: self.bar_width, self.height
