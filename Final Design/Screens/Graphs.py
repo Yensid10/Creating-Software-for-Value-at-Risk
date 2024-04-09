@@ -21,6 +21,15 @@ class Graphs(Screen):
     @property
     def varChecker(self):  # Used for self.varChecker possibly being used in other functions
         return self.manager.get_screen('VaRChecker') if self.manager else None
+    
+    def checkForStocks(func):
+        def wrapper(*args, **kwargs):
+            holdings = JsonStore('holdings.json')
+            if len(holdings) == 0:
+                print("Cannot create graph due to lack of stocks in portfolio.")
+                return
+            return func(*args, **kwargs)
+        return wrapper
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -36,7 +45,7 @@ class Graphs(Screen):
             self.graph1Flag = True
 
 
-
+    @checkForStocks
     def graph1(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
@@ -49,7 +58,11 @@ class Graphs(Screen):
             row = closePrices.iloc[i]
             for stockKey in store:
                 stockData = store.get(stockKey)
-                dailyTotal += row[stockData['ticker']] * float(stockData['sharesOwned'])
+                if len(store) != 1:
+                    currentPrice = row[stockData['ticker']]
+                else:
+                    currentPrice = row
+                dailyTotal += currentPrice * float(stockData['sharesOwned'])
             totalValues.append(dailyTotal)
 
         # y values for total portfolio value every 15 days
@@ -62,14 +75,17 @@ class Graphs(Screen):
         self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Portfolio Value Over Time With Theoretical Current Shares', '£')
 
 
-
+    @checkForStocks
     def graph2(self):
         tempStockInfo = self.portfolio.tempStockInfo
         if tempStockInfo is not None:
             stocks = self.portfolio.tempDownload
             store = JsonStore('holdings.json')
 
-            closePrices = stocks['Close'][tempStockInfo['ticker']].tail(500)
+            if len(store) != 1:
+                closePrices = stocks['Close'][tempStockInfo['ticker']].tail(500)
+            else:
+                closePrices = stocks['Close'].tail(500)
 
             totalValues = []
             for i in range(len(closePrices)):
@@ -146,9 +162,6 @@ class Graphs(Screen):
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
 
-        print(xlim, ylim)
-        print(x, y)
-    
         # Calculate the relative position of the point within the axes
         x_rel = (x - xlim[0]) / (xlim[1] - xlim[0])
         y_rel = (y - ylim[0]) / (ylim[1] - ylim[0])
@@ -177,26 +190,27 @@ class Graphs(Screen):
         test = self.varChecker.currentStock.text
 
 
-
+    @checkForStocks
     def graph5(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
+        if len(store) == 1:
+            print("Cannot create rankings graph due to lack of stocks in portfolio.")
+            return
 
         # Create a mapping between stock tickers and names
         tickerToName = {stock: store.get(stock)['name'].split("(")[0].strip() for stock in stocks.columns.levels[1]}
-        # print(tickerToName)
 
         VaRs = {}
         for stock in stocks.columns.levels[1]:  # iterate over stock tickers
             VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stocks['Adj Close'][stock]))  # name is the key
 
         sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
-        print(sortedVar)
         self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR', 'Value at Risk for £1000 holding of Stock', 'Ranking Portfolio Stocks based on their Value at Risk for £1000 holding of Stock')
 
 
 
-
+    @checkForStocks
     def graph6(self):
         if not self.threadRunning:
             self.threadRunning = True
@@ -205,6 +219,9 @@ class Graphs(Screen):
     def monteCarloConvSim(self):
         stocks = self.portfolio.tempDownload
         store = JsonStore('holdings.json')
+        if len(store) == 1:
+            print("Cannot create rankings graph due to lack of stocks in portfolio.")
+            return
         totalValue = float(self.portfolio.tempTotalValue)
 
         weightings = np.zeros(len(stocks['Close'].columns))
@@ -227,9 +244,10 @@ class Graphs(Screen):
             portfoReturns = np.zeros(sim)
 
             weightings = weightings.reshape(1, -1)
-            portfoReturns = np.sum(optimisedSim * weightings, axis=2)
+            portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
 
-            VaR = np.percentile(sorted(portfoReturns), 100 * self.portfolio.varCalc.rlPercent) * totalValue
+
+            VaR = np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent) * totalValue
             varResults.append(round(-VaR))
         
         self.threadRunning = False
@@ -238,10 +256,14 @@ class Graphs(Screen):
         self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£")
 
 
-
-
-
+    @checkForStocks
     def graph7(self):
+        if not self.threadRunning:
+            self.threadRunning = True
+            threading.Thread(target=self.monteCarloSimBackTest).start()
+
+
+    def monteCarloSimBackTest(self):
         stocks = self.portfolio.tempDownload
         totalValue = float(self.portfolio.tempTotalValue)
         count = 0
@@ -270,9 +292,9 @@ class Graphs(Screen):
                 optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.portfolio.varCalc.timeHori, simNum))
     
                 weightings = weightings.reshape(1, -1)
-                portfoReturns = np.sum(optimisedSim * weightings, axis=2)
+                portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
     
-                currentVar = -np.percentile(sorted(portfoReturns), 100 * self.portfolio.varCalc.rlPercent)
+                currentVar = -np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent)
     
                 if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
                     converged = True
@@ -308,79 +330,12 @@ class Graphs(Screen):
         print(count)
         print(VaRs)
         print(nextDays)
+        self.threadRunning = False
     
-    #     # ... existing code ...
-
-
-
-
-        # def backTest(self, stock):
-        #     #Taken from Single Stock VaR.py
-        #     count = 0
-        #     adjust = int(len(stock)/10)
-        #     for i in range(1, len(stock) - adjust - 1):
-        #         backTest = stock['Adj Close'].pct_change()[i:i+adjust]
-        #         if self.simMethod == "Historical":
-        #             VaR = np.percentile(backTest, self.rlPercent)*np.sqrt(self.timeHori)*self.portfolio
-        #         else:
-        #             VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(backTest), np.std(backTest)))*np.sqrt(self.timeHori)*-1 #Always returns a positive value with model simulation, so needs to be multiplied by -1
-        #         nextDay = stock['Adj Close'].pct_change()[i+adjust:i+adjust+1].values[0]*np.sqrt(self.timeHori)*self.portfolio
-        #         if VaR > nextDay:
-        #             count += 1
-        #     pValue = binom.cdf((len(stock)-adjust)-count,len(stock)-adjust,1-self.rlPercent/100)
-        #     #I know this doesn't provide enough statistical analysis, I will improve on it more in the future
-        #     if pValue > self.rlPercent/100:
-        #         setattr(self.backTestCheck, 'color', (0, 1, 0, 1)) #Green
-        #         setattr(self.backTestCheck, 'text', "PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")
-        #     else:
-        #         setattr(self.backTestCheck, 'color', (1, 0, 0, 1)) #Red
-        #         setattr(self.backTestCheck, 'text', "FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
-
-#       def convMonteCarloSim(self, totalValue, stocks):
-            # start = time.time()
-
-            # store = JsonStore('holdings.json')
-            # weightings = np.zeros(len(stocks['Adj Close'].columns))
-            # for x, stockKey in enumerate(store):
-            #     stockData = store.get(stockKey)
-            #     currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
-            #     currentValue = currentPrice * float(stockData['sharesOwned'])
-            #     weightings[x] = currentValue / totalValue
-
-            # closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
-            # simNum = 10000
-            # convThreshold = 0.0075
-            # previousVar = float('inf')
-            # converged = False
-
-            # while not converged and simNum <= 100000:            
-            #     portfoReturns = np.zeros(simNum)
-            #     optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
-
-            #     weightings = weightings.reshape(1, -1)
-            #     portfoReturns = np.sum(optimisedSim * weightings, axis=2)
-
-            #     currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
-
-            #     if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
-            #         converged = True
-            #     else:
-            #         previousVar = currentVar
-            #         simNum += 5000
-
-            # end = time.time()
-            # print(f"Monte Carlo Sim Speed: {end - start} seconds")
-            # return "{:,.2f}".format(currentVar * totalValue)
-
-        
-
-
-
 
 
     @mainthread
     def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol):
-        print(y)
         self.ids.graphSection.clear_widgets()
         self.fig, self.ax = plt.subplots()
         self.currentLine, = self.ax.plot(x, y, 'o-')

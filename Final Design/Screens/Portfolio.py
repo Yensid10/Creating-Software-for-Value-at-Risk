@@ -79,6 +79,14 @@ class Portfolio(Screen):
         if not isinstance(self.iSTCheck, ClockEvent):
             self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60)
         store = JsonStore('holdings.json')
+        if len(store) == 0:
+            self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
+            self.totalValue.text = "Total Value: [b]£0.00[/b]"
+            self.totalReturn.text = "Total Return: [color=ffffff]0.00% / £0.00[/color]"
+            self.totalShares.text = "Total No. of Shares: 0"
+            self.dailyVaR.text = "[b]Value at Risk: 0.00% / £0.00[/b]"
+            self.tempTotalValue = None
+            self.loadStocks(None)
 
         self.returnButton.opacity = 0
         self.returnButton.disabled = True
@@ -100,12 +108,10 @@ class Portfolio(Screen):
             stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d')
             self.tempDownload = stocks
             end = time.time()
-            print(f"Initial Stock Totals Speed: {end - start} seconds")
+            # print(f"Initial Stock Totals Speed: {end - start} seconds")
 
-            print(len(store))
             for stockKeys in store:
                 stockData = store.get(stockKeys)
-                # print(len(stocks.columns))
                 if len(store) != 1:
                     currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
                 else:
@@ -221,8 +227,6 @@ class VaRCalculators:
             weightings = weightings.reshape(1, -1)
             portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
 
-            print(self.rlPercent)
-            print(portfoReturns)
             currentVar = -np.percentile(portfoReturns, 100 * self.rlPercent)
 
             if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
@@ -232,7 +236,7 @@ class VaRCalculators:
                 simNum += 5000
 
         end = time.time()
-        print(f"Monte Carlo Sim Speed: {end - start} seconds")
+        # print(f"Monte Carlo Sim Speed: {end - start} seconds")
         return "{:,.2f}".format(currentVar * totalValue)
 
 
