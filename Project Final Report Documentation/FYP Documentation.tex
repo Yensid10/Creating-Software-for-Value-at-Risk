@@ -55,6 +55,7 @@ I have read and understood the Universities regulations on plagiarism and I here
   \item Submission Date: 12/04/2024
   \item Youtube Video showcasing Final Deliverable Program: \url{}
   \item All other programs included within my PROJECT Git repository are simple python programs that can just be ran normally, these mainly being found within the ``Command Line VaR Programs'' folder. The GUI program has been compiled into a .exe file within the main directory, called “Initial Design Test.exe”, it will open up a terminal when ran but please ignore it, it should work perfectly otherwise. The code for it is within the ``Kivy'' folder, that has other kivy tests inside it as well. It is all in the branch ``Master'', as I was having issues with my ``Main'' branch.
+  \item ADD A SECTION HERE ON HOW TO RUN THE SOFTWARE, ALSO EDIT AND CHANGE THE ABOVE ETC.
 
   % \item Signature: \includegraphics[scale=0.1]{Signature.png}
 \end{itemize}
@@ -803,8 +804,6 @@ This .kv file segment outlines the application's main layout, demonstrating the 
 \textbf{Conclusion:}
 The final iteration of the application incorporates advanced data processing, user interaction, and financial analysis features. Through detailed explanations of key code sections, we have illustrated how the application leverages Python's capabilities and Kivy's framework to provide a rich user experience and robust financial analysis tools. Further elaboration may be required to fully cover all aspects of the code's functionality and design decisions.
 
-% I used pyInstaller \href[page=1]{https://www.pyinstaller.org/}{(https://www.pyinstaller.org/)} to create an executable file for the GUI, which can be found within the base folder for this project, which can be run on any Windows computer. I will work on having the visual accessibility to be able to port my future GUI's onto mobile devices. The .exe also opens up a console whilst the program runs, I cannot seem to get the program to work without crashing when I disable the console, so I will try and fix that for next term. As another final thing to add, I have left heavy comments within the code helping to explain certain sections, as is such with good software engineering practices.\\\vspace{0.3cm}
-
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{Images/Initial Design Tes - Final Iteration 1.png}
@@ -827,11 +826,196 @@ Youtube Video: \href{https://youtu.be/2GIWug_IESI}{Presentation Demonstration Fo
 
 \section{Chapter 4 --- Portfolio Creation}
 
-\subsection{Command Line --- Monte Carlo Simulation}
+\subsection{Monte Carlo Simulation}
+
+Monte Carlo Simulation is arguably the most important computational technique I will need for calculating Value at Risk, since it can be utilised to perform repeated random sampling to estimate complex mathematical or physical models across a series of values. It's extremely useful in finance for the valuation of instruments, portfolios, and investments under uncertainty, since it simulates a range of possible outcomes for these random processes and proceeds to  averages the results to find a probabilistic estimation of the what the actual outcome would be.\\\vspace{0.3cm}
+
+For these Value at Risk (VaR) calculations, Monte Carlo Simulation allows for an estimation of the potential loss in value of a whole portfolio (different to the single stock's I've been dealing with using previous methods) with any given confidence level over the specified period. It does this by simulating the returns of the portfolio across numerous simulated scenarios to create a distribution of possible outcomes, and since VaR can then be derived as a percentile of this randomly estimated distribution, such as the 5th percentile, it helps indicate that there is a 95\% confidence level that losses will not exceed this value, or an equivalently based 5\% risk level that the losses will exceed.\\\vspace{0.3cm}
+
+It helps model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables, such as with multiple stocks within a stock market. The method involves generating a large number of random portfolio return paths based on historical return distributions and then determining the VaR from these simulated paths.\\\vspace{0.3cm}
+
+Given a portfolio consisting of \(n\) assets, let \(r = (r_1, r_2, \ldots, r_n)\) denote the vector of daily returns of these assets. The return of the portfolio on any given day can be expressed as a weighted sum of the individual asset returns:
+
+\begin{equation}
+    R = w \cdot r^T
+\end{equation}
+
+where:
+\begin{itemize}
+  \item \(R\) is the portfolio return.
+  \item \(w = (w_1, w_2, \ldots, w_n)\) is the vector of portfolio weights corresponding to each asset, stocks in our case.
+  \item \(r^T\) is the transpose of the return vector.
+\end{itemize}
+
+\vspace{5cm}
+When using Monte Carlo Simulation for VaR calculation, we simulate this return \(R\) for a given time horizon using the historical mean (\(\mu\)) and covariance (\(\Sigma\)) of the asset returns. For a single-day horizon, the simulated return for the portfolio can be generated from a multivariate normal distribution:
+
+\begin{equation}
+  \tilde{r} \sim \mathcal{N}(\mu, \Sigma)
+\end{equation}
+
+where:
+\begin{itemize}
+  \item \(\tilde{r}\) represents a vector of simulated daily returns for the portfolio assets.
+  \item The process is repeated \(N\) times to generate a distribution of simulated portfolio returns.
+\end{itemize}
+
+\vspace{0.3cm}
+This corresponds, based on the amount of repeated simulations \(N\) and subsequent returns \(\tilde{R}\), to the following:
+
+\begin{equation}
+    \{\tilde{R}_1, \tilde{R}_2, \ldots, \tilde{R}_N\} = \{w \cdot \tilde{r}_1^T, w \cdot \tilde{r}_2^T, \ldots, w \cdot \tilde{r}_N^T\}
+\end{equation}
+
+\vspace{0.3cm}
+The VaR at a confidence level (e.g. 95\%) or equivalent risk level \(\alpha\) (e.g. 5\%) is then determined by finding the \((\alpha)\)th-percentile of this simulated portfolio returns distribution:
+
+\begin{equation}
+  VaR_\alpha = -\min \{\tilde{R} : P(R \leq \tilde{R}) \geq \alpha\}
+\end{equation}
+
+where:
+\begin{itemize}
+  \item \(VaR_\alpha\) is the Value at Risk at the risk level \(\alpha\). This represents the loss that is not exceeded with probability \(\alpha\), indicating a worst-case scenario within the bounds of the specified risk level.
+  \item \(\tilde{R}\) represents a possible return.
+  \item \(R\) is the random variable representing portfolio returns.
+  \item \(P(R \leq \tilde{R})\) is the probability that the portfolio return is less than or equal to \(\tilde{R}\).
+  \item \(\alpha\) is the risk level, indicating the portion of the distribution under consideration for VaR. \\For example, a confidence level of 95\%, would result in a risk level \(\alpha\) of 0.05 (5\%), reflecting the lower 5\% of the return distribution where the losses lie.
+\end{itemize}
+
+In theory, when the simulated returns are sorted in ascending order, the \((\alpha)\)-quantile is directly computed as the value at the \(N(\alpha)\)-th position in the sorted list, where \(N\) is the total number of simulations. This quantile represents the maximum expected loss at the risk level \(\alpha\), representing the worst-case scenario within the specified risk bounds over the given time horizon. For a given portfolio value \(P\), the monetary value of the VaR can be calculated as:
+
+\begin{equation}
+    VaR_{\text{Monetary}} = P \times VaR_\alpha
+\end{equation}
+
+This given mathematical framework helps underpin the Monte Carlo Simulation approach to VaR calculation, providing a probabilistic estimate of potential portfolio losses over a specified time horizon based on historical asset performance. This is what I will need to adapt to python in my subsequent program to be able to estimate VaR calculations within a portfolio of stocks.
+
+
+
+\subsubsection{Command Line --- Monte Carlo Simulation}
+
+Continuing on from my proof of concept programs for Historical and Method simulation, I used Yahoo Finance package again to obtain stocks from Nike (NKE), Adidas (ADS.DE), and Under Armour (UAA) over a period of 100 days. I will leverage historical price data to help model my portfolios future returns distribution. I will also be using the numpy package, since it lets me perform the random multivariate normal distribution, as well as the dot product sum between this result and my weightings. \\\vspace{0.3cm}
+
+
+Firstly, I download the historical price data for the specified stocks using the \texttt{yfinance} package and subsequently  calculate the daily returns, dropping any missing values. I assign theoretical weights to each stock in the portfolio and calculate the mean and covariance of these daily returns, key inputs for the simulation.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  stock = yf.download(['NKE', 'ADS.DE', 'UAA'], period='100d')
+  closeDiffs = stock['Close'].pct_change().dropna()
+
+  weighting = np.array([0.333, 0.333, 0.334])
+  mean = closeDiffs.mean()
+  cov = closeDiffs.cov()
+  timeHori = 1
+\end{verbatim}
+
+\vspace{0.3cm}
+The Monte Carlo simulation is conducted by generating random samples from a multivariate normal distribution, utilising the mean and covariance of the daily returns, simulating the portfolio's returns over the specified time horizon. The process is then repeated a large number of times to form a distribution of the portfolio's returns, in this case I opted for 10,000 simulations for the program. I initialise an empty list to store the simulated portfolio returns and iterate over the number of simulations, calculating the weighted sum of the simulated returns to represent the portfolio return for each simulation, appending these results to the list.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  portfoReturns = []
+  for x in range(10000):
+      simReturns = np.random.multivariate_normal(mean, cov, timeHori)
+      singleReturn = np.sum(simReturns * weighting)
+      portfoReturns.append(singleReturn)
+\end{verbatim}
+
+\vspace{0.3cm}
+Finally, I sort the simulated returns and calculate the VaR by determining the value at the specified percentile of the distribution. In this case, using the 5th percentile, a risk level of 5\%, which I then multiply by my theoretical portfolio value (100,000,000) to obtain the monetary VaR, rounded to two decimal places for logical pounds and pence articulation.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  portfoReturns = sorted(portfoReturns)
+  rlPercent = 0.05
+  print("VaR: \pounds" + str("{:,}".format(round(-np.percentile(portfoReturns, 
+                                            100 * rlPercent)*100000000, 2))))
+\end{verbatim}
+
+\vspace{0.3cm}
+Using this methodology, I can provide a robust framework for estimating the VaR for any portfolio I chose to create in the future, adapting to various market conditions, and through the use of this simulation, capturing the inherent uncertainties and correlations between these assets.
+
 
 \subsection{Kivy Screen Manager}
+I knew that next I would want to implement what I had learnt about Monte Carlo Simulation into my GUI, but my current deliverable couldn't handle multiple stocks being selected at the same time, let alone the calculation of the VaR for them all, as it was only designed for single stock VaR calculations. I figured the best way to implement this be to add more sections to my program that can actually handle these multiple stocks needed, in essence, I needed to have the ability to create a portfolio. And since this was building towards my final deliverable, I knew I wanted to produce something that would adhere to the industry standards that I was creating my software for.\\\vspace{0.3cm}
+
+Subsequently, upon researching more into the capabilities of kivy and its framework using the online Kivy documentation [\ref{ref13}], I discovered the Kivy Screen Manager, a powerful tool that allows for the creation of multiple screens within a single application, each screen able to be utilised as a different section and form of functionality within the program. This was perfect for what I wanted to achieve, the ability to have multiple screens represented within one application, bouncing between the different options depending on what you need to do, possibly allowing for communication between screen adding to a more in-depth functionality provided by my program. It also allowed for impressive transistional animations between defined screens, an impressive gif showcasing this being found on the main page for it within the documentation. With this, I knew I had to plan out and draft what I initially needed for my subsequent final deliverable, so just as I had done with my previous design, I drew what I envisioned in the figure below:\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/IMG_1346.jpg}
+  \caption{Tabbing Conceptualisation for Switching Between Screens}
+  \label{fig:Tabbing Concept}
+\end{figure}
+
+With this, I came up with the 4 screens that I wanted to implement into my program, those being:
+\begin{itemize}
+  \item \textbf{Portfolio Screen:} The main screen when you open up the program, where you can create a portfolio, select the stocks and amount of shares that you want for it and generate the Value at Risk for the total value.
+  \item \textbf{Rankings Screen:} Have a list of stocks, such as the FTSE100, and be able to rank them based on their VaR values, as well as other metrics, possibly allowing for being able to select different lists.
+  \item \textbf{Trends Screen:} Using financial information to display graphical trends for stocks, such as the price of a stock over a period of time, or the VaR of a stock over a period of time.
+  \item \textbf{VaRCheck Screen:} A home for my previous initial design deliverable, still practical for what its used for, but not versatile enough to work as an independent program, so it can be used to check theoretical values at risk for the individual FTSE100 stocks.
+\end{itemize}
+
+I was inspired by the design of tabs in most modern browsers, which are used to switch back and forth between websites. I also liked the trapezium shape I used, but I knew I would fit the constrains of whatever my program needed to function optimally. With this, I knew that I had to implement it into my program, so I could begin the development of these screens, allowing for the functionality I was aiming for within my final deliverable.\\\vspace{0.3cm}
 
 \subsubsection{Tabbing System and Workspace Structure}
+Up until now, I had my whole program within one file, \texttt{Initial Design Test.py}, and the subsequent \texttt{IDT.kv} file alongside it, but for this, I knew that I wanted to be connecting a bunch of screens together, which would be far too much code to have it all handled within one file. So, since I'm' developing this program adhering to Object Oriented principles, I decided to use a hub program, and split up all my other screens into separate files, and then put into specific folders within the same directory as the main program.\\\vspace{0.3cm}
+
+For this I had to seperate my original file into one called \texttt{Final Design.py}, which would be the hub program, and my renaming my old file to be the screen, \texttt{VaRChecker.py}. This involved removing the kivy app definition and running section and putting it in the new program, intialising the app, certain imports and the window size (which had to be increased to be able to fit in the new tabs). The old program was then placed into a folder called \texttt{Screens}, and the new program remained at the base of the previous directory. Following on from this, I created the other 3 screens, \texttt{PortfolioScreen.py}, \texttt{RankingsScreen.py}, and \texttt{TrendsScreen.py}, and placed them in the same folder as the \texttt{VaRChecker.py} file.\\\vspace{0.3cm}
+
+For each of these however, I needed to create the specific .kv file to match, to define the kivy visuals. To do this, I created a folder called \texttt{kvFiles}, and implemented the files \texttt{PortfolioScreen.kv}, \texttt{RankingsScreen.kv}, \texttt{TrendsScreen.kv}, and \texttt{VaRChecker.kv} (which had the same code as \texttt{IDT.kv}). But even with these individual files, my new Final Design file could not see them. To fix this, I created the final new file, \texttt{FD.kv}, within the same directory as my \texttt{Final Design.py}, that I would use to link all the others together, using: \\\vspace{0.3cm}
+
+\begin{verbatim}
+  #:include kvFiles\VaRChecker.kv
+  #:include kvFiles\Trends.kv
+  #:include kvFiles\Portfolio.kv
+  #:include kvFiles\Rankings.kv
+\end{verbatim}
+
+\vspace{0.3cm}
+This would allow all my .kv files to work together, but the same could not be said for the python files, since the main app being run within the final design did not have access to the other screens yet. To implement the communication between the screens to the app, I needed to use: \\\vspace{0.3cm}
+
+\begin{verbatim}
+  from kivy.uix.screenmanager import ScreenManager
+  from Screens.Portfolio import Portfolio
+  from Screens.Rankings import Rankings
+  from Screens.Trends import Trends
+  from Screens.VaRChecker import VaRChecker
+
+\end{verbatim}
+
+This would give my main program access to the other screens, and subsequently link them all together within the screen manager. To do this, within the initial build method immediately defined within the app, I defined my screen manager, and added all the screens to it as widgets. Now that they were inside my screen manager within the building app, I needed to create the tabs for them to be displayed, this being done by creating a BoxLayout taking up the top 10\% of the screen, that for each screen within the screen manager, would create a named button 25\% of the apps size wide, allowing for the creation of 4 equal sized buttons spanning the top of the screen, with a a bound on\_release function set to a method I created, taking the text instance found on the selected button and switching the screen managers "current screen" to be the screen with the clicked name. This ended up functioning perfectly, I had to create blank kv files that were gray for all the screens that had not been populated yet, but the code and tabs worked great, with it implementing a swipe animation clicking between the screens already implemented (although it would only swipe from left to right, no matter what direction you were swapping between screens). The tabs and code can be seen below:\\\vspace{0.3cm}
+
+\begin{verbatim}
+  sm = ScreenManager()        
+  sm.add_widget(Portfolio(name='Portfolio'))
+  sm.add_widget(Rankings(name='Rankings'))
+  sm.add_widget(Trends(name='Trends'))
+  sm.add_widget(VaRChecker(name='VaRChecker'))
+
+  def screenSwitch(instance):
+      sm.current = instance.text
+
+  tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1})
+  for screen in sm.screens:
+      print(screen.name)
+      tabButton = Button(text=screen.name, size_hint=(None, 1), width=200)
+      tabButton.bind(on_release=screenSwitch)
+      abs.add_widget(tabButton)
+
+  layout = BoxLayout(orientation='vertical')
+  layout.add_widget(tabs)
+  layout.add_widget(sm)
+  return layout
+\end{verbatim}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{Images/Term 2 Images/tabs.png}
+  \caption{Tabs Implemented into the Program}
+  \label{fig:Tabs}
+\end{figure}
+
+
 
 \subsection{Developing a Portfolio Screen}
 
@@ -1021,6 +1205,7 @@ In the end, for this term, I am still happy with the progress I made. I learnt s
 % \subsection{VaR and what it is in the industry atm, and other VaR softwares and how I can take inspo from them?}
 \newpage
 \section{Bibliography}
+\subsection{References}
 \begin{small}
 \begin{enumerate}
   \item\label{ref1} Alexander, C. (2008). *Market Risk Analysis: Value-at-Risk Models.* Hoboken, NJ: Wiley. [Online] Available at: \url{https://ebookcentral-proquest-com.ezproxy01.rhul.ac.uk/lib/rhul/reader.action?docID=416450}.
@@ -1059,10 +1244,12 @@ In the end, for this term, I am still happy with the progress I made. I learnt s
   \item\label{ref12} Casarin, R., Chang, C.-L., Jimenez-Martin, J.-A., McAleer, M., Pérez-Amaral, T. (2013). *Risk management of risk under the Basel Accord: A Bayesian approach to forecasting Value-at-Risk of VIX futures.* Mathematics and Computers in Simulation, 94, 183-204. ISSN 0378-4754. [Online] Available at: \url{https://doi.org/10.1016/j.matcom.2012.06.013}.
   \\\textit{This reference is useful for understanding the Bayesian approach to forecasting Value-at-Risk of VIX futures and its relevance to risk management in financial institutions.}
 
+  \item\label{ref13} Kivy. (2023). *Kivy Documentation.* [Online] Available at: \url{https://kivy.org/doc/stable/}.
+
 \end{enumerate}
 \end{small}
 
-\subsection{Literature Review - Summary}
+\subsection{Literature Review}
 
 The bibliography that I have provided helps me to summarise some of the key literature surrounding Value at Risk (VaR), encompassing foundational theories, methodological advancements, and practical aspects of VaR in financial risk management, as well as touching on python and its plethora of libraries. It integrates perspectives from seminal texts, empirical studies, and modern computational approaches.\\\vspace{0.3cm}
 
@@ -1074,6 +1261,10 @@ Recent discussions around VaR and statistical analysis are enriched by Wasserste
 
 Overall, I think the references I have chosen really help encapsulate the multifaceted aspects of VaR found in the modern age, highlighting its theoretical, methodological, and practical scale. It highlights the continuous evolution in VaR modelling, helping set the context for my further research into this field, as well as helping enhance my knowledge for user interface design and general industry standard financial risk software development.
 
+TALK ABOUT THIS STUFF MORE, ADD MORE ABOUT IDK NEW REFERENCES AND GO INTO MORE DETAIL, LIKE CALLUM
+
+% TEMPORARY END OF DOCUMENT TO PROVIDE MORE REALISTIC WORD COUNT FOR NOW
+\end{document} 
 \section{Appendix}
 
 \subsection{Graphs}
@@ -1122,5 +1313,39 @@ I have spent the last few days working hard on the documentation. I regret not b
 
 07/12/23 - Finale\\
 I have finally completed the documentation, I am unhappy with the fact I had to miss out on so many sections that I had planned, but in the end I'm rather blown away that I was able to consolidate and present so much in such a small amount of time. I'm proud of the result, of this report and the code I created this term, but I do plan to spend the majority of my holiday catching up on the time I feel that I lost for my project throughout the term due to my illnesses and heartbreak. I need to compile all the programs I think are relevant for my submission, and put them all together within a zip file to be submitted. I am also dreading my presentation, as I know I will be quite sleep deprived for it, but I am happy with the slides I made, and I hope to be able to justify my project well, especially after I was able to justify it so well within the interim report/documentation. There are many changes that I want to make, but for now I will finally take a bit of a break to recover from the excessive amount of work that I have put in before the deadline to achieve this. Thank you for reading for now...
+
+29/01/24 - Start of Term 2\\
+I have discovered testing over the winter break that it displays properly on my normal monitor, but not on my laptop, even though I have fixed the resizing issues. I need to make sure to take screenshot references for this, and write about it within my FYP documentation.\\\vspace{0.3cm}
+
+05/02/24 - Fixing the issue from the last term\\
+I worked out what the issue was with my program. Essentially, I had hard coded the structure of a lot of the layouts, by not using size\_hints for everything, since that would keep everything consistent no matter what window size. Because of this, I need to change everything to implement size\_hints, which helped fix overall layout, but there would still be problems with text and other objects that I had hard-coded on the Python side that I couldn't use hints for, such as font size. This is where sp (scale independent pixels) came in handy, since I could use this to change any of my hard-coded values into ones that scale (which I could've done to fix the previous problem but it was better for me to get used to using hinting with the change). After attributing the dp to all integer size values, I had essentially gotten the program to work on both of my monitors, so I decided to stop using the DPIaware command, just let my program adjust naturally. I think I want to have the window be resizable in the future, but for now I want to get the tabbing system working next. I also need to quickly fix the back-testing title label I have for it, since I know where I want it to be, its just hard to add it to the layout properly...\\\vspace{0.3cm}
+
+
+19/03/24 - Finished Researching Monte-Carlo simulation\\
+After a busy month, with lots of other coursework and external factors, I have now finally been able to return to focusing on my project for the final stretch needed. I have now researched and understood the Monte-Carlo simulation, so I will start by creating a simple Monte-Carlo command line program to test that my knowledge lines up with creating it within Python. After that, I will start implementing tabs for the program, so I can move on to adding more utilities for the program, as well as implementing Monte-Carlo within it too.\\\vspace{0.3cm}
+
+23/03/24 - Implemented MonteCarlo\\
+I created a separate command line application to test that I could properly get MonteCarlo Sim to work, which I was able to. I'm planning to implement it into the main program after I've done the tabbing system.\\\vspace{0.3cm}
+
+25/03/24 - Implemented Tabbing System and OOP + Folders\\
+I managed to find a source that explained how screens work within Kivy, helping me set up a screen manager, and attempt to swap between multiple screens. At first, this absolutely broke my deliverable from last term when I ported it into a screen, but I realised that it didn't have the original box layout support that I had defined it with on the python side. So I had to implement that within the kv file and it seemed to work with the same functionality. I set up generic buttons for tabs at the top, but I don't like how they looks, so I will try and change them if I have time in the future. I like the custom animation that Kivy seems to have when switching between screens, but I don't like that it only moves in one direction, so I may also try and adjust it so that it will slide a certain direction depending on which screen you're navigating from to. \\Finally, I decided that I wanted to make the project and coding more Object Oriented, to allow it to be easier to understand and maintain the codebase in the future. To do this, I realised I can easily import the python code into a main python file, which allowed me to separate all the screens I now wanted all into their own individual files, including last terms deliverable, which I have now called a VaRChecker (which I still need to implement Monte-Carlo Sim into). I also, after performing some tests to make sure it worked properly, have been able to separate up the kivy (kv) files so they all communicate but are still separate files, so everything is split, communicates, and runs properly. I assume that when I compile this all into a working application in the end it will all be fine but I will have to see then. For now, I am going to start working on the Portfolio page as fast as I can, since I feel like it is one of the most important, complex features and I need it to work robustly. \\\vspace{0.3cm}
+
+28/03/24 - Started creating Portfolio Screen\\
+Today I started working on the portfolio screen, I wanted to make sure the functionality and aesthetics of this part were satisfactory but I am bad at making the aesthetic work properly, so for now I'm just focusing on functionality. I used some conceptual sketches that I will probably add to my report, and I've made a rough version of what I want to screen to look like, based off of it. Its very early stage, so it doesn't look very good but I'm hoping to add to the functionality, so it can work sufficiently.\\\vspace{0.3cm}
+
+03/04/24 - More Portfolio Screen + Removing Rankings Screen + Caching storage\\
+I found out you can use JSON.store to create a way to essentially cache portfolio information that I want to be retained within the program. This is amazing, as now I can store bits of information and keep it there, so the program can have initial stocks prices, and compare back to them whenever. I also realised that I just do not have the time to be able to create the 3 extra screens that I was planning to make for this term, so I'm just going to have to create 2, to be honest, the third screen I was going to make I didn't have a very good plan/idea for either, so doing it this way has streamlined the options that I have available, which is good, I'm feeling more confident that I can complete my goals. \\The two screens I'm keeping are trends and portfolio (the main one), and I am not going to be doing rankings any more. I was having a problem with labels not displaying when being put on my stock buttons, but I fixed this by directly adding text to the button, although it doesn't look very good regardless so I'll definitely have to change it in the future. I was then able to finally integrate yfinance into the current code, there was a massive error to do with the .info section, when researching online, there were no ways to fix the issues other then pulling custom code from other people's GitHub to fix, but I realised that I can just download the stocks and grab the latest value, and that gave me the results I needed anyway, so bizarre. I wanted to get it so that I would get consistently updating information every minute for fresh stock data, whether I was looking at an individual stock or all stocks. \\TO do this, I used a clock feature that would loop, and set up variable checkers to see if the other one was active or not, if so, it would turn off one clock and start the other, making sure only one can loop at a time and acquire fresh stock information. I've got it so it creates the totals, the returns and everything by comparing current prices to the initial prices, this is great as I can leave the stocks in their storage for now and it will only help show off my program more in the future. I need to get more information shown on the right hand side, like current individual stock price, rather then just the owned amount by timesing by the shares owned. I also have yet to implement any VaR stuff, so I will do that next as well.\\\vspace{0.3cm}
+
+04/04/24 - Adding Monte Carlo + Convergence\\
+I first implemented MonteCarlo sim, this was initially a bit annoying since I had to re-download all the stocks so I could recreate the weightings of each of them, but I changed the structure I displayed everything with so that I generate the stocks once at the start, and then get them passed in for every other bit of information. I also first realised that I can't use monte carlo sim for single stock simulations, which was fine since I could just re-incorporate my model method that I used within VaR checker. I got both of these to work so that when the total stocks were being displayed, monte carlo sim was used to calculate it, and model was used for the individual stocks, but I didn't like the amount of fluctuation that my monte carlo sim was displaying when I would get it to run 10000 simulations. It was also incredible laggy, I implemented a timer feature to see it took 4 seconds to generate every time. \\After researching some more, I realised that numpy can generate all the simulations at once with one of its methods, returning it in a structured format, and then I can work out the rest with all the simulations prone, this was so much faster, taking 0.07 seconds for the same amount of simulations, 10000. But I still got the results that were too different for every set of simulations, so I decided to adjust the code again so that it would do multiple bursts of simulations, and depending on how close each burst was to the previous, only when it starts to converge, will I display the result. This convergence point indicates that the simulations are giving similar, and subsequently more accurate results towards a specific outcome, which is what we're looking for. I set the convergence point low (0.5\%) to make sure the result was good, and made it so it can perform up to 100,000 simulations if need be, but actually this resulted in my simulations usually being a lot faster, and only sometimes slower then usual, but from what I could to tell, a lot more accurate. \\Finally, I decided to verify how I thought by using Matplotlib to display results of a simulation that continues to run until 100000, thus giving me a good overview to see how accurate it becomes when converging on a certain point over time, and it was good to see this implemented, as the first graphical change I had shown. This was great, but its not a section that I need here on this screen, so I will leave it for now and probably implement it within the trends screen in the future. It got me thinking that I should do the same for the back-testing within my var-checker screen as well, so I will try and do all of that when I work on the next screen hopefully tomorrow. I made a few UI adjustments, fixed up how exiting the pop-up worked and a bunch of other functionality things like being able to click on an invisible button when you select a specific stock to take you back to the total stock display. Overall, a big day for getting back-end stuff to work, now I just need to get this section to look visually better, add a little more information, and I had forgotten to add a way to delete stocks so I definitely need to implement that. I'm aiming to get started on the next screen tomorrow, so hopefully that is how it turns out.\\\vspace{0.3cm}
+
+05/04/24 - StockNameFinder, Delete Stocks, and Portfolio Screen Functionality Completion\\
+I started today by being tired of displaying tickers for everything, its practical because its how I want them to be added into my portfolio, but I wanted to find a way to get the name to display it, it would look way nicer. To do this, without using yfinance.info since its broken, I tried web scrapers, first pandas since it can find info in tables in pages, but I couldn't find any pages that would get me the relevant info. So instead, I used beautiful soup, which would help me, when I had sent a request to a webpage, find certain html elements in the page, which let me make requests to specific yahoo websites and look for the html code containing the title of the stock on every page. \\This could only be done since the ticker for each stock is part of the url, which was perfect since they'd all match as its how I get my stock data within python anyway. With this, I was able to retrieve most of the names for my stocks, but it wouldn't work for certain ones for foreign stock exchange, and I fixed it by adding a user-agent to have my request mimic a browser, which seemed to fix the situation. I could now display the names on the stock buttons, and I also got it so that whenever the stock totals (for specific or initial) are displayed with their looping background app refresh, it would also run the load stocks function, passing in the downloaded stock data, so I could then display the current prices of all the stocks without having to re-download them again every time, having everything work together at the same time. Then I added the delete stock functionality, this wasn't too bad, as it just involved me pushing the button originally, and it would see what specific stock is being stored and delete it. \\But since this is deleting, I wanted to add extra verification, so I moved stuff around, had it so a popup appears, the screen info is passed into the class so it can run the initialStockTotals only when a stock is deleted, and made it run all fluidly. This looked great and I don't think I need to change anything about this in the future, it works well so I'm happy. Finally, since this button would disappear whilst I was on the totals page, since it would only need to delete a specific stock when its selected, there was a gap on the screen when it was hidden. I felt that, since my project is about VaR, even though I have a very good VaR working for the screen, I need to give the user the ability to adjust it to some extent, and I think initiating another popup gives me the most freedom to implement and have this happen, since I understand it more after making 2 already. \\I wanted to have two buttons on top of each other that would boolean change which one is active or not at any given time, but this wouldn't let me click one of them, so instead I made it the same button that would send you to a function whenever you clicked on it, and depending on the text at the time (which changed depending on initial or specific stocks), it would perform a different action, either the previous delete functionality, or the new VaR adjustment functionality. The new adjustment one would take you to a new popup, that would have the calculator class passed into it, the one that's initialised and used within the portfolio screen, and you could directly change the time horizon and risk level being used for the VaR. I need to add a lot more verification, finish up that popup and add a lot more visual improvements and quality of life, but functionality wise the screen is looking fantastic.\\\vspace{0.3cm}
+
+06/04/24 - Finishing Portfolio and Starting Graphs Screen\\
+I started today by finally getting around and doing proper verification for my inputs. I started with the save stock input, since it needs to check if you're passing in a valid ticker and a bunch of other stuff. This wasn't too hard, since I had verification set up for a similar kind of thing for my previous screen, but to get the logic working perfectly it took a while and some nesting. I also wanted to give visual feedback on entering something wrong, where I discovered the animations feature for kivy, which essentially transitions from one colour to another, for me at least. This was great, because I could quickly get red to flash up and fade, showing they got it wrong. I was having so much trouble with focus shifting not working, not letting me tab from one input to another, but I was able to get it so that it could do that when I clicked the enter key which is good enough for now. Because I liked the animation feature so much, I wanted to add it as a small background transition for how the portfolio looks when going from portfolio to specific stock totals, which looks smooth and helps the user understand whats happening a bit better. \\I wanted to find a way to explain VaR a bit better, so I used the adjustment pop-up for it to write out and explain it, colour coordinating the values displayed to be the same as the text inputs, making it even easier for the user to see what they need to input. I also added verification for these as well, which was even easier to do, since I found out you can use input\_filtering, so I would only let people enter integers for these inputs. All I really needed to do for my screen then was to just fix formatting, I did a bunch of stuff like stopping the stocks from being buttons, instead they're a grid-layout with two columns, so I could wrap the text to be side by side based on the ":", since I thought this would look the most visually appealing, which it does. I had to give them an on click/on press whatever it is, so they could still function like before. \\I changed a bunch of colours all day, going back and forth between different visual ideas, adding boldness and underlining, making the top right have its own border and section, adjusting how close the right and side information is to each other and the left hand side etc. It was all just a bunch of formatting changes, so I think everything looks a lot better now, but I'm not very good at making stuff look pretty, but it will have to do for now. Very proud of the functionality, I added a massive stock name to the portfolio and the app would still display it correctly, works robust. Finally, I've started on the next and final screen that I want to complete for this project. It was originally trends but since I'm not only going to have trends display don the screen, I thought I would change it to be called graphs now. \\I got the original layout working, after I had to look online to find a way to get the imports for having matplotlib stuff within my kivy applications working, they gave me a pip-install and a different way to import the kivy gardens module, but with it working, it all seems to be good. I have a basic graph, displayed, with a scrollable bar underneath, with stock images being used for each option. I wanted to change up the style of having the up and down scrollable sections in my previous screens, so I like how this is, and honestly if I can get this section looking nice, I think I can breeze through the logic of it tomorrow, and finish up, ready to start on the write-up properly by Monday, I HOPE :))\\\vspace{0.3cm}
+
+07/04/24 - Graphs Screen\\
+I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my codes future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
 
 \end{document}
