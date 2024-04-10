@@ -1,4 +1,4 @@
-#MCaT - Stands for Money Can Always Triumph
+# MCaT - Stands for Money Can Always Triumph
 import sys
 
 # Check if this is running in a PyInstaller bundle or in a development environment
