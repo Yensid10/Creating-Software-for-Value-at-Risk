@@ -31,43 +31,45 @@
 \contentsline {subsubsection}{\numberline {5.1.1}Command Line --- Monte Carlo Simulation}{32}{subsubsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.2}Kivy Screen Manager}{33}{subsection.5.2}%
 \contentsline {subsubsection}{\numberline {5.2.1}Tabbing System and Workspace Structure}{34}{subsubsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.3}Developing a Portfolio Screen}{37}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}lots of these}{37}{subsubsection.5.3.1}%
-\contentsline {subsubsection}{\numberline {5.3.2}lots of these}{37}{subsubsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.3}lots of these}{37}{subsubsection.5.3.3}%
-\contentsline {subsubsection}{\numberline {5.3.4}lots of these}{37}{subsubsection.5.3.4}%
-\contentsline {subsubsection}{\numberline {5.3.5}lots of these}{37}{subsubsection.5.3.5}%
-\contentsline {section}{\numberline {6}Chapter 5 --- Graphical Visualisations}{37}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Convergence Analysis}{37}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Matplotlib within Kivy}{37}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Creating the Graphs Screen}{37}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}lots of these}{37}{subsubsection.6.3.1}%
-\contentsline {subsubsection}{\numberline {6.3.2}lots of these}{37}{subsubsection.6.3.2}%
-\contentsline {subsubsection}{\numberline {6.3.3}lots of these}{37}{subsubsection.6.3.3}%
-\contentsline {subsubsection}{\numberline {6.3.4}lots of these}{37}{subsubsection.6.3.4}%
-\contentsline {subsubsection}{\numberline {6.3.5}Analysing Visual Results}{37}{subsubsection.6.3.5}%
-\contentsline {subsubsection}{\numberline {6.3.6}lots of these}{37}{subsubsection.6.3.6}%
-\contentsline {subsubsection}{\numberline {6.3.7}lots of these}{37}{subsubsection.6.3.7}%
-\contentsline {section}{\numberline {7}Chapter 6 --- Completed Deliverable}{37}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Features and Expected Use}{37}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}P-Values and Statistical Analysis}{37}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Final GUI Design}{37}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Adaptations for Packaged Release}{37}{subsection.7.4}%
-\contentsline {section}{\numberline {8}Chapter 7 --- Software Engineering}{37}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Object Oriented Programming}{37}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Design Patterns}{37}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Testing and Documentation}{39}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Version Control (Git)}{40}{subsection.8.4}%
-\contentsline {subsubsection}{\numberline {8.4.1}Branching and Tagging}{41}{subsubsection.8.4.1}%
-\contentsline {section}{\numberline {9}Chapter 8 --- Critical Analysis}{41}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Interim Evaluation}{41}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Final Report Evaluation}{42}{subsection.9.2}%
-\contentsline {subsubsection}{\numberline {9.2.1}Coding Achivements and Success}{42}{subsubsection.9.2.1}%
-\contentsline {subsubsection}{\numberline {9.2.2}Difficulties and Improvements}{42}{subsubsection.9.2.2}%
-\contentsline {subsection}{\numberline {9.3}Conclusion}{42}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Professional Issues}{42}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Plagiarism and Using AI}{42}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Finance Industry Ethics}{42}{subsection.10.2}%
-\contentsline {section}{\numberline {11}Bibliography}{43}{section.11}%
-\contentsline {subsection}{\numberline {11.1}References}{43}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Literature Review}{44}{subsection.11.2}%
+\contentsline {subsection}{\numberline {5.3}Developing a Portfolio Screen}{36}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Initial Structure and Pop-Up}{38}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Storing Stocks and Calculating Portfolio Value}{39}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}Background App Refresh and Race Conditions}{41}{subsubsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Value at Risk Calculators}{42}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}Finding Comparny Names and Back Button}{44}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}Improving Monte Carlo Simulation}{46}{subsubsection.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.3.7}Deleting Stocks}{47}{subsubsection.5.3.7}%
+\contentsline {subsubsection}{\numberline {5.3.8}Adjusting VaR Parameters}{48}{subsubsection.5.3.8}%
+\contentsline {subsection}{\numberline {5.4}The Finalised Portfolio Screen}{50}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Chapter 5 --- Graphical Visualisation}{50}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Convergence Analysis}{50}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Matplotlib within Kivy}{51}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Creating the Graphs Screen}{51}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}lots of these}{52}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}lots of these}{52}{subsubsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3}lots of these}{52}{subsubsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.4}lots of these}{52}{subsubsection.6.3.4}%
+\contentsline {subsection}{\numberline {6.4}The Finalised Graphs Screen}{52}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Chapter 6 --- Completed Deliverable}{52}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Features and Expected Use}{52}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Final GUI Design}{52}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}P-Values and Graphical Analysis}{52}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Adaptations for Packaged Release}{52}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Chapter 7 --- Software Engineering}{52}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Object Oriented Programming}{52}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Design Patterns}{52}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Testing and Documentation}{55}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Version Control (Git)}{57}{subsection.8.4}%
+\contentsline {subsubsection}{\numberline {8.4.1}Branching and Tagging}{57}{subsubsection.8.4.1}%
+\contentsline {section}{\numberline {9}Chapter 8 --- Critical Analysis}{57}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Interim Evaluation}{57}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Final Report Evaluation}{58}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}Coding Achivements and Success}{58}{subsubsection.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}Difficulties and Improvements}{58}{subsubsection.9.2.2}%
+\contentsline {subsection}{\numberline {9.3}Conclusion}{58}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Professional Issues}{58}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Plagiarism and Using AI}{58}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Finance Industry Ethics}{58}{subsection.10.2}%
+\contentsline {section}{\numberline {11}Bibliography}{59}{section.11}%
+\contentsline {subsection}{\numberline {11.1}References}{59}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Literature Review}{60}{subsection.11.2}%

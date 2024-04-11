@@ -413,7 +413,7 @@ This results in this output, which appears to be a reasonable VaR result. \\\vsp
 For this project, I did not look up any online VaR results for this stock or any other further stock used, since I believe the methods were robust enough to be reliable. Since I also create multiple methods for calculating VaR, I was able to cross-reference them with each other, with them mostly showing similar results for the same stock, so I am confident that 
 these are accurate VaR predictions.
 
-\subsubsection{Command Line -- Model Building  (Variance-Covariance)}
+\subsubsection{Command Line -- Model Building  (Variance-Covariance)}\label{Command Model}
 
 To begin with this method, I discovered that I could import the historical stock price data conveniently by using the \href{https://pypi.org/project/yfinance/}{yfinance} package, which provides a convenient way to download financial market data from Yahoo Finance directly into Python. I selected Nike (NKE) as the target stock so I could compare it to the previous result given by Historical Simulation. A time span of the last 500 trading days was once again chosen to balance between a sufficient data sample size and computational efficiency, as well as for comparative reasons.\\\vspace{0.3cm}
 
@@ -482,7 +482,7 @@ To do this within Python whilst leading on from our previous two coded methods, 
       else: #Model Building
           VaR = -portfolio*(norm.ppf(rlPercent, mean, sD))
       nextDay = stock['Adj Close'].pct_change()[i+adjust:i+adjust+1].values[0]
-      nextDay = nextDay*portfolio*-1 #Done to fit within Latex Hbox
+      nextDay = nextDay*portfolio*-1
       if nextDay > VaR:
           count += 1
 \end{verbatim}
@@ -938,7 +938,7 @@ Using this methodology, I can provide a robust framework for estimating the VaR 
 \subsection{Kivy Screen Manager}
 I knew that next I would want to implement what I had learnt about Monte Carlo Simulation into my GUI, but my current deliverable couldn't handle multiple stocks being selected at the same time, let alone the calculation of the VaR for them all, as it was only designed for single stock VaR calculations. I figured the best way to implement this be to add more sections to my program that can actually handle these multiple stocks needed, in essence, I needed to have the ability to create a portfolio. And since this was building towards my final deliverable, I knew I wanted to produce something that would adhere to the industry standards that I was creating my software for.\\\vspace{0.3cm}
 
-Subsequently, upon researching more into the capabilities of kivy and its framework using the online Kivy documentation [\ref{ref13}], I discovered the Kivy Screen Manager, a powerful tool that allows for the creation of multiple screens within a single application, each screen able to be utilised as a different section and form of functionality within the program. This was perfect for what I wanted to achieve, the ability to have multiple screens represented within one application, bouncing between the different options depending on what you need to do, possibly allowing for communication between screen adding to a more in-depth functionality provided by my program. It also allowed for impressive transistional animations between defined screens, an impressive gif showcasing this being found on the main page for it within the documentation. With this, I knew I had to plan out and draft what I initially needed for my subsequent final deliverable, so just as I had done with my previous design, I drew what I envisioned in the figure below:\\\vspace{0.3cm}
+Subsequently, upon researching more into the capabilities of kivy and its framework using the online Kivy documentation [\ref{ref13}], I discovered the Kivy Screen Manager, a powerful tool that allows for the creation of multiple screens within a single application, each screen able to be utilised as a different section and form of functionality within the program. This was perfect for what I wanted to achieve, the ability to have multiple screens represented within one application, bouncing between the different options depending on what you need to do, possibly allowing for communication between screen adding to a more in-depth functionality provided by my program. It also allowed for impressive transitional animations between defined screens, an impressive gif showcasing this being found on the main page for it within the documentation. With this, I knew I had to plan out and draft what I initially needed for my subsequent final deliverable, so just as I had done with my previous design, I drew what I envisioned in the figure below:\\\vspace{0.3cm}
 
 \begin{figure}[h]
   \centering
@@ -1016,27 +1016,427 @@ This would give my main program access to the other screens, and subsequently li
 \end{figure}
 
 
-
 \subsection{Developing a Portfolio Screen}
+When initially creating portfolio management software, you need to take into account many things, such as:
+\begin{itemize}
+  \item \textbf{Data Collection}: The software needs to be able to collect all relevant data for a stock and update it's pricing in effective real-time.
+  \item \textbf{Data Storage}: You need to consider how and where the data will be stored. This is usually done within a database or in the cloud, but it depends on the software you're utilising.
+  \item \textbf{User Interface}: The software should have a user-friendly interface that allows users to easily manage their portfolio and understand the interactions between the options that they are presented with.
+  \item \textbf{Performance}: The software should be able to handle large amounts of data being stored and processed, to perform calculations quickly enough for the user experience to not be affected.
+  \item \textbf{Scalability}: The software should be able to handle an increasing number of stock data, and it should be able to handle multiple users if being user in different environments.
+\end{itemize}
 
-\subsubsection{lots of these}
+These in tandem will all help when creating this form of software, and help when visualising how you want the software to look and act. For this, I once again drafted an initial design, which I will explain in parts below:\\\vspace{0.3cm}
 
-\subsubsection{lots of these}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/IMG_1117.jpg}
+  \caption{Draft Portfolio Screen - Top}
+  \label{fig:Portfolio Screen Draft Top}
+\end{figure}
 
-\subsubsection{lots of these}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/IMG_1347.jpg}
+  \caption{Draft Portfolio Screen - Bottom}
+  \label{fig:Portfolio Screen Draft Bottom}
+\end{figure}
 
-\subsubsection{lots of these}
+In figure \ref{fig:Portfolio Screen Draft Top}, my plan is to create a portfolio system where you can store your stock within a scrolling list on the left hand side. This is the same concept I used for my initial design, within my VaRChecker screen now, but you can add and remove stocks from this dynamic list. To add the stocks, you would click on the button in the top left, which would create a pop-up window, a feature that I did not utilise within my initial design, but upon further use of the kivy documentation [\ref{ref13}] I discovered its existence and apparent usefulness for a situation like this. On the right hand side, it would display the overall total price/value of the portfolio, being calculated by getting the live prices of stocks, multiplied by the number of stored shares for each stock. It would also display the number of stocks (a rather useless metric from a financial standpoint but a nice feature to have), the daily return of the portfolio, and the Value at Risk of the portfolio, which would be calculated using the Monte Carlo Simulation method I had previously implemented. It is also noted that I want the stocks on the left to have their name displayed, as well as their holding value, since it can be used to compare to the overall value on the right, since both would be shown at the same time.\\\vspace{0.3cm}
 
-\subsubsection{lots of these}
+For figure \ref{fig:Portfolio Screen Draft Bottom}, I wanted to have it so when you select one of the stocks on the right, it replaces the overall portfolio stats on the right with specific ones for the currently selected stock, such as its name, holding value, No. of shares (much more important for this context), and individual VaR. This would allow for a more in-depth analysis of individual stocks within the portfolio, and allow for a more detailed understanding of the risks and rewards of each stock whilst still seeing how diversification affects the stability of Value at Risk. It would have a cross in the top right, allowing you return to your overall view of the portfolio. I also created a small sketch for how I would want the pop-up to look, having to inputs for ticker (since this is how yfinance would download it) and no's of shares, as well as a button to exit the pop-up, resulting in the end of the interaction.\\\vspace{0.3cm}
+
+With these initial ideas in place, I set to work on implementing them. Since this was a large program, with many different computational elements and visual designs within both the files used, I will attempt to showcase key points of its development with accompanying visual aid when possible, but since it cannot cover everything, the full code can be found in the appendix.\\\vspace{0.3cm}
+
+\subsubsection{Initial Structure and Pop-Up}
+My original structure for the file consisted of 3 classes, these being the screen class \texttt{{Portfolio}}, the one being referenced within my main hub, the button class \texttt{Stocks}, where I can display the current stocks that my system deals with and can be pressed, and a pop-up class \texttt{InputStock}, a way for me to add those stocks to the system. You would use a button in the top left to access the pop-up, which would create and store stock information. Since I wanted the stocks to be retained after you had closed and reopened the application, I had different options available to me to consider, due to the vast amount of imports and libraries that Python can utilise to store data, such as database frameworks, even using a notepad file, etc.\\\vspace{0.3cm}
+But once again, within the kivy documentation [\ref{ref13}], there's a built in way to easily store data within a JSON file in the directory your program is running in, using the module \texttt{kivy.storage.jsonstore}. It uses an easy dictionary format with a key, and can store all the relevant stock information I would need. When the pop-up is successfully dismissed, it will call a function within \texttt{Portfolio} to run an update on the stocks list, checking the JSON file and adding all of them as widgets into a scrollable list, with each stock element containing the current stock being displayed's data, which can be referenced when it's selected later to have its information displayed specifically on the right hand side. Below are the respective sections generally described above: \\\vspace{0.3cm}
+
+\begin{verbatim}def openPopup(self):
+  popup = InputStock()
+  popup.bind(on_dismiss=self.loadStocks)
+  popup.open()
+\end{verbatim}
+
+\vspace{0.3cm}
+This creates an instance of my pop-up class, binds the \texttt{on\_dismiss} function to the loadStocks method, and then opens the pop-up.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  from kivy.storage.jsonstore import JsonStore
+  ...
+  class InputStock(Popup):
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+          self.size_hint = (0.5, 0.5)
+          self.title = 'New Holding'
+
+      def saveStock(self):
+          stockData = {
+              'ticker': self.inputTicker.text,
+              'overallShares': self.inputShares.text,
+          }
+          JsonStore('holdings.json').put(stockData['ticker'], **stockData)
+          self.dismiss()
+\end{verbatim}
+
+\vspace{0.3cm}
+At the top of the file I import the JsonStore module, and then create my pop-up class, setting its size and title. The saveStock method is called when the save button is pressed, defined within the \texttt{.kv} file, creating a dictionary of the inputted stock data and storing it in the JSON file, then finally dismissing itself. The resulting stored data, for one of my initial uses when using my "holdings", looks like this - \texttt{\{"test ": \{"ticker": "test ", "overallShares": "test"\}\}}\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def loadStocks(self, *args):
+      store = JsonStore('holdings.json')
+      self.ids.stockCards.clear_widgets()
+
+      for stockKeys in store:
+          stockData = store.get(stockKeys)
+          self.addStock(stockData)
+\end{verbatim}
+
+\vspace{0.3cm}
+Upon dismiss, the \texttt{loadStocks} method is called, which opens the JSON file, clears the current stock list to make sure duplicates are not created, and iterates over all the keys in the JSON file, adding each stock to the list of stocks using my addStock function, that passes the relevant data into the stocks class.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  class Stocks(Button):
+        self.stockInfo = {
+            'ticker': ticker,
+            'overallShares': overallShares,
+        }
+\end{verbatim}
+
+\vspace{0.3cm}
+Within the class, I create a dictionary to store the stock information, so it can be later referenced when the stock is selected. This allowed me to store and accumulate stocks, that I could visually see added to my screen, but I did not have any deleting process implemented, so I would have to delete them by manually deleting them within the JSON for now. I also set it so that I had default values displayed on the stock information section, and utilised the neutral colour scheme for what I could with the presentation, sticking to colours the I felt were inoffensive from my VaRChecker's style. This resulted in figure \ref{fig:Early Portfolio}, very basic but apparent how the screen will be developed from now on. \\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (16).png}
+  \caption{Early Portfolio}
+  \label{fig:Early Portfolio}
+\end{figure}
+
+\subsubsection{Storing Stocks and Calculating Portfolio Value}
+At this point in my projects development cycle, I realised that the nuance between my Rankings Tab and my Trends tab were irrespective for what I needed to create and what I could deliver. Because of this, I realised I could integrate both into each other, graphically display whatever ranking I may compute within its own section, that also would show the trends that my stocks were taking. This resulted in me removing the Rankings tab and planning to just create the Trends tab, which can be seen at the top of the program in figures going forward.\\\vspace{0.3cm}
+
+Since I had not implemented verification, I had to be certain that the tickers I entered into my pop-up were correct, and if so, yfinance would be able to correctly download the data. This is crucial, since I would need to retrieve and store the initial stock price of the data as soon as I added it to my stocks list, since it would be needed to refer upon in the future to compare to whatever the continued current price would be going forward, needed when calculating return. To do this I used:\\\vspace{0.3cm}
+
+\begin{verbatim}
+  initialPrice = yf.download([self.inputTicker.text], period='1d')
+                                         .tail(1)['Close'].iloc[0]
+\end{verbatim}
+
+\vspace{0.3cm}
+Which would download the stock price for the last day, and then take the last value in the list, which would be the current price of the stock. Previously, using yfinance's \texttt{.info['regularMarketPrice']} command would have been a viable way for me to retrieve the current price easily, but due to certain limitations that Yahoo's financial API had put into place recently, I was unable to use this method, and had to find this work around, which I continue to use going forward since it presents the same results. This initial price would be stored within the JSON to be referenced later.\\\vspace{0.3cm}
+
+With this initial price now stored, I could now calculate the majority of the necessary information that my program would need to consistently display within my totals section. This would be done (once checking that the length of the JSON is not 0) by iterating over all the stocks in the JSON file, and for each stock, downloading its current price, calculating it's total value by multiplying it with the stored shares quantity, summing these all together, resulting in the Portfolio's current total value. The total shares would be added up within the iteration, and the daily return I adapted into just being the total return of the portfolio, a percentage based on all the current prices together being compared to all of the initial prices summed together.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def initialStockTotals(self, *args):
+      store = JsonStore('holdings.json')
+      if len(store) != 0:
+          totalValue = 0
+          ...
+          totalShares = 0
+
+          for stockKeys in store:
+              stockData = store.get(stockKeys)
+              currentPrice = yf.download([stockData['ticker']], period='1d')
+                                                   .tail(1)['Close'].iloc[0]
+
+              totalValue = totalValue + (currentPrice * float(stockData['sharesOwned']))
+              totalCurrentPrices = totalCurrentPrices + currentPrice
+              totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])
+              totalShares = totalShares + int(stockData['sharesOwned'])
+          totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
+
+          self.stockName.text = "[u]Total Portfolio Value[/u]"
+          self.totalValue.text = "Total Value: £{:,.2f}".format(totalValue)
+          self.totalReturn.text = "Total Return: {:.2f}%".format(totalReturn)
+          self.totalShares.text = f"Total No. of Shares: {totalShares}"
+\end{verbatim}
+
+\vspace{0.3cm}
+At the end, it changes the references to the id's in the \texttt{.kv} file's text to be the computed value, displaying them on the right hand side. This method would be called upon when the program is being initialised, and upon the dismissal of the pop-up, to ensure that the totals are always up to date.\\\vspace{0.3cm}
+
+\subsubsection{Background App Refresh and Race Conditions}
+But I want to have it so that the program can update the stock prices in real-time, so that the user can see the changes in their portfolio as they happen. Whilst realtime is a bit of an impossibility using python, since the download isn't instant and gets worse with more stocks being stored, having it re-download all stocks every 60 seconds seems a lot more reasonable, especially since stocks don't change in value that quickly. Within my time to decide to do this, I had implemented a \texttt{specificStockTotals} method that would be called upon when a stock was selected, and would display the specific stock's information on the right hand side, with generally the same logic as the previous section. Since I would still want this data to be updated every minute when a stock is selected, as well as when the portfolio totals are being displayed, I decided to utilise Kivy's Clock functionality.\\\vspace{0.3cm}
+
+By using \texttt{Clock.schedule\_interval()}, a function found within the \texttt{kivy.clock} module, I was able to call a function every 60 seconds, which would be my \texttt{initialStockTotals} method, which would update the stock prices and the portfolio totals. I also had a subsequent one within my \texttt{specificStockTotals} method that would do the same thing when a specific stock was selected. But this could result in the program trying to update and download the stock prices at the same time, since only downloading one stock when all are necessary would crash the program. To ensure that one clock was being run at one time (preventing any race conditions) and that the clock was not calling an instance inside itself recursively (resulting in it never being able to be stopped), I utilised the code below: \\\vspace{0.3cm}
+
+\begin{verbatim}
+  def specificStockTotals(self, *args):
+      if isinstance(self.iSTCheck, ClockEvent):
+          Clock.unschedule(self.iSTCheck)
+          self.iSTCheck = None
+
+      if not isinstance(self.sSTCheck, ClockEvent):
+          self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)
+\end{verbatim}
+
+\vspace{0.3cm}
+Using stored checker methods that were initialised during the classes startup, it would check if the other clock was already running, and if so, unschedule it, and then schedule this new clock. This would ensure that only one clock was running at one time, and that the clock was not calling itself recursively, allowing for the program to update the stock prices every 60 seconds completely dependant on what they had selected at the time.\\vspace{0.3cm}
+
+\subsubsection{Value at Risk Calculators}
+You may have noticed that when creating the displays for the total and specific stocks, that I had not displayed or generated the Value at Risk to be displayed for either. This was because I had not yet implemented the Monte Carlo Simulation method into the program, and I would need to do so to be able to calculate the VaR for the portfolio. I had tested single stock calculations for VaR with this method as well, but it did not work, so I decided that I would just use my Model Simulation (Variance-Covariance) method for the single stock VaR calculations, and the Monte Carlo Simulation for the portfolio VaR calculations, as I have had both working in other programs/screens. I chose to use model over historical simulation as when back-testing, the resultant p-value were much higher/more consistent when using the model method, so I believed it to be more reliable. To implement these methods, I decided to create another class (all subsequent new classes mention all being within this same \texttt{Portfolio.py} file.) called \texttt{VaRCalculators}, that would contain all the methods needed to calculate the VaR for the portfolio and the individual stocks. An instance of this would then be created when the screen was initialised (\texttt{self.varCalc = VaRCalculators()}), and the methods within could be referenced  whenever needed in the stock total clock cycles.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  class VaRCalculators:
+    def __init__(self, *args):
+        self.rlPercent = 0.05
+        self.timeHori = 1
+
+    def modelSim(self, totalValue, stocks):
+        closeDiffs = stocks['Close'].pct_change().dropna()
+        return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent/100,
+        np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori))
+\end{verbatim}
+
+\vspace{0.3cm}
+The \texttt{VaRCalculators} class is initialised with the risk level percentage and the time horizon, and the \texttt{modelSim} method is used to calculate the VaR for the single selected stock. It takes in the current value of the stock (being the current price times the shares owned) and the downloaded stock data, necessary for calculating the daily returns, and then uses the  Model Simulation seen in section \ref{Command Model}, which is then returned. This method would be called inside the specific stock cycle, and return the VaR to be displayed, rounded to two decimal places and with comma formatting.\\\vspace{0.3cm}
+
+For the total portfolio calculations however, I needed to implement the Monte Carlo method, as well as calculate the weightings of all the stocks. But since I had already implemented these kind of calculations in a previous section and had passed in all the stock information, I would use the same logic to calculate weightings and run my subsequent simulation.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def monteCarloSim(self, totalValue, stocks):
+      weightings = np.zeros(len(stocks['Close'].columns))
+      for x, stockKey in enumerate(store):
+          stockData = store.get(stockKey)
+          currentPrice = stocks['Close'][stockData['ticker']]
+          .loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+
+          currentValue = currentPrice * float(stockData['sharesOwned'])
+          weightings[x] = currentValue / totalValue
+  
+      closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+      simNum = 100000
+      portfoReturns = np.zeros(simNum)
+  
+      optimisedSim = np.random.multivariate_normal(closeDiffs.mean() 
+                         ,closeDiffs.cov(), (self.timeHori, simNum)) 
+
+      for x in range(simNum): 
+          portfoReturns[x] = np.sum(np.sum(optimisedSim[:, x, :] 
+                                          * weightings, axis=1))
+          
+      return "{:,.2f}".format(-np.percentile(sorted(portfoReturns), 100 
+                                          * self.rlPercent)*totalValue)
+\end{verbatim}
+
+\vspace{0.3cm}
+This new version of my Monte Carlo Simulation would calculate the weightings of all the stocks by iterating over all the stocks in the JSON file, using this to access each index within the downloaded stock data, calculating the current value of the stock, and then dividing it by the total value of the portfolio. It would then calculate their daily returns, and run the simulation 100,000 times. However, I realised that numpy had a built in way to perform the simulation by utilising how \texttt{np.random.multivariate\_normal()} works. By defining the final section within it with both \texttt{(self.timeHori, simNum)}, it would allow me to create a 3D array of the simulations, providing me with the data I needed in one statment. I still needed to run all the simulations, so I created a for loop that would multiply the optimised simulation by the weightings, summing them all together along the outer axis, and then summing them all together again, we result in finally obtaining the portfolio returns. This method ends up being a lot more efficient than my previous method, saving a lot of loading time for the application, which is crucial for the user experience when navigating a the main portfolio screen. Finally, the VaR is calculated by taking the 5th percentile of the sorted returns, and then multiplying it by the total portfolio value, returned correctly formatted.\\\vspace{0.3cm}
+
+\subsubsection{Finding Comparny Names and Back Button}
+As I was developing the program, there was a lot of visual iterations and changes to formatting and presentation that I can't cover in this report, but one of the features I knew I would need to have would be the actual display of the full company name, since trying to remember what each company was based on tickers in a stock list felt terrible, this being seen in figure \ref{fig:Ticker Names} (you can also see the reduced tabs at the top). Usually, this could have been done once again using the slightly altered aforementioned yfinance \texttt{.info['name']} method, but this was still broken, so I had to come up with a more creative solution.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (15).png}
+  \caption{Ticker as Stock Names}
+  \label{fig:Ticker Names}
+\end{figure}
+
+Yahoo finance has a fantastic website system for displaying their stocks, where every single stock page you find is located at: \url{https://uk.finance.yahoo.com/quote/}\texttt{XXXX}, where \texttt{XXXX} is the ticker of the stock you are querying. And on each one of their pages, towards the top you will always find the full company name displayed next to its ticker. Upon using inspect element on this section (a feature of most modern browsers allowing the user to see the underlying HTML of a webpage), I could see this \texttt{h1} element was always created using the same class, \texttt{D(ib) Fz(18px)}.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/HTML Element.png}
+  \caption{Ticker as Stock Names}
+  \label{fig:Ticker Names}
+\end{figure}
+
+\vspace{0.3cm}
+With this knowledge, I knew that I had to find a way to obtain the html of these pages I can query, with just the information given by a stock ticker. For retrieving the page, I could use the python \texttt{requests} module to download the html of a webpage, but for the parsing of the html, I would need to use \texttt{BeautifulSoup}. This module allows for the parsing of html and xml documents, and can be used to extract information from them, such as the text within the element that I needed to find.
+
+\begin{verbatim}
+  def findCompanyName(self, ticker):
+      yFinancePage = f"https://finance.yahoo.com/quote/{ticker}"
+      headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 
+      (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0'
+      } 
+
+      response = requests.get(yFinancePage, headers=headers)
+      soup = BeautifulSoup(response.content, 'html.parser')
+      companyName = soup.find('h1', class_='D(ib) Fz(18px)')
+
+      return companyName.text
+\end{verbatim}
+
+\vspace{0.3cm}
+This method would take in a ticker, concatenate it with a url to create the link for my needed stock page, and then download the html of the page using the requests module. Whilst this method would work for most of the stocks that I tried for, any that had "Non-US" denoters (stocks that aren't listed on NASDAQ, instead with London Stock Exchange with .L or country specific Germany with .DE) would fail to have their page load and stored correctly. To combat this, I would employ the use of a User Agent, found at \url{https://user-agents.net/my-user-agent}, within the headers of the request, which would simulate the request to appear as if it was coming from a browser, and not a python script, successfully allowing me to download the HTML data.\\\vspace{0.3cm}
+
+I would then proceed to parse the html using BeautifulSoup, and find the \texttt{h1} element with the class I needed, and return the text within it, which would be the full company name. This method would now be called upon whenever a stock was added to the list, storing the full company name along with ticker inside the JSON file, and with a small adjustment to stocks, promptly displayed in tandem on the stock list, as seen in \ref{fig:Stock and Ticker Names}. This would allow for a much more user-friendly experience when navigating my app, I'm aware that it would be optimal to use a stock name when adding it to your portfolio but I could not envision this capability working vice versa due to the nature of the URL's that Yahoo Finance provides, since it is through that I can use the ticker and find the stock names in the first place.\\\vspace{0.3cm} 
+
+The new resultant holding information would look like this - \texttt{\{"ADS.DE": \{"name": "adidas AG (ADS.DE)", "ticker": "ADS.DE", "sharesOwned": "50", "initialPrice": 201.39999389648438\}\}}\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (12).png}
+  \caption{Stocks List with Company Names}
+  \label{fig:Stock and Ticker Names}
+\end{figure}
+
+\vspace{0.3cm}
+Another thing to note within the figure \ref{fig:Stock and Ticker Names} is the addition of a back button, which can be seen in the top right. I assumed with the \texttt{+} symbol for adding a stock and this \texttt{X} button, that the user would intuitively understand what each were trying to represent, since it adheres to the genreal design principles found within the creation of graphical interface. (IDK ADD A REFERENCE HERE TO UCD MAYBE). On the Total Portfolio display, the back button can still be seen in the same place, but with its opacity and ability to be pressed set to 0. When you run the \texttt{specificStockTotals} method, it would set the opacity to 1 and the ability to be pressed to 1, allowing for the user to return to the total portfolio view. And the code it runs when pressed is simply just \texttt{initialStockTotals()}, redrawing back over it and setting itself to invisible \& untouchable again.\\\vspace{0.3cm}
+
+\subsubsection{Improving Monte Carlo Simulation}
+Every time I would switch between my two Portfolio views, it would have to recalculate the VaR, thus running more Monte Carlo Simulations, and slightly lagging the app consistently. Whilst this method was efficient, I wanted to adapt is so that it didn't have to run through all the simulations extensively every time (since the more simulations produced more accurate results that I wanted to have displayed), resulting in me considering the use of a convergence point/threshold. With this, my method would continuously perform simulation steps, incrementing and producing a new VaR result every time, but performing many less simulations to begin with. And as soon as one of these simulations is within the same threshold (1\%) as the last one, I could assume that this was a reasonably accurate estimation of the VaR, returning the latest value for it.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def monteCarloSim(self, totalValue, stocks):
+      ...
+      simNum = 5000
+      convThreshold = 0.005
+      previousVar = float('inf')
+      converged = False
+
+      while not converged and simNum <= 100000:            
+          ...
+          currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)
+
+          if previousVar != float('inf') and abs((currentVar - previousVar) / 
+                                                previousVar) < convThreshold:
+              converged = True
+          else:
+              previousVar = currentVar
+              simNum += 50004
+\end{verbatim}
+
+\vspace{0.3cm}
+I would set the starting simulation number to 5000, the threshold to 0.5\% as it seemed to produce the best results with the speed the VaR would now be calculated at. Upon running the simulation, it would verify that the previous VaR was not infinity, and check if the current VaR was within the threshold of the previous one. If so, it would set the converged boolean to true and return this as the new VaR, and if not, it would set the previous VaR to the current one, increment the simulation number by 5000, and run the simulation again, until it either converges or reaches the point where it is performing 100,000 simulations again. With this convergence method, I was able to obtain the VaR results at a much faster speed, helping improve the app further. \\\vspace{0.3cm}
+
+\subsubsection{Deleting Stocks}
+As can also be seen in figure \ref{fig:Stock and Ticker Names}, this time in the bottom right corner, I had implemented a delete button. This would only be visible when a user has selected a stock, since this indicates that the selected stock is the one that can be deleted. Since I found it so useful in creating its own formatted separate section to acquire information, I wanted to use another pop-up to confirm the deletion of a stock, since being able to do it with just one button press would be too much of a risk, especially when dealing with these assets. To do this, I would create a new class for the pop-up in my \texttt{Portfolio.py} file, as well as the subsequent one in my \texttt{Portfolio.kv} file, which I would be able to use to define the pop-ups layout, containing a title, warning and two buttons to press.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  <ConfirmDelete>:
+      size_hint: 0.5, 0.35
+      title: 'Confirm Deletion'
+      BoxLayout:
+          orientation: 'vertical'
+          spacing: 10
+          Label:
+              text: "Are you sure you want to delete this stock?\n\nIt will be permanent."
+              halign: 'center'
+              valign: 'center'
+          BoxLayout:
+              size_hint_y: None
+              height: '50sp'
+              Button:
+                  text: "Yes"
+                  on_release: root.on_confirm()
+              Button:
+                  text: "No"
+                  on_release: root.dismiss()
+\end{verbatim}
+
+\vspace{0.3cm}
+In the process of formatting and changing the functionality of my add stocks pop-up, I discovered that by default, when you click off the pop-up, it would dismiss itself, which was the perfect behaviors for that pop-up, and could be well utilised here again, even if it does also have a no button that will accomplish the same thing. The on\_confirm using the Yes button would send a signal to the root class, but since the button for the pop-up is found within my portfolio class, I had assigned the current ticker to it, so that when it is pressed, the ticker is passed in with it.
+
+\begin{verbatim}
+  class ConfirmDelete(Popup):
+    def __init__(self, portfolio, ticker=None,  **kwargs):
+        super().__init__(**kwargs)
+        self.ticker = ticker
+        self.currentPortfolio = portfolio
+
+    def on_confirm(self):
+        JsonStore('holdings.json').delete(self.ticker)
+        self.currentPortfolio.initialStockTotals()
+        self.dismiss()
+\end{verbatim}
+
+\vspace{0.3cm}
+With the ticker being initialised and the current instance of my portfolio class also being passed in, the on\_confirm method can find the ticker within my JSON file, delete it, and call the initialStockTotals method to update the stock list, and then dismiss itself. This would now remove the stock, whenever any of the Stock Totals methods are ran, they also call the \texttt{loadStocks} method, which would update the stock list, removing the deleted stock from the list. This happens dynamically within the list in kivy, so if you're scrolled down within the list when viewing and deleting a stock, it will keep you in the same position you were, not having to scroll back down to find where you were. The pop-up for this can be found below, as well as the portfolio screen display after deleting a stock. \\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (10).png}
+  \caption{Delete Stock Pop-Up}
+  \label{fig:Delete Stock}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (13).png}
+  \caption{Stocks List after Deleting a Stock}
+  \label{fig:Deleted Stocks List}
+\end{figure}
+
+\subsubsection{Adjusting VaR Parameters}
+As seen in figure \ref{fig:Deleted Stocks List}, in the exact place where the \texttt(Delete Stock) button was, there's another button called \texttt{Adjust VaR}. This is actually the same button but having the text within it changed based on the Portfolio or Specific stock view being used, the logic for which being in a function that checks what text is currently being used by the button to indicate what to do for it. In this instance, it is now used to open up a final pop-up, one used to help explain VaR and add the ability to adjust the parameters of the VaR calculation. My initial creation of it can be seen in figure \ref{fig:OG Adjust VaR}.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (11).png}
+  \caption{Original Adjust VaR Pop-Up}
+  \label{fig:OG Adjust VaR}
+\end{figure}
+
+\begin{verbatim}
+  class AdjustVaRPopup(Popup): 
+      def __init__(self, portfolio, varCalc, **kwargs):
+          super().__init__(**kwargs)
+          self.varCalc = varCalc
+          self.currentPortfolio = portfolio
+
+      def submit(self):       
+          self.varCalc.timeHori = int(self.timeHoriInput.text)
+          self.varCalc.rlPercent = float(self.riskLevelInput.text) / 100.0
+          self.currentPortfolio.initialStockTotals()
+          self.dismiss()
+\end{verbatim}
+
+\vspace{0.3cm}
+With this pop-up, it passed in the current instance of the portfolio class and the varCalc class being used inside it. With his, it could directly change the VaR calculator class by adjusting its parameters directly, as well as updating the new VaR totals to reflect these new changes, applicable for both Monte Carlo Simulation and Model (Variance-Covariance) methods. I knew that not everyone that uses this app could understand what Value at Risk even represents or means in general, so I decided to add a brief explanation of what it is in the form of a contextual sentence as can be seen in figure \ref{fig:Final Adjust VaR}. I used colour coordination to make it easier to understand what text input relates to what portion of the sentence, making use of hint text colour, and for both pop-ups featuring inputted data (the other being \texttt{InputStock}), I added full verification and visual animations to help emphasise when either text input was incorrect. The numbers within this sentence will also update every time the pop-up is re-opened, so the user will always know what values are currently selected. I know that it would be better to show this on the Portfolio screen at all times, but I was not able to find a subsequent place that I could showcase such information, so it's current location will have to suffice.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Final Adjust VaR.png}
+  \caption{Completed Version of Adjust VaR Pop-Up}
+  \label{fig:Final Adjust VaR}
+\end{figure}
+
+\subsection{The Finalised Portfolio Screen}
+I am inherently not the best at creating visually appealing software, I struggle with finding colour schemes that are coherent and I don't know how to always make things look right. With my VaRChecker, I was able to find a bland gray scheme, and whilst I continued to utilise a few of these colours for consistency, I settled on a range of different blues for the portfolio screens display. I have made a multitude of different styling and customisations to help with visual appearance and user understanding of where things are and what is important. The portfolio's code has been adapted to work when there are no stocks being held within it, and when there's only one stock being held as well, since yfinance downloads need to be defined differently afterwards when retrieving information since it gives it back in a different data-frame. For a while, I was dividing my VaR Method Simulation by 100 since I used the same code from my \texttt{VaRChecker.py} file, but after realising and changing this, I was able to get matching VaR results across the two screens, so both produce accurate single stock data. The screen is fantastically robust and can handle whatever stock storage scenario you want to throw at it, including storing large stock names and numbers. I will add a range of figures showing various parts of this screen below, this also including \ref{fig:Final Adjust VaR} since that is from the finished product as well and a previous green button design that I didn't think fit the visual style, as well as me not having changed the Stocks to a Blue Hue.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (8).png}
+  \caption{Previous Iteration of Portfolio Screen}
+  \label{fig:Previous Iteration}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Create Holding.png}
+  \caption{Final Create/Update Holding Pop-Up}
+  \label{fig:Final Create Holding}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Confirm Delete.png}
+  \caption{Final Confirm Delete Pop-Up}
+  \label{fig:Final Confirm Delete}
+\end{figure}
 
 
-\section{Chapter 5 --- Graphical Visualisations}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (6).png}
+  \caption{Completed Portfolio Screen}
+  \label{Completed Portfolio Screen}
+\end{figure}
+
+\section{Chapter 5 --- Graphical Visualisation}
 
 \subsection{Convergence Analysis}
+After finishing my Portfolio screen, I realised that the term "Trends" for my final screen was not sufficient for what I wanted it to be. Thus, it was changed to "Graphs", particularly influenced by a brief detour I took within my recent development cycle, when I created a graphical representation of my Monte Carlo Simulation.
+
 
 \subsection{Matplotlib within Kivy}
 
 \subsection{Creating the Graphs Screen}
+Start with putting my initial drawing for this here.
 
 \subsubsection{lots of these}
 
@@ -1046,22 +1446,18 @@ This would give my main program access to the other screens, and subsequently li
 
 \subsubsection{lots of these}
 
-\subsubsection{Analysing Visual Results}
-
-\subsubsection{lots of these}
-
-\subsubsection{lots of these}
-
-
+\subsection{The Finalised Graphs Screen}
 
 
 \section{Chapter 6 --- Completed Deliverable}
 
 \subsection{Features and Expected Use}
 
-\subsection{P-Values and Statistical Analysis}
 
 \subsection{Final GUI Design}
+
+\subsection{P-Values and Graphical Analysis}
+
 
 \subsection{Adaptations for Packaged Release}
 
@@ -1265,11 +1661,10 @@ TALK ABOUT THIS STUFF MORE, ADD MORE ABOUT IDK NEW REFERENCES AND GO INTO MORE D
 
 % TEMPORARY END OF DOCUMENT TO PROVIDE MORE REALISTIC WORD COUNT FOR NOW
 \end{document} 
+
 \section{Appendix}
 
-\subsection{Graphs}
-
-\subsection{Interesting Code Snippets?}
+\subsection{Example Graphs}
 
 \subsection{Diary}
 FINAL YEAR PROJECT DIARY\\
@@ -1347,5 +1742,1711 @@ I started today by finally getting around and doing proper verification for my i
 
 07/04/24 - Graphs Screen\\
 I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my codes future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
+
+\subsection{Fully Packaged Code}
+\vspace{0.5cm}
+\subsubsection{Final Design.py}
+\begin{verbatim}
+  # MCaT - Stands for Money Can Always Triumph
+  import sys
+
+  # Check if this is running in a PyInstaller bundle or in a development environment
+  if getattr(sys, 'frozen', False):
+      # Set up logging to a file, otherwise the app needs a console
+      sys.stdout = open('Bin.log', 'w')
+      sys.stderr = open('Bin.log', 'w')
+
+  #Adjusting window size to be perfect for the tabs and different screens
+  from kivy.core.window import Window
+  Window.size = (800, 550)
+
+  #Importing the libraries needed
+  from kivy.app import App
+  from kivy.uix.boxlayout import BoxLayout
+  from kivy.uix.button import Button
+  from kivy.uix.screenmanager import ScreenManager, SlideTransition
+
+  #Importing the classes from other files within the directory
+  from Screens.Portfolio import Portfolio
+  from Screens.Graphs import Graphs
+  from Screens.VaRChecker import VaRChecker
+
+  from kivy.lang import Builder
+  import os
+
+  def createPathToResource(relativePath): # Converts the relative path to an absolute path, since that's what needed to work with pyinstaller, my packager
+      originalPath = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))) # If the program is run as an executable, the path is different
+      return os.path.join(originalPath, relativePath) # Joining the original path with the relative path to get the absolute path
+
+  global PATH_TO_RESOURCE # Need to do with caps and global so that it can be used as a path reference
+  PATH_TO_RESOURCE = createPathToResource('')
+
+  Builder.load_file(createPathToResource('kvFiles/Portfolio.kv'))
+  Builder.load_file(createPathToResource('kvFiles/Graphs.kv'))
+  Builder.load_file(createPathToResource('kvFiles/VaRChecker.kv'))
+
+  class FDApp(App):
+      PATH_TO_RESOURCE = PATH_TO_RESOURCE
+      def build(self):
+          sm = ScreenManager()        
+          sm.add_widget(Portfolio(name='Portfolio'))
+          sm.add_widget(Graphs(name='Graphs'))
+          sm.add_widget(VaRChecker(name='VaRChecker'))
+
+          def screenSwitcher(instance):
+              currentTabIndex = sm.screen_names.index(sm.current) # Getting the index of the current screen
+              selectedTabIndex = sm.screen_names.index(instance.text) # Getting the index of the screen that was clicked
+
+              if selectedTabIndex > currentTabIndex: # If the selected tab is to the right of the current tab, slide left
+                  sm.transition = SlideTransition(direction='left')
+              else: # Otherwise, slide right
+                  sm.transition = SlideTransition(direction='right')
+
+              sm.current = instance.text # Switch to the selected screen
+
+
+          tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1}) # Creating the tabs, takes up 10% of the screen space at the top
+          for screen in sm.screens:
+              tabButton = Button(text=screen.name, size_hint=(0.33, 1)) # There are 3, so they take up the available space
+              tabButton.bind(on_release=screenSwitcher)
+              tabs.add_widget(tabButton)
+
+          layout = BoxLayout(orientation='vertical')
+          layout.add_widget(tabs)
+          layout.add_widget(sm)
+
+          return layout
+
+  if __name__ == '__main__':
+      FDApp().run() # Runs the App
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{Portfolio.py}
+\begin{verbatim}
+  from kivy.uix.screenmanager import Screen
+  from kivy.uix.gridlayout import GridLayout
+  from kivy.uix.label import Label
+  from kivy.uix.popup import Popup
+  from kivy.storage.jsonstore import JsonStore
+  import yfinance as yf
+  from kivy.clock import Clock, ClockEvent
+  import numpy as np
+  from scipy.stats import norm
+  import logging
+  from bs4 import BeautifulSoup
+  import requests
+  from kivy.animation import Animation
+  logging.getLogger('yfinance').setLevel(logging.WARNING)
+
+  class Portfolio(Screen):
+      tempStockInfo = None # Used to store the info of whatever stock is clicked on
+      iSTCheck = None # Used to stop blocking of the initialStockTotals function
+      sSTCheck = None # Used to stop blocking of the specificStockTotals function
+      tempDownload = None # Used to store the download of the stocks to be referenced in another screen
+      tempTotalValue = None # Used to store the total value of the portfolio to be referenced in another screen
+      tempCurrentPrice = None # Used to store the current price of a stock to be referenced in another screen
+
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+          self.varCalc = VaRCalculators() 
+          self.initialStockTotals() # Initialises the portfolio and repeats every 60 seconds, also runs loadStocks
+
+      def handlePopupDismiss(self, value):
+          self.initialStockTotals() # I callback to make this happen when a add stock pop-up is saved successfully
+
+      def openPopup(self):
+          popup = InputStock()
+          popup.dismissHandler = self.handlePopupDismiss
+          popup.open() 
+
+      def adjDeleteHandler(self): # Used to handle the adjust VaR and delete stock buttons
+          if self.adjDeleteButton.text == "Adjust VaR":
+              popup = AdjustVaRPopup(portfolio=self, varCalc=self.varCalc, var=self.dailyVaR.text)            
+          else:
+              popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])
+          popup.open()
+
+      def addStock(self, stockData, currentPrice):
+          stockCard = Stocks(portfolio=self, **stockData, currentPrice=currentPrice)
+          self.ids.stockCards.add_widget(stockCard)
+
+      def loadStocks(self, stocks):
+          
+          # Some important stuff to specify for this file, it will generate in the directory that you are calling the main Final Design file from, so if you are calling that file from another folder, it will store it in the outer folder you are calling from. So make sure in the future you call the Final Design file from the same directory as you used last time, or it won't be able to access the holdings. I advise to just use the same directory as the program is being stored in when its compiled, since I assume that will work.
+          store = JsonStore('holdings.json')
+
+          # Clear existing stock widgets
+          self.ids.stockCards.clear_widgets()
+
+          # Load existing stocks and display them
+          for stockKeys in store:
+              stockData = store.get(stockKeys)
+              if len(store) != 1: # I use variations of this code a lot since you need to call the code differently when there is one stock in the portfolio
+                  currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+              else:
+                  currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
+              self.addStock(stockData, currentPrice)        
+
+      def initialStockTotals(self, *args):
+          if isinstance(self.sSTCheck, ClockEvent): # Stops the blocking of the specificStockTotals function
+              Clock.unschedule(self.sSTCheck)
+              self.sSTCheck = None
+
+          if not isinstance(self.iSTCheck, ClockEvent): 
+              self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60) # Repeats every 60 seconds
+
+          store = JsonStore('holdings.json')
+          if len(store) == 0: # If there are no stocks in the portfolio
+              self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
+              self.totalValue.text = "Total Value: [b]£0.00[/b]"
+              self.totalReturn.text = "Total Return: [color=ffffff]0.00% / £0.00[/color]"
+              self.totalShares.text = "Total No. of Shares: 0"
+              self.dailyVaR.text = "[b]Value at Risk: 0.00% / £0.00[/b]"
+              self.tempTotalValue = None
+              self.loadStocks(None) # Clears the stock widgets since it isn't called after a delete if there are no stocks
+
+          # Reset the portfolio to its original state
+          self.returnButton.opacity = 0
+          self.returnButton.disabled = True
+          self.adjDeleteButton.text = "Adjust VaR"
+          self.tempStockInfo = None
+
+          # Animate the background colour of the right side of the screen to a slightly darker shade
+          anime = Animation(rgba=[0.25, 0.25, 0.25, 1], duration=0.5)
+          anime.start(self.rightSide.canvas.before.children[0])
+
+
+          if len(store) != 0: # If there are stocks in the portfolio
+              totalValue = 0
+              totalCurrentPrices = 0
+              totalInitialPrices = 0
+              totalShares = 0
+
+              stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d') # Downloads the stocks for the portfolio all at once
+              self.tempDownload = stocks
+
+              for stockKeys in store: # Generates the necessary values to be displayed
+                  stockData = store.get(stockKeys)
+                  if len(store) != 1:
+                      currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+                  else:
+                      currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
+                  totalValue += (currentPrice * float(stockData['sharesOwned']))
+                  totalCurrentPrices += currentPrice * float(stockData['sharesOwned'])
+                  totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])
+                  totalShares += int(stockData['sharesOwned'])
+
+              self.tempTotalValue = totalValue
+              totalReturn = ((totalCurrentPrices / totalInitialPrices) - 1) * 100
+              totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000') # Determines the colour of the total return text, using red for negative, green for positive and white for no change
+              if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01" # This is to prevent 0.00% from being green and vice-versa for -0.00%
+              elif totalReturn > -0.01 and totalReturn < 0: totalReturn = "<-0.01"
+              else: totalReturn = "{:.2f}".format(totalReturn)
+
+              self.stockName.text = "[u][b]PORTFOLIO[/u][/b]"
+              self.totalValue.text = "Total Value: [b]£{:,.2f}".format(totalValue)+"[/b]"
+              self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalCurrentPrices - totalInitialPrices:,.2f}[/color]"
+              self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"
+
+
+              if len(store) != 1: # You can't run Monte Carlo simulations on a single stock, so this helps to determine which method to use
+                  VaR = self.varCalc.convMonteCarloSim(totalValue, stocks)
+              else:
+                  VaR = self.varCalc.modelSim(totalValue, stocks['Adj Close'])
+              self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
+
+              self.loadStocks(stocks)
+
+
+      def specificStockTotals(self, *args): # Temporary Stock Info was passed in from the stocks class
+          if isinstance(self.iSTCheck, ClockEvent):
+              Clock.unschedule(self.iSTCheck)
+              self.iSTCheck = None
+
+          if not isinstance(self.sSTCheck, ClockEvent):
+              self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)
+
+          self.returnButton.opacity = 1
+          self.returnButton.disabled = False
+          self.adjDeleteButton.text = "Delete Stock"
+
+          anime = Animation(rgba=[0.35, 0.35, 0.35, 1], duration=0.5) # Slightly brighter shade of grey
+          anime.start(self.rightSide.canvas.before.children[0])
+          
+          store = JsonStore('holdings.json')
+          stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d') # Still downloads all the stocks, since I may need them in my graphs screen
+          self.tempDownload = stocks
+
+          if len(store) != 1:
+              currentPrice = stocks['Adj Close'][self.tempStockInfo['ticker']].loc[stocks['Adj Close'][self.tempStockInfo['ticker']].last_valid_index()]
+          else:
+              currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
+          self.tempCurrentPrice = currentPrice
+          totalValue = currentPrice * float(self.tempStockInfo['sharesOwned'])
+          totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100
+          totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))
+
+          totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')
+          if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01"
+          elif totalReturn > -0.01 and totalReturn < 0: totalReturn = "<-0.01"
+          else: totalReturn = "{:.2f}".format(totalReturn)
+
+          self.stockName.text = "[u][b]" + self.tempStockInfo['ticker'] + "[/u][/b]"
+          self.totalValue.text = "Current Share Price: £{:,.2f}".format(currentPrice)
+          self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / £{totalReturnMoney:,.2f}[/color]"
+          self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"
+
+          if len(store) != 1:            
+              VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']]) # Has to be called differently for single stock as well
+          else:
+              VaR = self.varCalc.modelSim(totalValue, stocks['Close'])
+          self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / £{VaR[:-3]}[/b]"
+
+          self.loadStocks(stocks)
+
+
+
+
+
+
+
+  class VaRCalculators:
+      def __init__(self, *args):
+          self.rlPercent = 0.05 # Default values
+          self.timeHori = 1
+      
+      def convMonteCarloSim(self, totalValue, stocks):
+          store = JsonStore('holdings.json')
+          weightings = np.zeros(len(stocks['Adj Close'].columns))
+          for x, stockKey in enumerate(store):
+              stockData = store.get(stockKey)
+              currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+              currentValue = currentPrice * float(stockData['sharesOwned'])
+              weightings[x] = currentValue / totalValue
+
+          closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
+          simNum = 10000 # Good initial starting simulation amount
+          convThreshold = 0.001 # The threshold for convergence (percentage, 0.1%)
+          previousVar = float('inf')
+          converged = False
+
+          while not converged and simNum <= 100000: # Whilst the simulation hasn't converged and the simulation amount is less than 100,000
+              portfoReturns = np.zeros(simNum)
+              optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))
+
+              # These are commented on within graphs screen
+              weightings = weightings.reshape(1, -1)
+              portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
+
+              currentVar = -np.percentile(portfoReturns, 100 * self.rlPercent)
+
+              if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
+                  converged = True
+              else:
+                  previousVar = currentVar
+                  simNum += 5000
+
+          return "{:,.2f}".format(currentVar * totalValue)
+
+
+      def modelSim(self, totalValue, stocks):
+          closeDiffs = stocks.pct_change(fill_method=None).dropna()
+          return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori)) # I had an 100 in this from my VaRChecker producing bad results, but it is working now, also needs to be multiplied by square root of time horizon to get the correct value if time horizon has been adjusted
+      
+
+
+
+
+
+  class Stocks(GridLayout):
+      def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, currentPrice, **kwargs):
+          super().__init__(**kwargs)
+          self.currentPortfolio = portfolio # Passes in the screen to start functions when needed
+          self.cols = 2 # So I can align them where I want within the scroll wheel, which is wrapped around the ":"
+          self.size_hint_y = None
+          self.height = "110sp" # Need to use sp so it adapts to whatever screen size is needed
+          
+          nameLabel = Label(
+              text=name,
+              markup=True,
+              halign='right',
+              valign='middle',
+              text_size=("300sp", None), 
+              size_hint_x=None,
+              width="303sp",
+              color=(0, 0, 0, 1),
+              font_size="21.5sp" # Slightly bigger to contrast the prices bolding
+          )
+          nameLabel.bind(size=nameLabel.setter('text_size'))
+          
+          priceLabel = Label(
+              text=f"[b]: £{currentPrice*float(sharesOwned):,.2f}[/b]",
+              halign='left',
+              valign='middle',
+              text_size=("200sp", None),
+              size_hint_x=None,
+              width="200sp",
+              markup=True,
+              color=(0, 0, 0, 1),
+              font_size="20sp"
+          )
+          priceLabel.bind(size=priceLabel.setter('text_size'))
+
+          self.add_widget(nameLabel)
+          self.add_widget(priceLabel)
+
+          self.stockInfo = {
+              'name': name,
+              'ticker': ticker,
+              'sharesOwned': sharesOwned,
+              'initialPrice': initialPrice
+          }
+
+      def on_touch_down(self, touch): # Used to emulate a button, since it is not one now
+          if self.collide_point(*touch.pos):
+              self.currentPortfolio.tempStockInfo = self.stockInfo
+              self.currentPortfolio.specificStockTotals()
+          return super().on_touch_down(touch)
+
+
+
+
+
+
+  class InputStock(Popup):
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+          self.dismissHandler = None
+
+      def findCompanyName(self, ticker):
+          yFinancePage = f"https://finance.yahoo.com/quote/{ticker}"
+          headers = {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+          } # Needed to emulate a User-Agent, as if you are an actual browser accessing the page, since this helps retrieve results from yahoo for non-american stocks, denoted with a "." in the ticker
+          response = requests.get(yFinancePage, headers=headers) # I use requests to get the page, since the yfinance function to get the name is currently broken
+          soup = BeautifulSoup(response.content, 'html.parser') # I use BeautifulSoup to parse the HTML of the page
+          companyName = soup.find('h1', class_='D(ib) Fz(18px)') # When using inspect element on yahoo pages, the name is always within this specific element, so I retrieve it
+          if companyName:
+              return companyName.text
+          return None
+
+      def saveStock(self):
+          sharesCheck = True # Very messy use of verification but it makes sure that each input is valid, can be mutually exclusive between the two inputs
+          self.inputTicker.text = self.inputTicker.text.strip()
+          if self.inputTicker.text == "":
+              stocks = None        
+          else:
+              stocks = yf.download(self.inputTicker.text.capitalize(), period='1d')
+          if self.inputShares.text == "":
+              self.inputShares.text = "0"
+
+          if int(self.inputShares.text) <= 0:
+              self.inputShares.text = ""
+              self.inputShares.hint_text = "Invalid Shares"
+              self.inputShares.background_color = [1, 0.6, 0.6, 1]
+              anime = Animation(background_color=[1, 1, 1, 1], duration=1) # Animates the background colour back to white, as if flashing to say you have entered the wrong thing
+              anime.start(self.inputShares)
+              self.inputShares.focus = True # Focuses the user back to this input box, which only works if the above box is correct
+              sharesCheck = False
+
+          try:
+              initialPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()]
+          except:
+              self.inputTicker.text = ""
+              self.inputTicker.hint_text = "Invalid Ticker"
+              self.inputTicker.background_color = [1, 0.6, 0.6, 1]
+              anime = Animation(background_color=[1, 1, 1, 1], duration=1)
+              anime.start(self.inputTicker)
+              self.inputTicker.focus = True
+              sharesCheck = False
+          
+          if sharesCheck:
+              stockData = {
+                  'name': self.findCompanyName(self.inputTicker.text), # If the company name was not correct, it wouldn't have been able to download the stock information, so this function should always work
+                  'ticker': self.inputTicker.text.upper(),
+                  'sharesOwned': self.inputShares.text,
+                  'initialPrice': initialPrice,
+              }
+              JsonStore('holdings.json').put(stockData['ticker'], **stockData)
+              print(f"Added new holding: {stockData}")  # Only time I print, since I think its nice to see
+              self.dismissHandler(1) # Basically is used to make portfolio run a function in a very specific instance
+              self.dismiss()
+
+
+
+
+
+  class ConfirmDelete(Popup):
+      def __init__(self, portfolio, ticker=None,  **kwargs):
+          super().__init__(**kwargs)
+          self.ticker = ticker
+          self.currentPortfolio = portfolio
+
+      def on_confirm(self):
+          JsonStore('holdings.json').delete(self.ticker)
+          self.currentPortfolio.initialStockTotals() # I call this to refresh the portfolio after the stock is deleted
+          self.dismiss()
+
+
+
+
+  class AdjustVaRPopup(Popup):
+      def __init__(self, portfolio, varCalc, var, **kwargs):
+          super().__init__(**kwargs)
+          self.varCalc = varCalc
+          self.currentPortfolio = portfolio
+          self.varLabel.text = f"There is a [color=ff8000]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=00AAff]{self.varCalc.timeHori}[/color] day(s)." # Colours used to make it easier for the user to understand, helps to explain VaR as well
+
+      def submit(self):
+          inputCheck = True # Similar sort of verification as before
+          if not self.timeHoriInput.text.isdigit() or not (1 <= int(self.timeHoriInput.text) <= 30):
+              self.timeHoriInput.text = ""
+              self.timeHoriInput.hint_text = "Invalid Horizon [1-30]" # Helps to specify the restrictions after they get something wrong
+              self.timeHoriInput.background_color = [1, 0.6, 0.6, 1]
+              anime = Animation(background_color=[1, 1, 1, 1], duration=1)
+              anime.start(self.timeHoriInput)
+              self.timeHoriInput.focus = True
+              inputCheck = False
+          else:
+              self.varCalc.timeHori = int(self.timeHoriInput.text)
+
+          try:
+              rlPercent = float(self.riskLevelInput.text)
+              if not (0 < rlPercent <= 50):
+                  raise Exception
+          except:
+              self.riskLevelInput.text = ""
+              self.riskLevelInput.hint_text = "Invalid Percentage [1-50]"
+              self.riskLevelInput.background_color = [1, 0.6, 0.6, 1]
+              anime = Animation(background_color=[1, 1, 1, 1], duration=1)
+              anime.start(self.riskLevelInput)
+              self.riskLevelInput.focus = True
+              inputCheck = False
+          else:
+              self.varCalc.rlPercent = rlPercent / 100.0 # Divided by 100 to get the percentage in decimal form
+          if inputCheck:
+              self.currentPortfolio.initialStockTotals()
+              self.dismiss()
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{Portfolio.kv}
+\begin{verbatim}
+  #:kivy 2.3.0
+  # File name: Portfolio.kv
+
+  <Portfolio>:
+      stockCards: stockCards
+      stockName: stockName
+      totalValue: totalValue
+      totalReturn: totalReturn
+      totalShares: totalShares
+      dailyVaR: dailyVaR
+      returnButton: returnButton
+      adjDeleteButton: adjDeleteButton
+      rightSide: rightSide
+      BoxLayout:
+          orientation: 'horizontal' 
+          BoxLayout:
+              orientation: 'vertical'
+              size_hint_x: 0.575
+              BoxLayout:
+                  orientation: 'horizontal'
+                  size_hint_y: 0.1
+                  Button:
+                      size_hint_x: 0.1
+                      height: '50dp'
+                      text: '+' # I think users can make the assumption that this button will add a stock
+                      background_normal: ''
+                      background_color: 0.1961, 0.6392, 0.8078, 1.0
+                      on_release: root.openPopup()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 1.3
+                  BoxLayout:
+                      size_hint_x: 0.9
+                      canvas.before:
+                          Color:
+                              rgba: 0, 0, 0.05, 1
+                          Rectangle:
+                              pos: self.pos
+                              size: self.size
+                          Color:
+                              rgba: 0, 0, 0, 1 
+                          Line:
+                              rectangle: (self.x, self.y, self.width, self.height)
+                              width: 1.5
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 1.3
+                      Label:
+                          text: '       OWNED STOCK[b]: HOLDING[/b]' # I have to do this crude method because I can't get the text to align properly otherwise, you will see it done a few more times
+                          color: 1, 1, 1, 1
+                          font_size: '25sp'
+                          halign: 'center'
+                          valign: 'bottom'
+                          padding: '10sp' 
+                          markup: True
+              BlueScroll: # My custom scroll view to make it easier to see the scroll bar
+                  canvas.before:
+                      Color:
+                          rgba: 0.95, 0.95, 1, 1 # background needs to be set to this colour since it matches the stocks that go ontop and looks terrible when there are 0 stocks without this colour being here
+                      Rectangle:
+                          pos: self.pos
+                          size: self.size
+                  canvas.after:
+                      Color:
+                          rgba: 0, 0, 0, 1
+                      Line:
+                          rectangle: self.x, self.y, self.width, self.height
+                          width: 1.3
+                  GridLayout:
+                      id: stockCards
+                      cols: 1
+                      size_hint_y: None
+                      height: self.minimum_height
+          BoxLayout:
+              orientation: 'vertical'
+              size_hint_x: 0.425
+              id: rightSide
+              canvas.before:
+                  Color:
+                      rgba: 0.3, 0.3, 0.3, 1
+                  Rectangle:
+                      pos: self.pos
+                      size: self.size
+                  Color:
+                      rgba: 0, 0, 0, 1 
+                  Line:
+                      rectangle: (self.x, self.y, self.width, self.height)
+                      width: 1.5
+              canvas.after:
+                  Color:
+                      rgba: 0, 0, 0, 1
+                  Line:
+                      rectangle: self.x, self.y, self.width, self.height
+                      width: 1.3
+              BoxLayout:
+                  size_hint_y: 0.8
+                  canvas.before:
+                      Color:
+                          rgba: 0.1, 0.2, 0.3, 1
+                      Rectangle:
+                          pos: self.pos
+                          size: self.size
+                  canvas.after:
+                      Color:
+                          rgba: 0, 0, 0, 1
+                      Line:
+                          rectangle: self.x, self.y, self.width, self.height
+                          width: 1.3
+                  Label:
+                      id: stockName
+                      markup: True
+                      font_size: '30sp'
+              BoxLayout:
+                  size_hint_y: 0.65
+                  padding: [30, 0, 0, 0] # Pushes these all away from the sides
+                  Label:
+                      id: totalValue
+                      markup: True
+                      font_size: '20sp'
+                      halign: 'left'
+                      text_size: self.size
+              BoxLayout:
+                  size_hint_y: 0.8
+                  padding: [30, 0, 0, 0]  
+                  Label:
+                      markup: True
+                      id: totalReturn
+                      font_size: '20sp'
+                      halign: 'left'
+                      text_size: self.size
+              BoxLayout:
+                  size_hint_y: 0.8
+                  padding: [30, 0, 0, 0]  
+                  Label:
+                      id: totalShares
+                      font_size: '20sp'
+                      halign: 'left'
+                      text_size: self.size
+              BoxLayout:
+                  size_hint_y: 0.8
+                  padding: [30, 0, 0, 0]  
+                  Label:
+                      id: dailyVaR
+                      font_size: '20sp'
+                      markup: True
+                      halign: 'left'
+                      text_size: self.size
+              BoxLayout:
+                  size_hint_y: 1
+                  padding: '15sp'
+                  Button:
+                      id: adjDeleteButton
+                      size_hint: 0.2, 0.7
+                      pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                      background_normal: ''
+                      background_color: (0.0, 0.3, 0.6, 1)
+                      on_release: root.adjDeleteHandler()
+                      canvas.before:
+                          Color:
+                              rgba: (0, 0, 0, 1)
+                          Line:
+                              rectangle: (self.x+1, self.y+1, self.width-2, self.height-2)
+                              width: 3
+
+      AnchorLayout: # This managed to get it displayed in the top right, with the size and no background it looks perfect for what I want
+          anchor_x: 'right'
+          anchor_y: 'top'
+          Button:
+              id: returnButton
+              text: 'X' # Same assumption here, that people will realise that a cross in the top corner of an area indicates that its to close/bring them back to the previous section.
+              font_size: '35sp'
+              size_hint: None, None
+              size: '40dp', '40dp'
+              background_color: 0, 0, 0, 0
+              opacity: 0
+              disabled: True
+              on_release: root.initialStockTotals()
+
+
+
+
+
+  <Stocks>:
+      markup: True
+      canvas.before:
+          Color:
+              rgba: 0.95, 0.95, 1, 1
+          Rectangle:
+              pos: self.pos
+              size: self.size
+      canvas.after:
+          Color:
+              rgba: 0, 0, 0, 1
+          Line:
+              rectangle: self.x, self.y, self.width, self.height
+              width: 2
+
+
+
+
+
+  <InputStock>:
+      inputTicker: inputTicker
+      inputShares: inputShares
+      size_hint: 0.5, 0.5
+      title: '                                   Create/Update Holding'
+
+      BoxLayout:
+          orientation: 'vertical'
+          padding: '12dp'
+          spacing: '8dp'
+          Label:
+              markup: True
+              text: 'If you enter a [u][b]Stock[/b][/u] you already own, it will\nupdate your [u][b]No. of Shares[/b][/u], with a new [u][b]Initial Price.[/b][/u]' # Best way I could briefly explain how to use the app this way
+              halign: 'center'
+              valign: 'center'
+          TextInput:
+              id: inputTicker
+              hint_text: 'Stock Ticker'
+              size_hint_y: None
+              height: '30dp'
+              multiline: False
+              focus: True
+              on_text_validate: inputShares.focus = True # Have to use ontext validate, since other focus options were not working at all
+          TextInput:
+              id: inputShares
+              hint_text: 'No. of Shares'
+              size_hint_y: None
+              height: '30dp'
+              multiline: False
+              input_filter: 'int'
+              on_text_validate: root.saveStock() # Second one just validates both inputs, so might as well just used enter for everything
+          Button:
+              text: 'Save'
+              size_hint_y: None
+              height: '40dp'
+              on_release: root.saveStock()
+
+
+
+
+
+  <ConfirmDelete>:
+      size_hint: 0.5, 0.35  # Fairly simple popup
+      title: '                                           Confirm Deletion'
+
+      BoxLayout:
+          orientation: 'vertical'
+          spacing: 10
+          Label:
+              markup: True
+              text: "Are you sure you want to [u][b]delete[/u][/b] this stock?\n\nIt will be [u][b]permanent[/u][/b]."
+              halign: 'center'
+              valign: 'center'
+          BoxLayout:
+              size_hint_y: None
+              height: '50sp'
+              Button:
+                  text: "Yes"
+                  on_release: root.on_confirm()
+              Button:
+                  text: "No"
+                  on_release: root.dismiss()
+
+
+
+
+  <AdjustVaRPopup>:
+      timeHoriInput: timeHoriInput
+      riskLevelInput: riskLevelInput
+      varLabel: varLabel
+      size_hint: 0.5, 0.5
+      title: '                                   Adjust VaR Parameters'
+
+      BoxLayout:
+          orientation: 'vertical'
+          spacing: '10dp'
+          padding: '20dp'
+          Label:
+              id: varLabel
+              markup: True
+              halign: 'center'
+              valign: 'center'
+          TextInput:
+              id: riskLevelInput
+              hint_text: 'Risk Level (%)'
+              hint_text_color: 1, 0.5, 0, 1 # Same colour as the ones used for the explanation text
+              foreground_color: 1, 0.5, 0, 1
+              input_filter: 'int'
+              size_hint_y: None
+              height: '30dp'
+              multiline: False
+              focus: True
+              on_text_validate: timeHoriInput.focus = True # Same logic as other popup
+          TextInput:
+              id: timeHoriInput
+              hint_text: 'Time Horizon (days)'
+              hint_text_color: 0, 170/255, 1, 1
+              foreground_color: 0, 170/255, 1, 1
+              input_filter: 'int'
+              size_hint_y: None
+              height: '30dp'
+              multiline: False
+              on_text_validate: root.submit()
+          Button:
+              text: 'Submit'
+              size_hint_y: None
+              height: '40dp'
+              on_release: root.submit()
+
+  <BlueScroll@ScrollView>:
+      bar_width: 5 # The custom scroll bar I made
+      bar_color:  0, 0, 0.05, 1
+      bar_inactive_color:  0, 0, 0.5, 0.3
+      bar_margin: "3.5dp"
+      canvas.before:
+          Color:
+              rgba: self.bar_color if self.scroll_y else self.bar_inactive_color
+          Rectangle:
+              pos: self.x + self.width - self.bar_width, self.y
+              size: self.bar_width, self.height
+
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{Graphs.py}
+\begin{verbatim}
+  from kivy.uix.screenmanager import Screen
+  import matplotlib.pyplot as plt
+  from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+  import numpy as np
+  from kivy.storage.jsonstore import JsonStore
+  import yfinance as yf
+  import threading
+  from kivy.clock import mainthread, Clock
+  import logging
+  from scipy.stats import binom
+  logging.getLogger('matplotlib').setLevel(logging.INFO)
+
+  # Contains code inspired by: https://stackoverflow.com/a/55184676
+  class Graphs(Screen):
+
+      @property
+      def portfolio(self): # Used for self.portfolio possibly being used in other functions
+          return self.manager.get_screen('Portfolio') if self.manager else None
+      
+      @property
+      def varChecker(self):  # Used for self.varChecker possibly being used in other functions
+          return self.manager.get_screen('VaRChecker') if self.manager else None
+      
+      def checkForStocks(func): # Used to make sure that certain graphs cannot be run if there are no stocks in the portfolio
+          def wrapper(*args, **kwargs):
+              holdings = JsonStore('holdings.json')
+              if len(holdings) == 0:
+                  print("Cannot create graph due to lack of stocks in portfolio.")
+                  return
+              return func(*args, **kwargs)
+          return wrapper
+
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+          self.infoPopup = None 
+          self.currentLine = None
+          self.graph4Running = False # Used to check if the respective threads for each graph is already being ran
+          self.graph5Running = False 
+          self.graph6Running = False 
+          Clock.schedule_once(lambda dt: self.graph1(), 0) # This is used to run the first graph as soon as the portfolio screen is loaded
+
+
+
+      @checkForStocks
+      def graph1(self): # Theoretical Portfolio Value Over Time
+          stocks = self.portfolio.tempDownload
+          store = JsonStore('holdings.json')
+
+          closePrices = stocks['Close'].tail(500)
+      
+          totalValues = []
+          for i in range(len(closePrices)):
+              dailyTotal = 0
+              row = closePrices.iloc[i]
+              for stockKey in store:
+                  stockData = store.get(stockKey)
+                  if len(store) != 1:
+                      currentPrice = row[stockData['ticker']]
+                  else:
+                      currentPrice = row
+                  dailyTotal += currentPrice * float(stockData['sharesOwned'])
+              totalValues.append(dailyTotal)
+
+          # Done with 10 day intervals because it looks sufficient for what this is trying to show
+          x = list(range(500, 0, -10))
+          y = totalValues[::10]
+          y = self.replaceNan(y) # Intuitively replace nan figures so the graph looks complete
+          y = [round(num) for num in y]
+          y[-1] = round(self.portfolio.tempTotalValue) # Sets the final value to be what is displayed on the portfolio screen for consistency
+
+          self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (£)', 'Theoretical Portfolio Value Over Time With Current Shares', '£', 'red')
+
+
+
+      @checkForStocks
+      def graph2(self): # Portfolio Stocks Ranked by VaR
+          stocks = self.portfolio.tempDownload # Doesn't need threading because it doesn't need to re-download anything
+          store = JsonStore('holdings.json')
+          if len(store) == 1: # Pointless to show a ranking of 1 stock
+              print("Cannot create rankings graph due to lack of stocks in portfolio.")
+              return
+
+          # Create a map between stock tickers and names
+          tickerToName = {stock: store.get(stock)['name'].split("(")[0].strip() for stock in stocks.columns.levels[1]}
+
+          VaRs = {}
+          for stock in stocks.columns.levels[1]:  # iterate over tickers
+              VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stocks['Adj Close'][stock]))  # name is the key
+
+          sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value
+          self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking Portfolio Stocks based on their Value at Risk', 'blue')
+
+
+
+      @checkForStocks
+      def graph3(self): # Individual Share Pricing Over Time
+          tempStockInfo = self.portfolio.tempStockInfo
+          if tempStockInfo is None: # Makes sure a stock is selected on the portfolio screen
+              self.graph3Ref.text = "[color=ff0000]Please [u]Select a Stock[/u] on the [b]Portfolio Screen[/b] First![/color]"
+              Clock.schedule_once(lambda dt: setattr(self.graph3Ref, 'text', "[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]"), 3)
+          else:
+              stocks = self.portfolio.tempDownload
+              store = JsonStore('holdings.json')
+
+              if len(store) != 1: # Needs to be called differently if there's only 1 stock being stored
+                  closePrices = stocks['Close'][tempStockInfo['ticker']].tail(500)
+              else:
+                  closePrices = stocks['Close'].tail(500)
+
+              totalValues = []
+              for i in range(len(closePrices)): 
+                  dailyTotal = 0
+                  row = closePrices.iloc[i] 
+                  for stockKey in store:
+                      stockData = store.get(stockKey)
+                      if stockData['ticker'] == tempStockInfo['ticker']:
+                          dailyTotal += row
+                  totalValues.append(dailyTotal)
+
+              # Same as graph 1
+              x = list(range(500, 0, -10))
+              y = totalValues[::10]
+              y = self.replaceNan(y)
+              y = [round(num, 2) for num in y]
+              y[-1] = round(self.portfolio.tempCurrentPrice, 2) 
+
+              self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (£)', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + '\nIndividual Share Pricing Over Time', '£', '#F4743B')
+
+
+
+      @checkForStocks
+      def graph4(self): # Monte Carlo Simulation Convergence Analysis
+          if not self.graph4Running:
+              self.graph4Running = True
+              thread = threading.Thread(target=self.monteCarloSimConvAnalysis)
+              thread.daemon = True
+              thread.start()
+
+      def monteCarloSimConvAnalysis(self): 
+          stocks = self.portfolio.tempDownload
+          store = JsonStore('holdings.json')
+          if len(store) == 1: # Monte Carlo Simulation doesn't work with 1 stock
+              print("Cannot create rankings graph due to lack of stocks in portfolio.")
+              return
+          totalValue = float(self.portfolio.tempTotalValue)
+
+          weightings = np.zeros(len(stocks['Close'].columns))
+          for x, stockKey in enumerate(store):
+              stockData = store.get(stockKey)
+              currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()]
+              currentValue = currentPrice * float(stockData['sharesOwned'])
+              weightings[x] = currentValue / totalValue
+
+          closeDiffs = stocks['Close'].pct_change(fill_method=None).dropna()
+          
+          checkpoints = list(range(500, 25500, 500)) # Iteration checkpoints to check for convergence, 25000 seems to always produce a good visual result
+          varResults = [np.nan] # Helps me set the first value to not be plotted, but to show the right x coordinate on the graph
+
+          for sim in checkpoints:
+              # Generate all simulations at once
+              optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.portfolio.varCalc.timeHori, sim))
+              portfoReturns = np.zeros(sim)
+
+              # Vectorisation + adapted to fit time horizon
+              weightings = weightings.reshape(1, -1)
+              portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
+
+              VaR = np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent) * totalValue
+              varResults.append(round(-VaR))
+          
+          checkpoints.insert(0, 0) # x-axis starts at 0
+          self.graph4Running = False
+          self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (£)', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "£", 'purple')
+
+
+
+      def graph5(self): # FTSE100 Stocks Ranked by VaR
+          if not self.graph5Running:
+              self.graph5Running = True
+              thread = threading.Thread(target=self.ftse100Ranking) # Needs threading since it takes time to download the stock information for 100 stocks
+              thread.daemon = True
+              thread.start()
+      
+      def ftse100Ranking(self):
+          ftse100 = [ticker + ".L" for ticker in self.varChecker.ftse100['Ticker'].tolist()]
+          ftse100Names = self.varChecker.ftse100['Company'].tolist()
+          tickerToName = dict(zip(ftse100, ftse100Names))  # mapping between tickers and names
+      
+          stockData = yf.download(ftse100, period="500d")
+          VaRs = {}
+          for stock in stockData.columns.levels[1]:  # iterate over stock tickers
+              VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stockData['Adj Close'][stock])) # If you use 100, it will just generate a standard percentage
+      
+          sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value
+          self.graph5Running = False
+          self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking FTSE100 Stocks based on their Value at Risk', 'black')
+
+
+
+      @checkForStocks
+      def graph6(self): # Monte Carlo Simulation Backtesting
+          if not self.graph6Running:
+              self.graph6Running = True # Done to check that it doesn't run this same code again when pressed and create multiple instances, it also stops other threads from running at the same time as well
+              thread = threading.Thread(target=self.monteCarloSimBackTest)
+              thread.daemon = True
+              thread.start()
+
+      def monteCarloSimBackTest(self):
+          store = JsonStore('holdings.json')
+          if len(store) == 1: # Monte Carlo Simulation doesn't work with 1 stock
+              print("Cannot create rankings graph due to lack of stocks in portfolio.")
+              return
+          print("Back-Test Started!")
+          stocks = self.portfolio.tempDownload
+          totalValue = float(self.portfolio.tempTotalValue)
+          count = 0
+          adjust = int(len(stocks)/10) # Works the same way as it did for my VaR checker
+          VaRs = []
+          pDifferences = []
+          weightings = np.zeros(len(stocks['Adj Close'].columns))
+          for x, stockKey in enumerate(store):
+              stockData = store.get(stockKey)
+              currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()]
+              currentValue = currentPrice * float(stockData['sharesOwned'])
+              weightings[x] = currentValue / totalValue
+          
+
+          for i in range(1, len(stocks) - adjust - 1): # Changed this to increment differently to generate faster, but it didn't look as good
+              closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()
+              simNum = 10000
+              convThreshold = 0.001
+              previousVar = float('inf')
+              converged = False
+      
+              while not converged and simNum <= 100000:            
+                  portfoReturns = np.zeros(simNum)
+                  optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.portfolio.varCalc.timeHori, simNum))
+      
+                  weightings = weightings.reshape(1, -1)
+                  portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
+      
+                  currentVar = -np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent)
+      
+                  if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:
+                      converged = True
+                  else:
+                      previousVar = currentVar
+                      simNum += 5000
+      
+              VaR = -currentVar*100 # Not multiplied by portfolio to give a percentage (negative because its the possible loss you could have, so comparing that to the actual losses, it would be negative)
+              VaRs.append(VaR)
+
+              # Calculate total value for the day specified (i+adjust)
+              totalValue = 0
+              for stockKeys in store:
+                  stockData = store.get(stockKeys)
+                  currentPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust]
+                  totalValue += (currentPrice * float(stockData['sharesOwned']))
+              
+              # Calculate total value for the next day (i+adjust+1)
+              totalValueNextDay = 0
+              for stockKeys in store:
+                  stockData = store.get(stockKeys)
+                  nextDayPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust+1]
+                  totalValueNextDay += (nextDayPrice * float(stockData['sharesOwned']))
+              
+              # Calculate the percentage difference between the two days
+              percentageDifference = (((totalValueNextDay - totalValue) / totalValue) * 100)*np.sqrt(self.portfolio.varCalc.timeHori)
+              pDifferences.append(percentageDifference)
+      
+              if not np.isnan(percentageDifference) and VaR > percentageDifference:
+                  count += 1
+              
+          # Calculate p-value
+          pValue = binom.cdf(count, len(VaRs), 1-self.portfolio.varCalc.rlPercent)
+          
+          # Print statistical analysis
+          if pValue > self.portfolio.varCalc.rlPercent/100:
+              print("PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")
+          else:
+              print("FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
+          # I know this is not displayed in a graph, but I wanted to still check, and due to the nature of Monte Carlo sim, it does not pass backtesting when the portfolio is too diverse, so even though smaller portfolio's and backtesting for single stock, I don't think its worth showing that it fails backtesting, as it is expected for well diversified ones
+          self.graph6Running = False
+          self.backTestGraph(range(len(VaRs), 0, -1), VaRs, pDifferences, 'Last 450 Days', 'Value at Risk vs Percentage Difference (%)', 'Monte Carlo Simulation Back-Testing Comparing\n 50 Day Rolling Window of VaR to Daily Adjusted Close Percentage Difference')
+
+
+
+
+      @mainthread
+      def createGraph(self, x, y, xlabel, ylabel, title, currentSymbol, colour):
+          self.ids.graphSection.clear_widgets() # Clears the graph section to make way for the new graph
+          self.fig, self.ax = plt.subplots()
+          self.currentLine, = self.ax.plot(x, y, 'o-', color=colour)
+
+          if x[0] > x[-1]: # If the x-axis is in descending order, set the ticks to be in descending order
+              xTicks = np.arange(x[0], -1, -max(x[0] // 5, 20)) 
+              xTicks = np.append(xTicks, 0) 
+          else: # If the x-axis is in ascending order, set the ticks to be in ascending order
+              xTicks = np.linspace(start=min(x), stop=max(x), num=min(len(x), 5))
+
+          self.ax.set_xticks(xTicks)
+          self.ax.set_xticklabels([str(int(tick)) for tick in xTicks])
+
+          # Only invert the x-axis if the first values are in descending order
+          if x[0] > x[-1]:
+              self.ax.invert_xaxis()
+
+          self.ax.set_xlabel(xlabel)
+          self.ax.set_ylabel(ylabel)
+          self.ax.set_title(title)
+          
+          self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->")) # Initialise infoPopup
+          self.infoPopup.set_visible(False)
+
+          canvas = FigureCanvasKivyAgg(self.fig) 
+          canvas.mpl_connect("motion_notify_event", self.mouseHover) # Connects the mouseHover function to the canvas
+
+          self.fig.tight_layout() # Makes sure the graph fits the canvas
+          self.currentSymbol = currentSymbol # Used to display the current symbol in the popup
+          
+          self.ids.graphSection.add_widget(canvas)
+
+      def showPopup(self, x, y):
+          if y.is_integer(): # If the y value is an integer, display it as an integer, otherwise display it as a float
+              text = f"{self.currentSymbol}{int(y):,}"
+          else:
+              text = f"{self.currentSymbol}{y:,.2f}"
+
+          # Checks the relative position of the point within the axes
+          xlim = self.ax.get_xlim()
+          ylim = self.ax.get_ylim()
+          relativeX = (x - xlim[0]) / (xlim[1] - xlim[0])
+          relativeY = (y - ylim[0]) / (ylim[1] - ylim[0])
+      
+          # Have self tested these, they are different to the last way but work perfect for this section
+          if relativeX < 0.5: # Left half
+              xOffset = 10
+          else: # Right half
+              xOffset = -40
+
+          if relativeY < 0.5: # Bottom half
+              yOffset = 20
+          else: # Top half
+              yOffset = -40
+      
+          self.infoPopup.xy = (x, y)
+          self.infoPopup.set_position((xOffset, yOffset))
+          self.infoPopup.set_text(text)
+          self.infoPopup.set_visible(True)
+          self.fig.canvas.draw_idle()
+
+      def hidePopup(self):
+          self.infoPopup.set_visible(False)
+          self.fig.canvas.draw_idle()
+
+      def mouseHover(self, event):
+          if event.inaxes == self.ax: # If the mouse is in the axes
+              cont, ind = self.currentLine.contains(event) # Check if the mouse is on the line
+              if cont: # If so...
+                  pos = ind['ind'][0] # Get the position of the mouse on the line
+                  x, y = self.currentLine.get_data() # and the x and y values
+                  self.showPopup(x[pos], y[pos]) # and show the popup
+              else:
+                  self.hidePopup() # If the mouse is not on the line, hide the popup
+
+
+
+      @mainthread
+      def createRankingGraph(self, tickers, vars, xlabel, ylabel, title, colour): # Needed to use different logic for this
+          self.ids.graphSection.clear_widgets()
+          self.fig, self.ax = plt.subplots()
+          self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-', color=colour)
+      
+          plt.xlabel(xlabel)
+          plt.ylabel(ylabel)
+          plt.title(title)
+          self.ax.set_xticks([])  # Hide x-axis ticks and labels as they are not needed for a ranking
+      
+          self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+          self.infoPopup.set_visible(False)
+      
+          self.tickerHover = tickers  # Save the tickers for the hover function
+      
+          canvas = FigureCanvasKivyAgg(self.fig)
+          canvas.mpl_connect("motion_notify_event", self.rankingOnHover)
+          self.fig.tight_layout()
+          self.ids.graphSection.add_widget(canvas)
+
+      def rankingOnHover(self, event):
+          if event.inaxes == self.ax:
+              cont, ind = self.currentLine.contains(event)
+              if cont:
+                  pos = ind['ind'][0]
+                  tickerName = self.tickerHover[pos]  # Access the corresponding ticker value
+                  self.showRanking(tickerName, event.xdata, event.ydata) # Show the popup with this different data
+              else:
+                  self.hidePopup() # Can still use the previous hidePopup function
+
+      def showRanking(self, tickerName, x, y): 
+          xlim = self.ax.get_xlim()
+          ylim = self.ax.get_ylim()
+          relativeX = (x - xlim[0]) / (xlim[1] - xlim[0])
+          relativeY = (y - ylim[0]) / (ylim[1] - ylim[0])
+      
+          # Have self tested these, they appear to be perfect
+          if relativeX < 0.5: # Left half
+              xOffset = -10
+          else: # Right half
+              xOffset = -95
+
+          if relativeY < 0.5: # Bottom half
+              yOffset = 60
+          else: # Top half
+              yOffset = -30
+      
+          # # Update the position of the annotation text
+          self.infoPopup.xy = (x, y)
+          self.infoPopup.set_position((-x + xOffset, -y + yOffset)) # I think this overly complicates it, but it works
+          self.infoPopup.set_text(f"Stock: {tickerName}")
+          self.infoPopup.set_visible(True)
+          self.fig.canvas.draw_idle()
+
+
+
+      @mainthread 
+      def backTestGraph(self, x, y1, y2, xlabel, ylabel, title): # Needs again different logic, due to no hover and drawing 2 lines
+          self.ids.graphSection.clear_widgets()
+          self.fig, self.ax = plt.subplots()
+          self.ax.plot(x, y1, 'o-', color='blue', label='Value at Risk (%)') # Plot the first line
+          self.ax.plot(x, y2, 'o-', color='red', label='Daily Percentage Difference (%)') # Plot the second line
+
+          xTicks = np.arange(450, -1, -50)
+          self.ax.set_xticks(xTicks)
+          self.ax.set_xticklabels([str(int(tick)) for tick in xTicks])
+
+          if x[0] > x[-1]:
+              self.ax.invert_xaxis()
+
+          self.ax.set_xlabel(xlabel)
+          self.ax.set_ylabel(ylabel)
+          self.ax.set_title(title)
+          self.ax.legend() # Add a legend to the graph
+
+          canvas = FigureCanvasKivyAgg(self.fig)
+          self.fig.tight_layout()        
+          self.ids.graphSection.add_widget(canvas)
+
+
+
+      def replaceNan(self, y): # Used to replace nan values in the y list intuitively
+          for i in range(len(y)):
+              if np.isnan(y[i]):
+                  if i == 0: # If the first value is nan
+                      nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                      nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)
+                      if nextValue is not None and nextNextValue is not None: # If the next value and the value after that are not nan, set the first value to be the average between the two, taken away from the last non-nan value
+                          y[i] = nextValue - (nextNextValue - nextValue)
+                  else: # If the nan is not the first value
+                      prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)
+                      nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)
+                      if prevValue is not None and nextValue is not None: # And the previous and next values are not nan, set the value to be the average of the two
+                          y[i] = (prevValue + nextValue) / 2 
+                      if np.isnan(y[-1]): # If the last value is nan
+                          lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None) 
+                          if lastNoneNan is not None: # If the value before the last nan value is not nan, set the last value to be the average of this value and the last y value, since I have set it to be what is displayed on the portfolio screen
+                              y[-1] = (lastNoneNan + y[-1]) / 2
+          return y
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{Graphs.kv}
+\begin{verbatim}
+  #:kivy 2.3.0
+  # File name: Graphs.kv
+
+  <Graphs>:
+      graph3Ref: graph3Ref
+      BoxLayout:
+          orientation: 'vertical'
+          BoxLayout:
+              id: graphSection
+              orientation: 'vertical'
+              size_hint_y: 0.75
+              canvas.before:
+                  Color:
+                      rgba: 0.2, 0.2, 0.2, 1
+                  Rectangle:
+                      pos: self.pos
+                      size: self.size
+          BlackScroll:
+              do_scroll_x: True
+              do_scroll_y: False
+              size_hint_y: 0.25
+              canvas.after:
+                  Color:
+                      rgba: 0, 0, 0, 1
+                  Line:
+                      rectangle: self.x, self.y, self.width, self.height
+                      width: 1
+              GridLayout:
+                  cols: 10
+                  size_hint_x: None
+                  width: self.minimum_width
+                  Button:
+                      text: '[b][u]Portfolio Over Time[/u][/b]\nBased on Current Shares'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph1Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph1()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+                  Button:
+                      text: '[b][u]Portfolio VaR Ranking[/u][/b]\nNeeds 2+ Stocks'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph2Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph2()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+
+                  Button:
+                      text: '[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph3Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph3()
+                      id: graph3Ref # Needed for verification
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+
+                  Button:
+                      text: '[b][u]Monte Carlo Convergence[/u][/b]\n Load Time: 0.5s'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph4Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph4()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+
+                  Button:
+                      text: '[b][u]FTSE100 VaR Ranking[/u][/b]\n Load Time: 3s'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph5Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph5()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+
+                  Button:
+                      text: '[b][u]Monte Carlo Back-Testing[/u][/b]\n Load Time: 25 - 75s'
+                      markup: True
+                      color: 0, 0, 0, 1
+                      background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph6Blurred.png'
+                      size_hint_x: None
+                      width: 250
+                      halign: 'center'
+                      valign: 'middle'
+                      text_size: self.size
+                      on_press: root.graph6()
+                      canvas.after:
+                          Color:
+                              rgba: 0, 0, 0, 1
+                          Line:
+                              rectangle: self.x, self.y, self.width, self.height
+                              width: 2
+
+  <BlackScroll@ScrollView>:
+      bar_width: 5
+      bar_color:  0, 0, 0.05, 1
+      bar_inactive_color:  0, 0, 0, 0.3
+      bar_margin: "3.5dp"
+      canvas.before:
+          Color:
+              rgba: self.bar_color if self.scroll_y else self.bar_inactive_color
+          Rectangle:
+              pos: self.x + self.width - self.bar_width, self.y
+              size: self.bar_width, self.height
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{VaRChecker.py}
+\begin{verbatim}
+  from kivy.uix.boxlayout import BoxLayout
+  from kivy.uix.label import Label
+  from kivy.uix.textinput import TextInput
+  from kivy.properties import ObjectProperty
+  from kivy.uix.button import Button
+  from kivy.uix.floatlayout import FloatLayout
+  from kivy.uix.togglebutton import ToggleButton
+  from kivy.uix.screenmanager import Screen
+  import numpy as np
+  from scipy.stats import norm, binom
+  import yfinance as yf
+  import pandas as pd
+
+  class VaRChecker(Screen):
+      # Declare ObjectProperty variables for the stock list and user inputs, as well as all other variables
+      stockList = ObjectProperty(None)
+      userInputs = ObjectProperty(None)
+      portfolio = 100000000
+      rlPercent = 5
+      timeHori = 1
+      simMethod = "Historical"
+      currentTicker = ""
+      #Importing the FTSE100 list from Wikipedia
+      ftse100 = pd.read_html('https://en.wikipedia.org/wiki/FTSE_100_Index')[4]
+
+      def __init__(self, **kwargs):
+          # Call the parent class's constructor
+          super(VaRChecker, self).__init__(**kwargs)
+          self.populateList()
+          self.populateInputs()
+
+      def populateList(self):
+          for i in range(len(self.ftse100)):
+              button = Button(text=self.ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")
+              #Set the currentStock to the stock ticker that is clicked, and save it to the variable
+              button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + self.ftse100['Ticker'][i] + ".L"), setattr(self, 'currentTicker', str(self.ftse100['Ticker'][i])))) 
+              self.stockList.add_widget(button)
+
+      def simMethodPressed(self, current):
+          self.simMethod = current.text
+          if current.state == 'normal':
+              current.state = 'down'            
+              self.populateInputs()
+              
+      def backTest(self, stock):
+          #Taken from Single Stock VaR.py
+          count = 0
+          adjust = int(len(stock)/10)
+          for i in range(1, len(stock) - adjust - 1):
+              backTest = stock['Adj Close'].pct_change()[i:i+adjust]
+              if self.simMethod == "Historical":
+                  VaR = np.percentile(backTest, self.rlPercent)*np.sqrt(self.timeHori)*self.portfolio
+              else:
+                  VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(backTest), np.std(backTest)))*np.sqrt(self.timeHori)*-1 #Always returns a positive value with model simulation, so needs to be multiplied by -1
+              nextDay = stock['Adj Close'].pct_change()[i+adjust:i+adjust+1].values[0]*np.sqrt(self.timeHori)*self.portfolio
+              if VaR > nextDay:
+                  count += 1
+          pValue = binom.cdf((len(stock)-adjust)-count,len(stock)-adjust,1-self.rlPercent/100)
+          if pValue > self.rlPercent/100:
+              setattr(self.backTestCheck, 'color', (0, 1, 0, 1)) #Green
+              setattr(self.backTestCheck, 'text', "PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")
+          else:
+              setattr(self.backTestCheck, 'color', (1, 0, 0, 1)) #Red
+              setattr(self.backTestCheck, 'text', "FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")
+
+      def generateVaR(self):
+          #Taken from Single Stock VaR.py
+          if self.currentTicker == "":
+              setattr(self.valAtRisk, 'text', " VaR: Select a stock")
+              return
+          stock = yf.download(self.currentTicker + ".L", period="1000d").tail(500) # I chose to default it to 500 days, also turns out all the FTSE100 stocks use .L so that is included
+          closeDiffs = stock['Adj Close'].pct_change(fill_method=None).dropna() # fill_method=None is used to make sure that the NaN values are not filled in, as this would skew the data
+          if self.simMethod == "Historical":
+              # Assuming that N-days VaR = 1-day VaR * sqrt(N)
+              VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)*self.portfolio*-1*np.sqrt(self.timeHori), 0)))) #Returns a negative value, so needs to be multiplied by -1
+          else:
+              VaR = str('{:,}'.format(int(round((-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori), 0))))
+          
+          setattr(self.valAtRisk, 'text', " VaR: £" + VaR)        
+          self.backTest(stock)
+
+      def createButtons(self):
+          self.userInputs.add_widget(Label(text="Select Method:", size_hint_y=None, height="30sp", font_size="20sp"))
+          radioButtons = BoxLayout(size_hint_y=None, height="35sp", padding=["120sp", 0])
+          
+          #Historical Simulation Button
+          hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width="100sp")
+          hButton.bind(on_press=self.simMethodPressed)
+          if self.simMethod == 'Historical':
+              hButton.state = 'down'
+          else:
+              hButton.state = 'normal'
+          radioButtons.add_widget(hButton)
+          
+          #Model Simulation Button
+          mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width="100sp")
+          mButton.bind(on_press=self.simMethodPressed)
+          if self.simMethod == 'Model':
+              mButton.state = 'down'
+          else:
+              mButton.state = 'normal'
+          radioButtons.add_widget(mButton)
+
+          self.userInputs.add_widget(radioButtons)
+          
+      def validateInput(self, current, varName, maxVal):
+          try:
+              if current.text == "" or int(current.text) < 0:
+                  raise Exception # This will be caught by the except statement below, defaulting any wrong values
+              if int(current.text) > maxVal:
+                  setattr(self, varName, maxVal)
+              else:            
+                  setattr(self, varName, int(current.text))
+          except:
+              if varName == 'portfolio':
+                  setattr(self, varName, 100000000)
+              elif varName == 'rlPercent':
+                  setattr(self, varName, 5)
+              else:
+                  setattr(self, varName, 1)
+          self.populateInputs()
+
+      def populateInputs(self):
+          self.userInputs.clear_widgets() # Clears all the widgets in the layout, or they will duplicate
+          self.userInputs.add_widget(Label(text="\n", size_hint_y=None, height="5sp", font_size="20sp"))
+          # Create a dictionary of variable names and their corresponding displayed texts and max values
+          variables = {
+              'portfolio': ('Enter Portfolio Value (£): ', '1000000000'),
+              'rlPercent': ('Enter Risk Level Percentage (%): ', '50'),
+              'timeHori': ('Enter Time Horizon (No. of Days): ', '31')
+          }
+          for varName, (label, maxVal) in variables.items():
+              self.userInputs.add_widget(Label(text=label, size_hint_y=None, height="30sp", font_size="20sp"))
+              centeredLayout = BoxLayout(size_hint_y=None, height="30sp", padding=["85sp", 0]) # Padding used to center the text input
+              # Needs to set multiline to false or it won't let you use enter to validate         
+              text = TextInput(size_hint_x=None, width="275sp", font_size="15sp", multiline=False)
+              # text.bind(on_focus=self.onFocus) #Was not working, so will maybe try again in the future, in the future it still did not work D:
+              text.bind(on_text_validate=lambda current, varName=varName, maxVal=int(maxVal): self.validateInput(current, varName, maxVal))
+              centeredLayout.add_widget(text)
+              self.userInputs.add_widget(centeredLayout)
+          
+          self.createButtons()
+          
+          if self.portfolio == 100000000 and self.rlPercent == 5 and self.timeHori == 1:
+              self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given (Default)[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
+          else:
+              self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: £{'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))
+
+          # Adding back-testing title
+          floatLayout = FloatLayout()
+          label = Label(text='[u]Back-Testing[/u]', pos_hint={'center_x': 0.9, 'center_y': 0.1}, font_size="14sp", markup=True, color=(0, 0, 0, 1))#Using the pos_hint to make sure its in the right place, which it now always is
+          floatLayout.add_widget(label)
+
+          # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time
+          self.userInputs.add_widget(floatLayout)
+
+          # After going through this in the future, I don't know why I created so much stuff in the python, rather than in the kv file and just referencing it and adapting it as needed. I also needed to use more classes, but I am still happy with its presentation and functionality, so it is good to still keep as a tab within my program.
+\end{verbatim}
+\vspace{0.5cm}
+\subsubsection{VaRChecker.kv}
+\begin{verbatim}
+  #:kivy 2.3.0
+  # File name: VaRChecker.kv
+
+  <VaRChecker>:
+      stockList: stockList
+      userInputs: userInputs
+      currentStock: currentStock
+      valAtRisk: valAtRisk
+      backTestCheck: backTestCheck
+      BoxLayout:
+          orientation: 'horizontal'
+          BoxLayout:
+              orientation: 'vertical'
+              size_hint_x: 0.45
+              Label:
+                  font_size: "25sp"
+                  size_hint_y: 0.113
+                  text: 'Stock List: FTSE100'
+                  canvas.before:
+                      Color:
+                          rgba: 0.2, 0.2, 0.2, 1
+                      Rectangle:
+                          pos: self.pos
+                          size: self.size
+                      Color:
+                          rgba: 0, 0, 0, 1 
+                      Line:
+                          rectangle: (self.x, self.y, self.width, self.height)
+                          width: 1.5
+              BlackScroll: # Lets me use this from another kv file
+                  GridLayout:
+                      id: stockList
+                      cols: 1
+                      size_hint_y: None
+                      size_hint_x: 1
+                      height: self.minimum_height
+          BoxLayout:
+              orientation: 'vertical'
+              size_hint_x: 0.55
+              Label:
+                  id: currentStock
+                  size_hint: 1, 0.1
+                  font_size: "30sp"
+                  text: 'No Selected Stock'
+                  color: 0, 0, 0, 1
+                  canvas.before:
+                      Color:
+                          rgba: 0.9, 0.9, 0.9, 1
+                      Rectangle:
+                          pos: self.pos
+                          size: self.size
+                      Color:
+                          rgba: 0, 0, 0, 1 
+                      Line:
+                          rectangle: (self.x, self.y, self.width, self.height)
+                          width: 1.5
+              GridLayout:
+                  id: userInputs
+                  cols: 1
+                  size_hint_y: None
+                  spacing: 5
+                  size_hint : 1, 0.85
+                  canvas.before:
+                      Color:
+                          rgba: 0.5, 0.5, 0.5, 1
+                      Rectangle:
+                          pos: self.pos
+                          size: self.size
+                      Color:
+                          rgba: 0, 0, 0, 1 
+                      Line:
+                          rectangle: (self.x, self.y, self.width, self.height)
+                          width: 1.5
+              BoxLayout:
+                  orientation: 'horizontal'
+                  size_hint_y: 0.05
+                  Button:
+                      size_hint_x: 0.3
+                      text: 'Generate'
+                      font_size: "25sp"
+                      on_press: root.generateVaR()        
+                  Label:
+                      id: valAtRisk
+                      size_hint_x: 0.525
+                      text: ' VaR: '
+                      font_size: "25sp"
+                      halign: 'left'
+                      valign: 'middle'
+                      text_size: self.size
+                  Label:
+                      id: backTestCheck
+                      size_hint_x: 0.175
+                      text: ''
+                      font_size: "10sp"
+                      halign: 'left'
+                      valign: 'middle'
+                      text_size: self.size
+
+\end{verbatim}
 
 \end{document}
