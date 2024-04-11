@@ -57,7 +57,7 @@ I have read and understood the Universities regulations on plagiarism and I here
   \item All other programs included within my PROJECT Git repository are simple python programs that can just be ran normally, these mainly being found within the ``Command Line VaR Programs'' folder. The GUI program has been compiled into a .exe file within the main directory, called “Initial Design Test.exe”, it will open up a terminal when ran but please ignore it, it should work perfectly otherwise. The code for it is within the ``Kivy'' folder, that has other kivy tests inside it as well. It is all in the branch ``Master'', as I was having issues with my ``Main'' branch.
   \item ADD A SECTION HERE ON HOW TO RUN THE SOFTWARE, ALSO EDIT AND CHANGE THE ABOVE ETC.
 
-  % \item Signature: \includegraphics[scale=0.1]{Signature.png}
+
 \end{itemize}
 
 \newpage
@@ -163,7 +163,7 @@ My aims and goals for this project are as follows:
     \item \textbf{Industry Standard Tool Development:} Creating a software application that not only performs standard VaR calculations but also offers other stock-oriented features, such as advanced data visualisation. The goal is to make the tool align with industry standards, ensuring it is suitable for professional financial risk management and has been developed whilst adhering to to industry principles in regard to software engineering.
 \end{enumerate}
 
-The ambition of this thesis is to present a thorough understanding of VaR, culminating in the development of a robust, adaptable, and industry-relevant tool for financial risk assessment. It aims to be acceptable as an industry standard tool, 
+The ambition of this report is to present a thorough understanding of VaR, culminating in the development of a robust, adaptable, and industry-relevant tool for financial risk assessment. It aims to be acceptable as an industry standard tool. 
   
 \subsection{Milestone Plan}
 Due to unfortunate circumstances, I had rough delays to the start of this Project as well as inconsistent health concerns, but that should not effect my overall final deliverable. In the first term, I want to research and create a working program to compute Value at Risk for small portfolios, that has a serviceable GUI that can be expanded on later. I will also make sure to have amply researched about back-testing and how to incorporate it into my program in some capacity. For the second term, I will research and implement applying Value at Risk for a portfolio of derivatives, as well as looking into using the Monte Carlo simulation and allowing for the computation of all this with as many stocks as necessary. I will finalise the GUI and plan to look into completing some of the extensions provided for the project, this will depend on the overall developmental scope of the project at the time, but these are the options I would be willing to explore:
@@ -194,8 +194,6 @@ The project's milestones have been structured to ensure a systematic and efficie
   The entire project is structured over two academic terms, allowing ample time for each phase while ensuring a steady progression towards the project's completion. This timescale is designed to balance the initial development and subsequent refinement and testing phases effectively, ensuring that each aspect of the software is given due attention.\\\vspace{0.3cm}
 
   Concurrent with the development, ongoing documentation is a critical aspect of this project. Documenting the process as it unfolds serves multiple purposes: it ensures a clear record of the development process and aids in identifying and resolving issues more efficiently. This approach to documentation not only enhances the quality and maintainability of the software but also ensures that the project's progress is well-documented and aligns with the overall objectives and milestones.
-% \subsubsection{Timeline}
-
 \vspace{-2\baselineskip}
 \begin{table}[H]
   \centering
@@ -274,7 +272,6 @@ The project's milestones have been structured to ensure a systematic and efficie
   
       \begin{itemize}
           \item Start implementing the Monte Carlo simulation method and continue derivative implementation
-          \item Start researching Eigen \& Cholesky decomposition to allow for however many stocks are needed within a portfolio
       \end{itemize}
     } \vskip-19pt\hspace*{\dimexpr\linewidth-0.721\linewidth}\rule{0.7\linewidth}{0.4pt} 
     \ytl{Week 5--7}{
@@ -371,12 +368,8 @@ The Value at Risk (VaR) calculation in the Variance-Covariance method is execute
 
 Thus, the equation calculates the VaR as the maximum expected loss over a certain period, given normal market conditions and a specified confidence level. The Variance-Covariance method is a simple yet effective approach to VaR calculation, but it does have its limitations, such as the fact that it assumes that the returns are normally distributed, which is not always the case.\\\vspace{0.3cm}
 
-
-% \\\vspace{0.3cm}
-
-
 \subsection{Coding VaR Methods}
-To validate that I could apply the knowledge I had gained from my research, I decided to code the two methods of VaR calculation that I had researched, this being the historical simulation and model building methods. I have decided to use Python (3.11.1) as my coding language, as it is a language that I am familiar with and has a rich ecosystem of libraries that I can use to help me with the project. I also decided to use command line to display the results, as it utilises pythons inbuilt \(\text{print()}\) command to easily display variables, allowing for a quick and easy way to display the results of the VaR calculations, as well as any tests run as well. %I have also decided to use yahoo finance as my data source, as it is a free and easy to use API that allows for the collection of historical stock data, which is exactly what I need for this project.
+To validate that I could apply the knowledge I had gained from my research, I decided to code the two methods of VaR calculation that I had researched, this being the historical simulation and model building methods. I have decided to use Python (3.11.1) as my coding language, as it is a language that I am familiar with and has a rich ecosystem of libraries that I can use to help me with the project. I also decided to use command line to display the results, as it utilises pythons inbuilt \(\text{print()}\) command to easily display variables, allowing for a quick and easy way to display the results of the VaR calculations, as well as any tests run as well.
 
 \subsubsection{Command Line --- Historical Simulation}
 I decided to get the stock data I wanted to use for this directly from \href{https://finance.yahoo.com/}{Yahoo Finance's} online website, since it would allow me to specify the days I wanted to use, as well as the stock I wanted to use. I decided to use Nike (NKE) as my stock, as it is a company that I am familiar with and I know has been around for a long time, so it would have a lot of historical data to use. I decided to use the last 500 days of data, as it would allow for a good amount of historical stock data coverage, but not too much that it would take a long time to run.\\\vspace{0.3cm}
@@ -390,7 +383,7 @@ To start, I imported the libraries I would need, this being \texttt{numpy} and \
           closes = np.append(closes, float(row[5]))
   \end{verbatim}
 
-I then created an empty array called \texttt{diffs}, which would be used to store the percentage differences of the closing prices of the stock, followed by a \texttt{for} loop to iterate through each element of the \texttt{closes} array, calculating said percentage difference between the current element and the previous element, then adding it to the \texttt{diffs} array. Finally, I used the \texttt{np.percentile()} function to calculate the 5th percentile of the \texttt{diffs} array, which would be the VaR for the portfolio (this meaning I didn't need to manually order it to find the 25th worst case result result, I can just use this useful function). I multiplied this by the portfolio value, which in this case was 100,000,000, to get the VaR for the portfolio and then multiplied this by -1, as VaR is always represented as a positive value, to get the final VaR value.\\\vspace{0.3cm}
+I then created an empty array called \texttt{diffs}, which would be used to store the percentage differences of the closing prices of the stock, followed by a \texttt{for} loop to iterate through each element of the \texttt{closes} array, calculating said percentage difference between the current element and the previous element, then adding it to the \texttt{diffs} array. Finally, I used the \texttt{np.percentile()} function to calculate the 5th percentile of the \texttt{diffs} array, which would be the VaR for the portfolio (this meaning I didn't need to manually order it to find the 25th worst case result, I can just use this useful function). I multiplied this by the portfolio value, which in this case was 100,000,000, to get the VaR for the portfolio and then multiplied this by -1, as VaR is always represented as a positive value, to get the final VaR value.\\\vspace{0.3cm}
 
   \begin{verbatim}
     diffs = np.array([])
@@ -512,7 +505,7 @@ else:
     "% statistical significance level (p-value)")
 \end{verbatim}
 
-By utilizing p-values, we can assign a level of confidence to our back-testing results, supporting the validation process of our VaR model. It enables us to make informed decisions about the model's reliability and whether it can be trusted for making future risk assessments. It help provide a quantitative method to validate the accuracy of VaR models, ensuring that risk managers and financial analysts can rely on the model's predictions to make critical decisions. In the future, along a set of portfolio's with multiple stocks within, I could perform multiple back test on multiple stocks using both VaR, and form a statistical conclusion on how many time each model fails the p-value back-testing, thus seeing which model is more reliable and should possibly be used in further graphical builds, although I have not touched on Monet Carlo simulation yet, which could be far more accurate then either of these two methods, so I will have to see how my research into it goes.[\ref{ref11}]
+By utilizing p-values, we can assign a level of confidence to our back-testing results, supporting the validation process of our VaR model. It enables us to make informed decisions about the model's reliability and whether it can be trusted for making future risk assessments. It help provide a quantitative method to validate the accuracy of VaR models, ensuring that risk managers and financial analysts can rely on the model's predictions to make critical decisions. In the future, along a set of portfolio's with multiple stocks within, I could perform multiple back test on multiple stocks using both VaR, and form a statistical conclusion on how many time each model fails the p-value back-testing, thus seeing which model is more reliable and should possibly be used in further graphical builds, although I have not touched on Monte Carlo simulation yet, which could be far more accurate then either of these two methods, so I will have to see how my research into it goes.[\ref{ref11}]
 
 \begin{figure}
   \centering
@@ -565,7 +558,7 @@ Since the code for this is just a large and robust amount of verification and in
   \caption{Console output of the Single Stock VaR.py program.}\label{fig:Single Stock VaR}
 \end{figure}
 
- I have neglected to mention how the Time Horizon in handled within this program. The best way to show how it is handled would be to quote from reference [\ref{ref6}] --- \textit{Options, Futures, and Other Derivatives.} by John C. Hull, which states:
+Additionally, I wanted to mention how Time Horizon in handled within this program. The best way to show how it is handled would be to quote from reference [\ref{ref6}] --- \textit{Options, Futures, and Other Derivatives.} by John C. Hull, which states:
 
  \begin{quote}
   VaR has two parameters: the time horizon \( N \), measured in days, and the confidence level \( X \). In practice, analysts almost invariably set \( N = 1 \) in the first instance. This is because there is not enough data to estimate directly the behavior of market variables over periods of time longer than 1 day. The usual assumption is: 
@@ -584,14 +577,13 @@ Since the code for this is just a large and robust amount of verification and in
 
   Since we are dealing with the other cases frequently throughout the use of the VaR Models used within the programs, I utilise the formula \ref{eq:Time Horizon} above to accommodate for the VaR value over a given time period, by multiplying the VaR by the square root of the given time horizon, which is why the user is asked to input the time horizon in days, and not in years or months, this providing sufficient estimations so far.
 
-% \subsubsection{Multiple Stocks}
 \newpage
 \section{Chapter 3 --- Graphical User Interface}
 
 \subsection{What is Kivy?}
-Kivy \href[page=1]{https://kivy.org/#home}{(https://kivy.org/)}is an open-source Python library for developing multitouch application software with a natural user interface (NUI). It is highly versatile and can run on various operating systems, including Windows, macOS, Linux, Android, and iOS\@. This cross-platform compatibility is due to Kivy's use of OpenGL ES 2, allowing it to render consistent graphics across all supported platforms.[\ref{ref9}] Kivy is also free to use, even for commercial purposes, as it is distributed under the MIT license.\\\vspace{0.3cm}
+Kivy \href[page=1]{https://kivy.org/#home}{(https://kivy.org/)} is an open-source Python library for developing multitouch application software with natural user interface (NUI) integration. It is fantastically versatile and can run on various operating systems, including Windows, macOS, Linux, Android, and iOS\@. This cross-platform compatibility is due to Kivy's use dynamic use of OpenGL ES 2, allowing it to render consistent graphics across all supported platforms.[\ref{ref9}] Kivy is also free to use, even for commercial purposes, as it is distributed under the MIT license.\\\vspace{0.3cm}
 
-Kivy's compatibility with multiple operating systems makes it an excellent choice for financial software development. The ability to write code once and deploy it on various platforms without modification is particularly advantageous in a financial context, where users may access software from different devices.
+Because of this, Kivy's compatibility with multiple operating systems makes it an excellent choice for financial software development. The ability to write code once and deploy it on various platforms without modification is particularly advantageous in a financial context, where users may access software from different devices.
 
 \begin{itemize}
     \item \textbf{Cross-Platform:} Kivy apps can run on desktop and mobile devices, enhancing accessibility for users who need to monitor financial markets or run VaR calculations on the go.
@@ -641,14 +633,14 @@ Since the book taught me to separate the GUI into two files, I have done so for 
 The Python script `Initial Design Test.py' serves as the backbone of the application. Utilizing Kivy's standard libraries, the script defines my ApplicationView class, which inherits from Kivy's BoxLayout to establish the fundamental structure of the GUI:
 
 \begin{verbatim}
-class ApplicationView(BoxLayout):
-    stockList = ObjectProperty(None)
-    userInputs = ObjectProperty(None)
-    ...
-    def populateList(self):
-        ...
-    def populateInputs(self):
-        ...
+  class ApplicationView(BoxLayout):
+      stockList = ObjectProperty(None)
+      userInputs = ObjectProperty(None)
+      ...
+      def populateList(self):
+          ...
+      def populateInputs(self):
+          ...
 \end{verbatim}
 
 The `ApplicationView' class is integral to the GUI, as it initializes the user interface and binds the graphical components to the backend logic. The ObjectProperty instances `stockList' and `userInputs' are object placeholders for dynamic python elements within the GUI.\@ The methods `populateList' and `populateInputs' are responsible for filling these placeholders with actual content — in this case, labels representing stock data and text input fields for user parameters, respectively.\\\vspace{0.3cm}
@@ -656,13 +648,13 @@ The `ApplicationView' class is integral to the GUI, as it initializes the user i
 The layout and styling of the GUI are defined in the Kivy language file `IDT.kv', which allows for a clear separation of the interface design from the logic of the application:
 
 \begin{verbatim}
-<ApplicationView>:
-    orientation: 'horizontal'
-    BoxLayout:
-        orientation: 'vertical'
-        ...
-        ScrollView:
-            ...
+  <ApplicationView>:
+      orientation: 'horizontal'
+      BoxLayout:
+          orientation: 'vertical'
+          ...
+          ScrollView:
+              ...
 \end{verbatim}
 
 This .kv file outlines two main sections in a horizontal arrangement — a searchable stock list and a detailed input area for configuring VaR parameters. The use of ScrollView elements ensures that the content is accessible even when it exceeds the screen space. This design decision was made to enhance the application's scalability and to provide a seamless user experience.\\\vspace{0.3cm}
@@ -670,23 +662,23 @@ This .kv file outlines two main sections in a horizontal arrangement — a searc
 The `populateList' and `populateInputs' functions demonstrate the dynamic nature of the interface. They are called upon initialization to populate the GUI with interactive elements:
 
 \begin{verbatim}
-def populateList(self):
-    for i in range(100):
-        self.stockList.add_widget(Label(...))
-        
-def populateInputs(self):
-    for i in range(20):
-        self.userInputs.add_widget(Label(...))
-        self.userInputs.add_widget(TextInput(...))
+  def populateList(self):
+      for i in range(100):
+          self.stockList.add_widget(Label(...))
+          
+  def populateInputs(self):
+      for i in range(20):
+          self.userInputs.add_widget(Label(...))
+          self.userInputs.add_widget(TextInput(...))
 \end{verbatim}
 
-These functions are responsible for creating the labels and text input fields that are displayed in the GUI.\@ The labels are populated will hopefully be populated stock data, and the text input fields will be used to configure VaR parameters.  This approach allows for the creation of a scalable interface that can be easily adapted to accommodate additional stocks and parameters in the future, once they are implemented.\\\vspace{0.3cm}
+These functions are responsible for creating the labels, along with the text input fields that are displayed in the GUI.\@ These labels are populated with stock data, and the text input fields will be used to configure VaR parameters. This approach allows for the creation of a scalable interface that can be easily adapted to accommodate additional stocks and parameters in the future, once they are implemented.\\\vspace{0.3cm}
 
 Upon executing the `Initial Design Test.py' script, the Kivy application builds the GUI based on the defined classes and .kv file, initiated by the following code:
 
 \begin{verbatim}
-if __name__ == '__main__':
-    IDTApp().run()
+  if __name__ == '__main__':
+      IDTApp().run()
 \end{verbatim}
 
 \begin{figure}[h!]
@@ -698,111 +690,112 @@ if __name__ == '__main__':
 
 \newpage
 
-\subsubsection{Final Iteration}
-
 \subsection{Completed Initial Design}
 For my final iteration of my first design, I took all of the elements that were explored within the Combining Implementations chapter, and implemented them into the GUI, as well as adapting some of the old features so they could work in the boundary of what I was able to achieve.
 
 
 \subsubsection{Enhanced Application Structure}
-The `ApplicationView` class has been expanded to include new properties and functionalities that support a richer user experience and more sophisticated data analysis capabilities:
+The \texttt{ApplicationView} class was expanded expanded to include more properties and functionalities that can be used throughout the program to enhance its functional data analysis capabilities:
 
 \begin{verbatim}
-class ApplicationView(BoxLayout):
-    portfolio = 100000000
-    rlPercent = 5
-    timeHori = 1
-    simMethod = "Historical"
-    currentTicker = ""
-    ...
+  class ApplicationView(BoxLayout):
+      portfolio = 100000000
+      rlPercent = 5
+      timeHori = 1
+      simMethod = "Historical"
+      currentTicker = ""
+      ...
 \end{verbatim}
 
-These new properties include a default portfolio value, risk level percentage, time horizon for analysis, simulation method preference, and the currently selected stock ticker. This setup allows for a dynamic and customizable analysis based on user inputs.
+\vspace{0.3cm}
+Above I initialise the portfolio value, risk level percentage, time horizon, simulation method, and current stock ticker as class attributes, providing default values for these parameters. This allows for easy access and modification of these values throughout the application, ensuring consistency and flexibility as I adapt them to meet the needs of whatever section they are needed within.\\\vspace{0.3cm}
 
 \subsubsection{Dynamic Stock List Generation}
-The method `populateList` dynamically generates a list of stocks from the FTSE 100 index, allowing users to select a company for analysis:
+The method \texttt{populateList} dynamically generates a list of stocks from the FTSE 100 index, allowing users to select a company for analysis:
 
 \begin{verbatim}
-def populateList(self):
-    for i in range(len(ftse100)):
-        button = Button(text=ftse100['Company'][i], ...)
-        button.bind(on_release=lambda btn, i=i: ...)
-        self.stockList.add_widget(button)
+  def populateList(self):
+      for i in range(len(ftse100)):
+          button = Button(text=ftse100['Company'][i], ...)
+          button.bind(on_release=lambda btn, i=i: ...)
+          self.stockList.add_widget(button)
 \end{verbatim}
 
-This code snippet showcases the application's ability to fetch and display a list of companies from a live data source (Wikipedia), with each company represented as a button within the user interface.
+\vspace{0.3cm}
+This function iterates over the FTSE 100 stock list, originally stored within my application by parsing the FTSE100 wikipedia link in through pandas, and taking the results from the 4th index, a table containing the ticker information for all stocks. The code will then create a button for each company that, when clicked, updates the current stock ticker and displays it in the GUI. The lambda function is used to pass the index of the selected stock to the button's event handler, ensuring that the correct stock is selected when the button is clicked.\\\vspace{0.3cm}
 
 \subsubsection{Value at Risk (VaR) Calculation}
-The `generateVaR` method calculates the Value at Risk for the selected stock, using either historical data or a model simulation approach:
+The \texttt{generateVaR} method calculates the Value at Risk for the selected stock, using either historical data or a model simulation approach, both of which have been described within previous sections:
 
 \begin{verbatim}
-def generateVaR(self):
-    ...
-    stock = yf.download(self.currentTicker, startDate, endDate).tail(500)
-    ...
-    if self.simMethod == "Historical":
-        VaR = np.percentile(closeDiffs, self.rlPercent)...
-    else:
-        VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, ...)...
-    ...
-    setattr(self.valAtRisk, 'text', " VaR: £" + VaR)
+  def generateVaR(self):
+      ...
+      stock = yf.download(self.currentTicker, startDate, endDate).tail(500)
+      ...
+      if self.simMethod == "Historical":
+          VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)
+                                     *self.portfolio*-1*np.sqrt(self.timeHori), 0))))
+      else:
+          VaR = str('{:,}'.format(int(round((-self.portfolio*norm.ppf(self.rlPercent/100, 
+                  np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori), 0))))
+      ...
+      setattr(self.valAtRisk, 'text', " VaR: £" + VaR)
 \end{verbatim}
 
-This function demonstrates complex financial analysis by downloading stock data using `yfinance`, calculating percentage changes in the stock's closing price, and determining the VaR based on the user's selected risk assessment method.
-
-\subsubsection{Back-testing Functionality}
-The `backTest` method evaluates the performance of the VaR calculation against historical data to assess its accuracy:
-
-\begin{verbatim}
-def backTest(self, stock):
-    ...
-    for i in range(1, len(stock) - adjust - 1):
-        ...
-        if VaR > nextDay:
-            count += 1
-    ...
-    if pValue > self.rlPercent/100:
-        ...
-    else:
-        ...
-\end{verbatim}
-
-This section of the code uses historical stock price data to perform a back-test, comparing calculated VaR values against actual market movements to generate a statistical p-value representing the model's reliability.
+\vspace{0.3cm}
+This function retrieves historical stock price data for the selected stock(start and end date around 1000 days apart, \texttt{.tail} only retrieving the last 500 non-nan days), calculates the VaR using the chosen method above that match their command line implementations, and updates the GUI with the calculated VaR value. The VaR value is displayed in the \texttt{valAtRisk} label, providing users with immediate feedback on the risk level (as soon as the data for the simulation is downloaded from yfinance) associated with their hypothetical investment.\\\vspace{0.3cm}
 
 \subsubsection{User Input Handling and Validation}
 The application includes mechanisms to handle and validate user inputs, ensuring that the analysis is based on accurate and realistic parameters:
 
 \begin{verbatim}
-def validateInput(self, current, varName, maxVal):
-    ...
-    if varName == 'portfolio':
-        ...
-    elif varName == 'rlPercent':
-        ...
-    else:
-        ...
-    self.populateInputs()
+  def validateInput(self, current, varName, maxVal):
+      try:
+          if current.text == "" or int(current.text) < 0:
+              raise Exception
+          if int(current.text) > maxVal:
+              setattr(self, varName, maxVal)
+          else:            
+              setattr(self, varName, int(current.text))
+      except:
+          if varName == 'portfolio':
+              setattr(self, varName, 100000000)
+          elif varName == 'rlPercent':
+              setattr(self, varName, 5)
+          else:
+              setattr(self, varName, 1)
+      self.populateInputs()
 \end{verbatim}
 
-This function validates user inputs for the portfolio value, risk level percentage, and time horizon, applying constraints and default values as necessary. It showcases the application's robust error handling and user feedback mechanisms.
+\vspace{0.3cm}
+The \texttt{validateInput} function takes in the current text input field, the variable name, and the maximum value allowed for that parameter. It validates the input by checking if the text field is empty or contains a negative value, also accounting for if the input exceeds the maximum value. If the input is invalid, the function sets the parameter to a default value, and then repopulates the input fields to reflect the updated values. This ensures that no invalid data is used in the VaR calculation, maintaining the integrity of the analysis.\\\vspace{0.3cm}
 
-\subsubsection{Kivy Layout and Styling}
-The Kivy language file (.kv) defines the layout and appearance of the application, separating the design from the Python logic:
+\subsubsection{Radio Buttons}
+The application includes radio buttons for selecting the simulation method, allowing users to switch between historical and model-based approaches:
 
 \begin{verbatim}
-<ApplicationView>:
-    orientation: 'horizontal'
-    ...
-    ScrollView:
-        ...
-    BoxLayout:
-        ...
+  hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width="100sp")
+  hButton.bind(on_press=self.simMethodPressed)
+  if self.simMethod == 'Historical':
+      hButton.state = 'down'
+  else:
+      hButton.state = 'normal'
+  radioButtons.add_widget(hButton)
+  
+  mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width="100sp")
+  mButton.bind(on_press=self.simMethodPressed)
+  if self.simMethod == 'Model':
+      mButton.state = 'down'
+  else:
+      mButton.state = 'normal'
+  radioButtons.add_widget(mButton)
 \end{verbatim}
 
-This .kv file segment outlines the application's main layout, demonstrating the use of ScrollView for the stock list and BoxLayout for organizing interface elements. This separation of concerns facilitates easier maintenance and updates to the UI without altering the backend logic.
+\vspace{0.3cm}
+The radio buttons are created using Kivy's ToggleButton widget, allowing users to select the simulation method by toggling between the historical and model-based options. The buttons are bound to the \texttt{simMethodPressed} function, which updates the simulation method based on the user's selection. The state of the buttons is set based on the current simulation method, ensuring that the correct button is highlighted when the application is launched, and ensuring that only one button will displayed that they are selected at any given time.\\\vspace{0.3cm}
 
-\textbf{Conclusion:}
-The final iteration of the application incorporates advanced data processing, user interaction, and financial analysis features. Through detailed explanations of key code sections, we have illustrated how the application leverages Python's capabilities and Kivy's framework to provide a rich user experience and robust financial analysis tools. Further elaboration may be required to fully cover all aspects of the code's functionality and design decisions.
+\subsection{Initial Deliverable With Pictures}
+The final iteration of the initial design successfully integrates the core functionalities of the VaR calculation tool into a user-friendly interface. The application allows users to select an available stock, configure VaR parameters, and calculate the VaR using either historical data or a model-based approach. The dynamic stock list generation, user input handling, and radio buttons enhance the application's usability and flexibility, providing any users with a sufficient tool for risk analysis. The accompanying \texttt{.kv} file provides the structural backbone behind the visual appearance, but it is less complex than the \texttt{.py} file, more on the visual alteration of kivy can be found in later section. For what it was created to accomplish, I believe this final initial design is aesthetically pleasing, computationally sound and accomplishes exactly what is required of it in a robust and efficient manner.\\\vspace{0.3cm}
 
 \begin{figure}[h!]
   \centering
@@ -1238,8 +1231,8 @@ Yahoo finance has a fantastic website system for displaying their stocks, where 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/HTML Element.png}
-  \caption{Ticker as Stock Names}
-  \label{fig:Ticker Names}
+  \caption{The HTML Element for the Company Name}
+  \label{fig:HTML Element}
 \end{figure}
 
 \vspace{0.3cm}
@@ -1277,7 +1270,7 @@ The new resultant holding information would look like this - \texttt{\{"ADS.DE":
 \vspace{0.3cm}
 Another thing to note within the figure \ref{fig:Stock and Ticker Names} is the addition of a back button, which can be seen in the top right. I assumed with the \texttt{+} symbol for adding a stock and this \texttt{X} button, that the user would intuitively understand what each were trying to represent, since it adheres to the genreal design principles found within the creation of graphical interface. (IDK ADD A REFERENCE HERE TO UCD MAYBE). On the Total Portfolio display, the back button can still be seen in the same place, but with its opacity and ability to be pressed set to 0. When you run the \texttt{specificStockTotals} method, it would set the opacity to 1 and the ability to be pressed to 1, allowing for the user to return to the total portfolio view. And the code it runs when pressed is simply just \texttt{initialStockTotals()}, redrawing back over it and setting itself to invisible \& untouchable again.\\\vspace{0.3cm}
 
-\subsubsection{Improving Monte Carlo Simulation}
+\subsubsection{Improving Monte Carlo Simulation}\label{improvingmcs}
 Every time I would switch between my two Portfolio views, it would have to recalculate the VaR, thus running more Monte Carlo Simulations, and slightly lagging the app consistently. Whilst this method was efficient, I wanted to adapt is so that it didn't have to run through all the simulations extensively every time (since the more simulations produced more accurate results that I wanted to have displayed), resulting in me considering the use of a convergence point/threshold. With this, my method would continuously perform simulation steps, incrementing and producing a new VaR result every time, but performing many less simulations to begin with. And as soon as one of these simulations is within the same threshold (1\%) as the last one, I could assume that this was a reasonably accurate estimation of the VaR, returning the latest value for it.\\\vspace{0.3cm}
 
 \begin{verbatim}
@@ -1419,7 +1412,6 @@ I am inherently not the best at creating visually appealing software, I struggle
   \label{fig:Final Confirm Delete}
 \end{figure}
 
-
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (6).png}
@@ -1430,34 +1422,62 @@ I am inherently not the best at creating visually appealing software, I struggle
 \section{Chapter 5 --- Graphical Visualisation}
 
 \subsection{Convergence Analysis}
-After finishing my Portfolio screen, I realised that the term "Trends" for my final screen was not sufficient for what I wanted it to be. Thus, it was changed to "Graphs", particularly influenced by a brief detour I took within my recent development cycle, when I created a graphical representation of my Monte Carlo Simulation.
+After finishing my Portfolio screen, I realised that the term "Trends" for my final screen was not sufficient for what I wanted it to be. Thus, it was changed to "Graphs", particularly influenced by a brief detour I took within my recent development cycle, when I created a graphical representation of my Monte Carlo Simulation. I was trying to understand the convergence method I eventually used, since it would help me hone in on a more accurate result in faster time, improving my codes efficiency, but I didn't entirely understand what I was looking for. To help me visualise what I needed, I decided to employ the use of a library called MatPlotLib (\url{https://matplotlib.org/}), a plotting library for the Python programming language. When defined and called, it would create a new window with a graph of the data you had inputted, a feature I have used in the past for other coding projects, so I knew how useful it can be for displaying these forms of information.\\\vspace{0.3cm}
+
+So whilst I was initially experimenting with the coding design found in section \ref{label:improvingmcs}, I used the codes results to store the VaR values into a list, and plotted these results on a graph, with the x-axis being the number of simulations (checkpoints) done for each VaR value, which was subsequently displayed on the y-axis. This would allow me to see if I was right to attempt this method of finding an incremental way to ensure that the VaR was converging, and if it was, how many simulations it would take to reach this point.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  import matplotlib.pyplot as plt
+  plt.plot(checkpoints, varResults, marker='o-')
+  plt.xlabel('Number of Simulations')
+  plt.ylabel('Value at Risk (VaR)')
+  plt.title('Convergence Analysis of Monte Carlo Simulation')
+  plt.show()
+\end{verbatim}
+
+\vspace{0.3cm}
+The methods used for the library are quite self-explanatory, with the \texttt{plt.plot()} method plotting the data, the \texttt{plt.xlabel()} and \texttt{plt.ylabel()} methods setting the labels for the x and y axis, the \texttt{plt.title()} method setting the title of the graph, and with \texttt{plt.show()}, the graph is displayed. When the code is ran, a MatPlotLib pop-up window would appear, giving me the ability to visually perceive the convergence and perform my own analysis of it, resulting in me implementing a slightly altered version of this convergence method for my portfolio, but giving me the idea to have this be displayed within my Graphs screen, since its so useful in showing how the Monte Carlo Simulation works. I would go on to create many graphs within this screen, one of such being this one. Within the rest of this section, I will go into detail on each screen that was created, but here I will show what the Convergence Analysis graph looked like in figure \ref{fig:Convergence Analysis}.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Image (1).png}
+  \caption{Convergence Analysis of Monte Carlo Simulation}
+  \label{fig:Convergence Analysis}
+\end{figure}
 
 
 \subsection{Matplotlib within Kivy}
 
+
+
+
 \subsection{Creating the Graphs Screen}
 Start with putting my initial drawing for this here.
 
-\subsubsection{lots of these}
+\subsubsection{Adding Dynamic Pop-Up Labels}
 
-\subsubsection{lots of these}
+\subsubsection{Threading}
 
-\subsubsection{lots of these}
+\subsubsection{Theoretical Portfolio Value Over Time and Custom ScrollView}
 
-\subsubsection{lots of these}
+\subsubsection{Single Stock Price Over Time and Vectorisation}
+
+\subsubsection{Creating Ranking Graphs and Displaying Names}
+
+\subsubsection{Keeping Labels Within the Graphs Boundaries}
+
+\subsubsection{Current Portfolio Ranking}
+
+\subsection{Visualising Back-Testing}
 
 \subsection{The Finalised Graphs Screen}
 
 
 \section{Chapter 6 --- Completed Deliverable}
 
-\subsection{Features and Expected Use}
-
-
-\subsection{Final GUI Design}
+\subsection{Features and Final GUI Design}
 
 \subsection{P-Values and Graphical Analysis}
-
 
 \subsection{Adaptations for Packaged Release}
 
@@ -1469,6 +1489,24 @@ Start with putting my initial drawing for this here.
 \section{Chapter 7 --- Software Engineering}
 
 \subsection{Object Oriented Programming}
+
+Object-Oriented Programming (OOP) helps form the backbone of the design and structure of my Value at Risk (VaR) application. Utilising certain principles, such as encapsulation, inheritance, and polymorphism, I have been able to organise my codebase into classes and objects, allowing for modular, reusable, and scalable software architecture.\\\vspace{0.3cm}
+
+I use encapsulation to bundle the data (attributes) and code (methods) that operates on the data into a single unit, or class. For instance, the \texttt{VaRCalculators} class encapsulates the logic for VaR calculations, including both historical simulation and the Monte Carlo simulation methods. This encapsulation ensures that the calculation logic is abstracted away from the rest of the application, promoting code reuse and simplicity.\\\vspace{0.3cm}
+
+Inheritance is a core part of developing within Kivy, since its has predefined classes used for GUI creation, enabling you to adapt them into subclasses that inherit attributes and methods from these parent classes. In my codebase, inheritance is prominently used for all my graphical user interface (GUI) components. For example, the \texttt{Portfolio}, \texttt{Graphs}, and \texttt{VaRChecker} classes inherit from the Kivy \texttt{Screen} class, inheriting essential GUI functionalities while also allowing for the extension and customisation I have done specifically for each screen within the application.\\\vspace{0.3cm}
+
+Polymorphism helps allow for the use of a single interface to represent different underlying forms (data types). Through method overriding, the application can process objects differently depending on their class. An example of polymorphism is observed when handling different types events (e.g. button presses) within the GUI, since the same event listener interface is used, but the specific actions performed are dependent on the context in which the event occurs, such as switching between different views or initiating a VaR calculation etc.\\\vspace{0.3cm}
+
+Since I originally used a more linear approach, and then decided to adopt OOP principles, it has helped significantly contributed to the project's success by:
+\begin{itemize}
+    \item Enhancing code maintainability and readability, thereby reducing the complexity involved in extending the application.
+    \item Facilitating the division of the project into distinct, manageable sections, each encapsulating specific functionalities.
+    \item Allowing for the efficient handling of GUI events and interactions, therefore improving user experience.
+\end{itemize}
+
+Since one of my main goals was to create software that would adhere to industry standards, using OOP in the development of financial applications such as this one, aligns with industry best practices. OOP's emphasis on modularity, reusability, and scalability is particularly beneficial in the fast-paced financial sector, where these applications need to be robust, secure, and adaptable to ever-changing market conditions. Moreover, the OOP approach aids in collaborative development environments, facilitating easier code reviews, testing, and integration, thus contributing to the overall efficiency and quality of software development projects within the industry, even if I wasn't able to utilise these benefits as much within my own development cycle.
+
 
 \subsection{Design Patterns}
 
@@ -1489,8 +1527,8 @@ For my final iteration of my Initial GUI Design, the architecture loosely follow
 The Observer pattern is present in the way the application monitors the state of user inputs. For instance, toggle buttons for selecting the VaR calculation method employ event listeners that update the system's state when user interaction occurs.
 
 \begin{verbatim}
-hButton.bind(on_press=self.simMethodPressed)
-mButton.bind(on_press=self.simMethodPressed)
+  hButton.bind(on_press=self.simMethodPressed)
+  mButton.bind(on_press=self.simMethodPressed)
 \end{verbatim}
 
 This pattern decouples the system's components, allowing for independent updates and scalability.\\\vspace{0.3cm}
@@ -1500,7 +1538,7 @@ This pattern decouples the system's components, allowing for independent updates
 The Command pattern is utilized in encapsulating the action to be performed in response to user interactions. For example, when a user selects a stock or initiates a VaR calculation, the corresponding actions are enclosed within command methods, such as \texttt{populateList} or \texttt{generateVaR}.
 
 \begin{verbatim}
-button.bind(on_release=lambda btn, i=i: ...)
+  button.bind(on_release=lambda btn, i=i: ...)
 \end{verbatim}
 
 This approach allows for more flexible and extensible execution of actions within the application.\\\vspace{0.3cm}
@@ -1510,20 +1548,82 @@ This approach allows for more flexible and extensible execution of actions withi
 While not explicitly implemented, the Singleton pattern is conceptually used in the management of the application state. There is only one instance of the \texttt{ApplicationView} class, which maintains a single state throughout the application's lifecycle.
 
 \begin{verbatim}
-class IDTApp(App):
-    def build(self):
-        return ApplicationView()
+  class IDTApp(App):
+      def build(self):
+          return ApplicationView()
 \end{verbatim}
 
 This ensures that there is a consistent state that is accessible throughout all parts of the application.\\\vspace{0.3cm}
 
-These design patterns contribute significantly to the application's robustness, allowing for efficient risk assessment and providing a foundation for future enhancements and scalability.By adhering to these established practices, I have ensured that my software remains maintainable and adaptable to the evolving needs that my graphical interface my undergo in the future.
+These design patterns contribute significantly to the application's robustness, allowing for efficient risk assessment and providing a foundation for future enhancements and scalability. By adhering to these established practices, I have ensured that my software remains maintainable and adaptable to the evolving needs that my graphical interface my undergo in the future.\\\vspace{0.3cm}
+
+Going forward, when developing my final deliverable, I introduced and explored even more design patterns, each one helping build and maintain a different section of my code base, making it more efficient and easier to understand and work with.\\\vspace{0.3cm}
+
+\underline{\textbf{Decorator Pattern}}\\\vspace{0.3cm}
+
+The Decorator Pattern is utilised within the graphical components of my application, particularly for the customisation of graphical user interface (GUI) elements. For instance, in \texttt{Graphs.kv}, \texttt{BlackScroll} acts as a decorator around the standard \texttt{ScrollView} component provided by Kivy. This decoration enhances the functionality of \texttt{ScrollView} by customizing its visual appearance, such as modifying the scroll bar's color and width to be more visually distinct and viewable, something I did not do with my initial design. The decorator pattern allows for dynamic additions to the functionality of an object without altering its structure, since I could leave the logic in place and just enhance its visual appearance.
+
+\begin{verbatim}
+  <BlackScroll@ScrollView>:
+    bar_width: 5
+    bar_color:  0, 0, 0.05, 1
+    ...
+\end{verbatim}
+
+\vspace{0.3cm}
+\underline{\textbf{Dependency Injection Pattern}}\\\vspace{0.3cm}
+
+The creation of an object of another class within the initialisation of a class, such as the instantiation of \texttt{VaRCalculators} within the \texttt{Portfolio} class, aligns with the Dependency Injection Pattern. This pattern allows for a form of inversion of control where a class receives its dependencies from external sources rather than creating them internally, helping facilitate increased modularity and making the code more maintainable and extensible.
+
+\begin{verbatim}
+  class Portfolio(Screen):
+      def __init__(self, **kwargs):
+          super().__init__(**kwargs)
+          self.varCalc = VaRCalculators() 
+\end{verbatim}
+
+\vspace{0.3cm}
+By injecting the \texttt{VaRCalculators} dependency into the \texttt{Portfolio} class, the application's components become loosely coupled, enhancing the flexibility and reusability of the code. This can be seen when I reference the \texttt{varCalc} object within the \texttt{Portfolio} class in my \texttt{Graphs} screen, allowing for the VaR calculations to be performed for data retrieved from another class, meshing them all together coherently.\\\vspace{0.3cm}
+
+\vspace{0.3cm}
+\underline{\textbf{Accessor and Mutator Methods (Getter/Setter)}}\\\vspace{0.3cm}
+
+The use of \texttt{@property} decorators in Python, seen at the start of my Graphs screen, embodies the Accessor (Getter) and Mutator (Setter) methods pattern, by providing controlled access to certain attributes of another class. This decorator allows a method to be accessed like an attribute, enabling encapsulation and the hiding of internal representation from the class's external interface.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  class Graphs(Screen):
+      @property
+      def portfolio(self):
+          return self.manager.get_screen('Portfolio') if self.manager else None
+\end{verbatim}
+
+\vspace{0.3cm}
+The implementation of getter and setter methods through this helps ensure that object attributes are accessed and modified in a controlled manner, helping not only safeguard the data integrity of the class but also enhancing the flexibility of changing the attribute's internal representation without affecting external access to it. Using the Accessor and Mutator Methods pattern through the \texttt{@property} decorators significantly helps contribute towards the robustness and maintainability of the program, helping promote one of the best practices within object-oriented programming.\\\vspace{0.3cm}
 
 
+\underline{\textbf{Wrapper Pattern}}\\\vspace{0.3cm}
+
+I was very happy with my use of the Wrapper Pattern employed in \texttt{graphs.py} through the use of a decorator function, \texttt{checkForStocks}, which serves as a pre-invocation check for methods responsible for generating graphs. This wrapper ensures that the underlying graph generation methods are called only if there are stocks present in the portfolio, thereby preventing runtime errors or undesirable behaviors when attempting to render the graphs without data. This pattern is an excellent example of adding pre-processing steps to method invocations without altering the core functionality of the methods themselves, and I plan to use this far more in future projects due to its simplicity and usefulness.\\\vspace{0.3cm}
+
+\begin{verbatim}
+def checkForStocks(func):
+    def wrapper(*args, **kwargs):
+        holdings = JsonStore('holdings.json')
+        if len(holdings) == 0:
+            print("Cannot create graph due to lack of stocks in portfolio.")
+            return
+        return func(*args, **kwargs)
+    return wrapper
+\end{verbatim}
+
+\vspace{0.3cm}
+This implementation of the Wrapper Pattern ensures that each graph generation checks the state of the portfolio before execution. By doing so, it gracefully handles scenarios where the portfolio is empty, enhancing the application's robustness, verification and user experience.\\\vspace{0.3cm}
+
+These additional design patterns utilised throughout all code within my program helps underscore the application's well-structured architecture, helping achieve a high degree of modularity, extensibility, robustness, and characteristics that are all essential for maintaining and scaling complex software systems such as this.
 
 \subsection{Testing and Documentation}
 
-Testing is a critical component of software development, essential for ensuring that the application meets its requirements and is free of errors. Mainly for my project, the primary mode of testing involved running the application and observing its behavior for errors or incorrect VaR calculations.\\\vspace{0.3cm}
+Testing is a critical component of software development, essential for ensuring that the application meets its requirements and is free of errors. Mainly for my project, the primary mode of testing involved running the application and observing its behaviors for errors, crashes, GUI issues or incorrect VaR calculations.\\\vspace{0.3cm}
 
 This testing approach used can be classified as Ad Hoc Testing and Exploratory Testing. These methods are informal and unstructured, as I have been relying on my intuition and experience to identify issues.
 
@@ -1532,13 +1632,12 @@ This testing approach used can be classified as Ad Hoc Testing and Exploratory T
     \item \textbf{Exploratory Testing}: This approach combines learning, test design, and test execution into a single activity. It is particularly effective in situations where there are no detailed specifications, and tests need to be devised on the fly.
 \end{itemize}
 
-While these methods can be effective for identifying obvious faults, they lack reliability and cannot provide a systematic approach that other testing methods would. They are often more suited to the early stages of development which this project is still in, thus me using them so far.\\\vspace{0.3cm}
-
+While these methods can be effective for identifying obvious faults, they lack reliability and cannot provide a systematic approach that other testing methods would. They are often more suited to the early stages of development, but have been sufficient enough with my knowledge and expertise to produce a robust final product regardless.\\\vspace{0.3cm}
 
 One of the main limitations of my current testing approach is the absence of \textbf{Test-Driven Development (TDD)}. TDD is a modern software development process where requirements are turned into very specific test cases, then the software is improved to pass the new tests. This approach was not followed, as I was unable to justify what I would be testing for (I had planned out unit testing, but I especially did not know how to incorporate it within a Kivy application, as I have not done TDD with Python or Kivy before), so I continued with the above testing style, which worked and allowed me to create my program efficiently, but not up to the industry standard that I know I should be aiming for.\\\vspace{0.3cm}
 
 \newpage
-For future development cycles, I plan on incorporating more testing strategies to enhance the quality and reliability of the application, such as:
+If I was to continue to develop my final deliverable, with its scalability, for future development cycles, I would plan on incorporating more testing strategies to enhance the quality and reliability of the application, such as:
 
 \begin{itemize}
     \item \textbf{Unit Testing}: Develop tests for individual components or functions to ensure they work correctly in isolation. (Had already planned, now I shall be able to implement)
@@ -1548,7 +1647,11 @@ For future development cycles, I plan on incorporating more testing strategies t
     \item \textbf{User Acceptance Testing (UAT)}: Involve end-users to validate the functionality and usability of the application in real-world scenarios (Will bring in external individuals to help be observed, providing a wide range of feedback that I can take note of and apply to my application).
 \end{itemize}
 
-By integrating these practices, my project can achieve a higher level of quality assurance and deliver a more robust and user-trusted VaR product.
+By integrating these practices, my application could achieve a higher level of quality assurance and deliver a more robust and user-trusted financial product.\\\vspace{0.3cm}
+
+Another key aspect to consider when developing software is the use of \underline{documentation}. Documentation is essential for ensuring that the codebase is understandable for future users and mainly developers, so they can easily navigate, comprehend and possibly scale the application going forward. For my project, since it was created in Python, I could have utilised a library called PyDoc (\url{https://docs.python.org/3/library/pydoc.html}), which automatically generates documentation from Python modules.\\\vspace{0.3cm}
+
+This would have helped me easily create documentation for my codebase, providing a clear and structured overview of the application's components, classes, methods, and attributes. However, due to the nature of my codes development alongside this reports structure, I believed that the level of detail that I have been able to display of multiple parts within my codes development cycle are acceptable in understanding key aspects of the application. But there are still many things that I did not touch on within this report, so having a more detailed documentation system in place would have been beneficial, and something that I would have welcomed implementing in the future if development was to continue with this project.\\\vspace{0.3cm}
 
 \subsection{Version Control (Git)} 
 
@@ -1558,7 +1661,7 @@ Git is a distributed version control system, which means that the complete codeb
 \begin{itemize}
     \item Regular Commits: Consistent commits were made to the repository, with detailed messages that clearly described the changes and their impact on the project.
     \item Backup and Security: All the code was backed up on OneDrive as well (a personal decision), providing an additional layer of security and ensuring that no work would be lost in case of system failures.
-    \item Branching Strategy: While currently the project has not utilised extensive branching, I acknowledging the  benefits of feature branches and plan to rigorously employ them in the future.
+    \item Remote Repository: The code was pushed to a remote repository on GitHub, enabling me to work on the project from multiple devices when necessary.
 \end{itemize}
 
 The practice of making regular commits with detailed messages is incredibly invaluable, thus me making sure to regularly comply with this methodology. It enabled the tracking of changes and helps simplify the process of understanding the evolution of the codebase. For me, Git has been essential for several reasons:
@@ -1567,11 +1670,12 @@ The practice of making regular commits with detailed messages is incredibly inva
     \item \textbf{Reversion}: Git can allow me to revert to previous states of the codebase, which is crucial when a new feature can accidentally break functionality.
     \item \textbf{Traceability}: With Git, all my changes are traceable to a specific commit, making it easier to track when and why changes were made.
     \item \textbf{Backup and Restore}: My files are backed up on a remote repository, providing a fail-safe in case the my local repository suffers a setback.
+    \item \textbf{Future Referencing}: The commit history can be looked back upon to help understand the evolution of the codebase and the rationale behind specific decisions.
 \end{itemize}
 
-While my development with this project's version control strategy was effective to a degree, it also highlighted areas for improvement. Adopting a more structured approach to branching and leveraging the full suite of features offered by Git will be a focus in future endeavours to ensure a more efficient and error-preventative development workflow.
+While my development with this project's version control strategy was effective to a degree, it also highlighted areas for improvement. I acknowledge that I did not engage with using the branching feature for my program, which would have been easily implemented due to the nature of working on one specific screen at any given time, since I would be able to easily isolate these periods of development into feature branches. This was a lapse in my ability when using Git, I was more focused on the outcome of the overall product that I chose not to consider branching, especially since I was the only developer on this project. However, this is still not an excuse and I am rightly disappointed in my lack of its usage.\\\vspace{0.3cm}
 
-\subsubsection{Branching and Tagging}
+Another example of me failing to leveraging the full suite of features offered by Git, which I should have implemented to ensure a more efficient and error-preventative development workflow, would be the use of tagging. Tagging is a feature that allows you to mark specific points in the repository's history as being significant, such as a release or a version update. This would have been useful for marking the completion of each screen, or the completion of each iteration of the GUI, so that I could easily refer back to these points in the future, especially when using Git interfaces such as \texttt{GitHub Desktop}, since it shows the tags in a linear visual manner, used to easily identify your significant commits. However, I do understand that tags are mainly used for different iterations of deployed software, a stage that my application did not reach until the very end of its development, so I think that my use of a tag for its final release is justifiable in this instance.\\\vspace{0.3cm}
 
 \section{Chapter 8 --- Critical Analysis}
 
@@ -1581,24 +1685,49 @@ In the end, for this term, I am still happy with the progress I made. I learnt s
 
 \subsection{Final Report Evaluation}
 
-\subsubsection{Coding Achivements and Success}
-
-\subsubsection{Difficulties and Improvements}
-
+\subsubsection{Coding Achivements and Dificulties}
 
 \subsection{Conclusion}
 
 
 \section{Professional Issues}
 
-\subsection{Plagiarism and Using AI}
-
 \subsection{Finance Industry Ethics}
 
+The finance industry, at its core, has consistently, for the last few centuries, played an incredibly important role in the global economy, influencing everything from peoples individual livelihoods to the stability of entire nations. However, its complexity and the significance has unfortunately introduce a grand myriad of ethical considerations. With the increasing integration of technology and computer science within this sector, especially in areas such as algorithmic trading, risk assessment models, and financial prediction systems, the ethical implications have started to become consistently more pronounced.\\\vspace{0.3cm}
+
+One of these primary ethical concerns within the industry is about the concept of risk and how to manage it. Financial institutions often employ complex computer models to predict market trends and assess risk levels associated with various financial products; whilst these models which are designed to minimise risk and maximise returns, they can sometimes fail spectacularly, leading to significant financial losses and, more importantly, affecting the lives of millions and millions of people. The 2008 financial crisis serves as a stark reminder of what can happen when risk management models are not adequately designed or ethically considered [\ref{ref14}], highlighting these consequences of prioritising profit over the potential societal impact it can bring.\\\vspace{0.3cm}
+
+Furthermore, the finance industry's reliance on technology and algorithms has raised further questions about transparency and accountability, with financial algorithms, created by computer scientists and mathematicians, forming a sort of "black box" with their inner workings known only to a select few. This lack of transparency can lead to companies and wealthy individuals exploiting and performing unethical practices, going unnoticed until the resultant negative consequences come to fruition.\\\vspace{0.3cm}
+
+This ethical use of technology in finance can also extend to the issue of data privacy and security. Financial institutions collect vast amounts of personal data, and the ethical handling of this data is paramount [\ref{ref15}]. There have been numerous instances of data breaches in major financial institutions, leading to the exposure of sensitive personal information. The ethical responsibility of protecting this data should never be overstated, as the repercussions of such breaches can be devastating for individuals affected, evaporating people's livelihoods.\\\vspace{0.3cm}
+
+Following on from this, the integration of Artificial Intelligence (AI) in financial services not only brings about innovation and efficiency but also introduces another broad range of ethical and privacy concerns. To try and mitigate these specific kind of risks, corporations have started establishing Institutional Review Boards (IRB) [\ref{ref15}] so they can ensure ethical data practices and help guide further ethical decision-making with these new technologies.\\\vspace{0.3cm}
+
+These AI technologies, with their vast data processing and computational capabilities, amplify the risks of data abuse, so upholding them to ethical scrutiny should be imperative. An IRB can function as an early-warning system, identifying potential ethical and privacy issues before they escalate and proactively helping ensure that any AI-driven decisions align with ethical standards and general societal values.\\\vspace{0.3cm}
+
+The ethical deployment of AI within more and more financial services must require a consistent commitment to transparency, accountability, and it's continuous ethical evaluation. By establishing these rules and boards under scrutiny, financial institutions can help navigate the ethical complexities of AI, ensuring that technological advancements contribute positively to society while safeguarding the right and privacy of individuals.\\\vspace{0.3cm}
+
+This approach not only aligns with the ethical guidelines provided by professional bodies such as the \href{https://www.bcs.org/media/2211/bcs-code-of-conduct.pdf}{BCS} and \href{https://www.acm.org/code-of-ethics}{ACM}, but also reflects a broader commitment to ethical professionalism in the computing field. As future computing professionals, understanding and implementing ethical practices in the development and deployment of AI technologies is paramount, ensuring that we contribute to a technologically advanced yet ethically responsible future.\\\vspace{0.3cm}
+
+As a computer science student, hopefully soon to be graduating and entering this field or one similar with the same problems to do with artificial Intelligence, it is crucial that I recognize the profound societal impact of what the people in the industry are able to achieve and shape. The aforementioned codes of conduct and ethical guidelines are there to emphasise integrity, competence, and a commitment to the interests of not only stakeholder, but to all the people reliant on these products and services that we provide. Adhering to these guidelines ensures that myself, and all others within this industry as professionals, can positively help contribute to it's ethical landscape.\\\vspace{0.3cm}
+
+In conclusion, being aware of the intersection between finance and technology means acknowledging that it is fraught with ethical challenges. From the management of risk and livelihoods, to the transparency of algorithms and the security of data, and especially when dealing with the newfound technological advances and access granted to AI, the decisions made by computer science professionals have further reaching consequences than even. I believe that it is our ethical duty to approach these challenges with responsibility and caution, making certain we can ensure that with our contributions to the finance industry, we can not only provide innovation, but also balance this with moral values, hopefully resulting in bringing benefits for society in general.
+
+
+\subsection{Plagiarism and Using AI}
+I felt that I had made my point clear with the section above, but I also wanted to explore briefly one other ethical issue that I think is paramount within not only my project and the computer science industry as a whole, but especially for university students.\\\vspace{0.3cm}
+
+The first thing I want to address if for the issue of plagiarism in academia and the industry, since it has far-reaching implications for students, educators, and professionals alike. The problem for touching on this with the context of computer science and software development, the is an incredible proliferation of readily available code and resources online, which can consistently blur the lines between inspiration and outright plagiarism. These forms of ambiguity pose significant challenges when trying to ensure the academic integrity of ones work, as well as misplacing genuine innovation if not handled correctly.\\\vspace{0.3cm}
+
+Plagiarism for computer science is not just limited to copying code without proper attribution; it can also encompass the unauthorized use of ideas, algorithms, and documentation when not correctly addressed or credited. The nature of programming and it's development, where certain solutions and patterns are common place, only helps further exacerbate the issue. Attempting to distinguish between commonly accepted practices and plagiarism requires a ever nuanced understanding of both the technical and ethical aspects of software development, becoming harder and harder with modern technological innovation producing more ways to circumvent this integrity.\\\vspace{0.3cm}
+
+Following on as such, Artificial Intelligence (AI) tools have introduced a new dimension for attempting to monitor and judicate plagiarism. It is a very conflicting subject, as on one hand, AI can be a powerful tool for learning, informational exploration and increasing the efficiency that a programmer is able to tackle development, helping aid students and professionals in understanding complex concepts and developing innovative solutions. On the other hand, the ease with which AI can produce work that appears original raises questions about the authenticity of anyone's contributions.\\\vspace{0.3cm}
+
+The ethical use of AI in educational and professional settings all hinges on the individuals transparency and intentions with it. It's imperative to disclose the use of AI-generated content and if so, ensuring that the content is used as a supplement to one's own understanding and creativity, rather than as a replacement. Educational institutions and industries, taking influence from coding institutions, must develop clear guidelines on the use of AI tools, for the continued sake of academic integrity.\\\vspace{0.3cm}
 
 
 
-% \subsection{VaR and what it is in the industry atm, and other VaR softwares and how I can take inspo from them?}
 \newpage
 \section{Bibliography}
 \subsection{References}
@@ -1640,12 +1769,30 @@ In the end, for this term, I am still happy with the progress I made. I learnt s
   \item\label{ref12} Casarin, R., Chang, C.-L., Jimenez-Martin, J.-A., McAleer, M., Pérez-Amaral, T. (2013). *Risk management of risk under the Basel Accord: A Bayesian approach to forecasting Value-at-Risk of VIX futures.* Mathematics and Computers in Simulation, 94, 183-204. ISSN 0378-4754. [Online] Available at: \url{https://doi.org/10.1016/j.matcom.2012.06.013}.
   \\\textit{This reference is useful for understanding the Bayesian approach to forecasting Value-at-Risk of VIX futures and its relevance to risk management in financial institutions.}
 
-  \item\label{ref13} Kivy. (2023). *Kivy Documentation.* [Online] Available at: \url{https://kivy.org/doc/stable/}.
 
+
+
+  \item\label{ref13} Kivy. (2023). *Kivy Documentation.* [Online] Available at: \url{https://kivy.org/doc/stable/}.
+  \\\textit{This reference is the official documentation for the Kivy framework, which I consistently used to aid me in my understanding and ability to develop the GUI to such a high degree.}
+  
+  \item\label{ref14} Boatright, J.R. (2010). *The Ethics of Risk Management: A Post-Crisis Perspective.* Business Ethics Quarterly, 20(4), 621-642. [Online] Available at: \url{https://www.bbvaopenmind.com/en/articles/the-ethics-of-risk-management-a-post-crisis-perspective/}.
+  \\\textit{This reference is a paper that explores the ethical considerations in risk management, which I will be using to help me understand the ethical implications of the risk management models I will be developing for my project.}
+
+  \item\label{ref15} Weis, V. (2023). *How Financial Services Firms Can Inform Decision-Making with Ethical Data Handling.* Atrium. [Online] Available at: \url{https://atrium.ai/resources/how-financial-services-firms-can-inform-decision-making-with-ethical-data-handling/}.
+  \\\textit{This reference is an article that discusses the importance of ethical data handling in financial services, which I will be using to help me understand the ethical implications of handling financial data in my project.}
+
+
+  \item\label{ref16} Hong, L.J., Hu, Z., Liu, G. (2014). *Monte Carlo Methods for Value-at-Risk and Conditional Value-at-Risk: A Review.* ACM Computing Surveys, 46(2), 1-29. [Online] Available at: \url{https://dl.acm.org/doi/pdf/10.1145/2661631}.
+  \\\textit{This reference is a paper that reviews Monte Carlo methods for Value-at-Risk and Conditional Value-at-Risk, which I will be using to help me understand the Monte Carlo simulation method for my project.}
+
+  \item\label{ref17} Holman, J.O., Hacherl, A. (2022). *Teaching Monte Carlo Simulation with Python.* Journal of Statistics Education, 30(1), 33-44. [Online] Available at: \url{https://www.tandfonline.com/doi/epdf/10.1080/26939169.2022.2111008?needAccess=true}.
+  \\\textit{This reference is a paper that discusses teaching Monte Carlo simulation with Python, which I will be using to help me understand how to implement the Monte Carlo simulation method in Python for my project.}
 \end{enumerate}
 \end{small}
 
 \subsection{Literature Review}
+
+\subsubsection{Bibliography Summary}
 
 The bibliography that I have provided helps me to summarise some of the key literature surrounding Value at Risk (VaR), encompassing foundational theories, methodological advancements, and practical aspects of VaR in financial risk management, as well as touching on python and its plethora of libraries. It integrates perspectives from seminal texts, empirical studies, and modern computational approaches.\\\vspace{0.3cm}
 
@@ -1657,14 +1804,51 @@ Recent discussions around VaR and statistical analysis are enriched by Wasserste
 
 Overall, I think the references I have chosen really help encapsulate the multifaceted aspects of VaR found in the modern age, highlighting its theoretical, methodological, and practical scale. It highlights the continuous evolution in VaR modelling, helping set the context for my further research into this field, as well as helping enhance my knowledge for user interface design and general industry standard financial risk software development.
 
-TALK ABOUT THIS STUFF MORE, ADD MORE ABOUT IDK NEW REFERENCES AND GO INTO MORE DETAIL, LIKE CALLUM
+\subsubsection{General Literature}
+
+The general literature within the industry around the development of Python software found online, particularly for applications in finance and risk management, helps to exemplify its simplicity, efficiency, and robustness for being utilised for the medium. Python's apparent ascent as a preferred programming language for financial software development is largely attributed to its easy readability, expansive library ecosystem, and the persistently supportive community surrounding it. As noted when I was looking into Van Rossum [\ref{ref18}], the creator of Python, the language's design philosophy helps to emphasise code readability and syntax simplicity, allowing developers to express concepts in fewer, more readable lines of code compared to other programming languages.\\\vspace{0.3cm}
+
+Furthermore, the work of Oliphant [\ref{ref19}] on NumPy, an essential library for the majority of all numerical computations within Python, has significantly propelled its adoption into data-intensive and computational fields such as finance. Oliphant details how NumPy's array objects and optimised functionalities for mathematical operations lay the groundwork for more specialised financial and statistical libraries, which has resulted in packages such as pandas and SciPy, this scalability python provides making i such an indispensable tool for the financial analysis and algorithmic exploration.\\\vspace{0.3cm}
+
+With McKinney's [\ref{ref20}] seminal work on pandas, a Python library providing high-performance, easy-to-use data structures, and data analysis tools, the literature surrounding the integration of Python in finance has been extensively explored in both academic and industry contexts. This only serves to once again underscore the language's capability to address the complex data manipulation necessary to analyse the needs of financial markets in a way that few other languages are capable of. McKinney notes that Pandas' development was partly motivated by the finance industry's requirement for powerful analytical and data manipulation tools that are both flexible and accessible, being implemented within Python only helping to further that point.\\\vspace{0.3cm}
+
+In addition to libraries, Python's role in financial modelling and risk management can be seen detailed by Hilpisch [\ref{ref21}], who highlights Python's application in quantitative finance, from derivatives modelling all the way to risk management strategies. The book exemplifies how Python's incredible ecosystem, encompassing libraries such as MatPlotLib for data visualisation and IPython for interactive computing, help to facilitate an end-to-end workflow for financial analysis.\\\vspace{0.3cm}
+
+To follow up from my previous observations, may I note how \texttt{O'Reilly} Media has played a pivotal role in my dissemination of knowledge across various domains, including the computer science, financial, and data analysis aspects of my research. With its rich history of publishing comprehensive, well-authored books, \texttt{O'Reilly} has continue to establish itself as a beacon for learners and professionals seeking to enhance their understanding and skills. Their commitment to quality content, coupled with the ease of access I can take advantage of through digital publishing and online learning platforms, have undeniably helped contribute to the widespread accessibility of these educational resources.\\\vspace{0.3cm}
+
+Moving on to exploring financial specifics, the calculation of Value at Risk (VaR) perhaps exemplifies one of the most critical aspects of risk management, helping to quantify the potential loss in value of a portfolio over a defined period for a given confidence interval (as I have mentioned throughout my report). Jorion [\ref{ref22}] writes comprehensively about the metric, elucidating its foundational methodologies and concepts, showcasing its applications in many circumstances in financial risk management. Jorion's work emphasizes VaR's singular role in quantifying market risk and showcases its adoption by financial institutions for compliance and internal risk management.\\\vspace{0.3cm}
+
+Among the various methods for calculating VaR, the historical simulation approach, method (variance-covariance) approach, and Monte Carlo Simulation are all predominantly used, all of which I have delved into and thoroughly explored. For Monte Carlo, it's flexibility and applicability to complex financial instruments make it a valuable tool for risk assessment, albeit with computational intensity that Python's scientific libraries coupled with intelligent programming help mitigate.\\\vspace{0.3cm}
+
+To conclude, this wide range of literature detailed above and within my reports bibliography helps to underscore Python's significant role in financial software development, a role that I have had the pleasure of utilising myself, particularly with helping produce competent applications for VaR calculation. The language's simplicity, combined with its powerful libraries and the active development community, positions Python as the key enabler in innovation for risk management software. As the financial industry continues to evolve amidst growing data volumes, complexities and technological advancements, Python's relevance is only expected to increase further.
+
+\subsubsection{Literature Review References}
+
+\begin{small}
+  \begin{enumerate}
+
+    \item\label{ref18} Van Rossum, G. (1995). *Python Reference Manual.* Amsterdam: Centrum voor Wiskunde en Informatica. [Online] Available at: \url{https://stuff.mit.edu/afs/athena/course/18/18.417/doc/pydocs/ref.pdf}.
+    \\\textit{This reference provides the creators insight into Python's design philosophy and its emphasis on readability and simplicity, which make it a fantastic tool for use within financial software development.}
+
+    \item\label{ref19} Oliphant, T.E. (2007). *Python for Scientific Computing.* Computing in Science \& Engineering, 9(3), 10-20. [Online] Available at: \url{https://ieeexplore.ieee.org/abstract/document/4160250}.
+    \\\textit{This reference discusses NumPy's role in scientific computing and its impact on Python's quick adoption into finance due to its data-intensive capabilities.}
+
+    \item\label{ref20} McKinney, W. (2012). *Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://books.google.co.uk/books?hl=en&lr=&id=v3n4_AK8vu0C&oi=fnd&pg=PR3&dq=McKinney,+W.+(2012).+*Python+for+Data+Analysis:+Data+Wrangling+with+Pandas,+NumPy,+and+IPython.*+&ots=riEGbmwwnC&sig=6yVYKAcKhqcwpXXLiib29nFF2tc&redir_esc=y#v=onepage&q&f=false}.
+    \\\textit{This reference explores pandas' functionalities for data analysis and manipulation, highlighting Python's utility for financial data processing.}
+
+    \item\label{ref21} Hilpisch, Y. (2014). *Python for Finance: Analyze Big Financial Data.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://learning.oreilly.com/library/view/python-for-finance/9781491945360/}.
+    \\\textit{This reference showcases hoe applicable Python can be for quantitative programming, emphasizing its role in helping compute financial modelling and risk management.}
+
+    \item\label{ref22} Jorion, P. (2007). *Value at Risk: The New Benchmark for Managing Financial Risk.* New York, NY: McGraw-Hill. [Online] Available at: \url{https://merage.uci.edu/~jorion/answer.pdf}.
+    \\\textit{This reference provides a comprehensive look at Value at Risk, and how significant it has been for managing financial risk.}
+
+  \end{enumerate}
+\end{small}
 
 % TEMPORARY END OF DOCUMENT TO PROVIDE MORE REALISTIC WORD COUNT FOR NOW
-\end{document} 
+% \end{document} 
 
 \section{Appendix}
-
-\subsection{Example Graphs}
 
 \subsection{Diary}
 FINAL YEAR PROJECT DIARY\\
@@ -1742,6 +1926,9 @@ I started today by finally getting around and doing proper verification for my i
 
 07/04/24 - Graphs Screen\\
 I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my codes future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
+
+
+
 
 \subsection{Fully Packaged Code}
 \vspace{0.5cm}
