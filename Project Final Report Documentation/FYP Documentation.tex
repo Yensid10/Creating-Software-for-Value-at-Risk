@@ -722,7 +722,7 @@ The method \texttt{populateList} dynamically generates a list of stocks from the
 \end{verbatim}
 
 \vspace{0.3cm}
-This function iterates over the FTSE 100 stock list, originally stored within my application by parsing the FTSE100 wikipedia link in through pandas, and taking the results from the 4th index, a table containing the ticker information for all stocks. The code will then create a button for each company that, when clicked, updates the current stock ticker and displays it in the GUI. The lambda function is used to pass the index of the selected stock to the button's event handler, ensuring that the correct stock is selected when the button is clicked.\\\vspace{0.3cm}
+This function iterates over the FTSE 100 stock list, originally stored within my application by parsing the FTSE100 wikipedia link in through pandas, and taking the results from the 4th index, a table containing the company name and subsequent ticker information for all stocks. The code will then create a button for each company that, when clicked, updates the current stock ticker and displays it in the GUI. The lambda function is used to pass the index of the selected stock to the button's event handler, ensuring that the correct stock is selected when the button is clicked.\\\vspace{0.3cm}
 
 \subsubsection{Value at Risk (VaR) Calculation}
 The \texttt{generateVaR} method calculates the Value at Risk for the selected stock, using either historical data or a model simulation approach, both of which have been described within previous sections:
@@ -794,8 +794,8 @@ The application includes radio buttons for selecting the simulation method, allo
 \vspace{0.3cm}
 The radio buttons are created using Kivy's ToggleButton widget, allowing users to select the simulation method by toggling between the historical and model-based options. The buttons are bound to the \texttt{simMethodPressed} function, which updates the simulation method based on the user's selection. The state of the buttons is set based on the current simulation method, ensuring that the correct button is highlighted when the application is launched, and ensuring that only one button will displayed that they are selected at any given time.\\\vspace{0.3cm}
 
-\subsection{Initial Deliverable With Pictures}
-The final iteration of the initial design successfully integrates the core functionalities of the VaR calculation tool into a user-friendly interface. The application allows users to select an available stock, configure VaR parameters, and calculate the VaR using either historical data or a model-based approach. The dynamic stock list generation, user input handling, and radio buttons enhance the application's usability and flexibility, providing any users with a sufficient tool for risk analysis. The accompanying \texttt{.kv} file provides the structural backbone behind the visual appearance, but it is less complex than the \texttt{.py} file, more on the visual alteration of kivy can be found in later section. For what it was created to accomplish, I believe this final initial design is aesthetically pleasing, computationally sound and accomplishes exactly what is required of it in a robust and efficient manner.\\\vspace{0.3cm}
+\subsection{Initial Deliverable with Pictures}
+The final iteration of the initial design successfully integrates the core functionalities of the VaR calculation tool into a user-friendly interface. The application allows users to select an available stock, configure VaR parameters, and calculate the VaR using either historical data or a model-based approach. The dynamic stock list generation, user input handling, and radio buttons enhance the application's usability and flexibility, providing any users with a sufficient tool for risk analysis. The accompanying \texttt{.kv} file provides the structural backbone behind the visual appearance, but it is less complex than the \texttt{.py} file, more on the visual alteration of kivy can be found in later section. For what it was created to accomplish, I believe this final initial design is aesthetically pleasing, computationally sound and accomplishes exactly what is required of it in a robust and efficient manner. Pictures of this deliverable can be found on the subsequent page in figure \ref{fig:Initial Design Test - Final Iteration 1} and figure \ref{fig:Initial Design Test - Final Iteration 2}.
 
 \begin{figure}[h!]
   \centering
@@ -814,18 +814,25 @@ The final iteration of the initial design successfully integrates the core funct
 Youtube Video: \href{https://youtu.be/2GIWug_IESI}{Presentation Demonstration For Final Initial Design - FYP}
 
 \subsection{Reflectional Adjustments}
+When completing the development for the rest of my program, there were times where I would have to refer back to this initial design. When doing so, I realised a few mistakes that I had overlooked. I will briefly detail them as to affirm that I have acknowledged and improved upon some of them within this time-frame.\\\vspace{0.3cm}
 
+To begin with, I discover that whilst my code would attempt to download a stock, and upon this failing, it would try again with a ".L" denoting London Stock Exchange, which worked for the vast majority of the stocks, with the few exceptions displaying an error. This was weird, since when I went to the Yahoo Finance website, I could see that the stock was readily available and updating, but I assumed it was to do with the API having a specific issue. Then came a time where I was retrieving stock names, and realised that the names I was generating did not match with many of the FTSE100 names I had displayed within this section. After doing some more experimentation, I discovered that in fact every single one of these stocks were on the London Stock Exchange (which in hindsight is obvious due to the FTSE100 being a London based and ran list), so they would all need to be appended with ".L" to be able to be downloaded. Upon running this through the program, even the stocks that had previously caused errors now retrieved information perfectly.\\\vspace{0.3cm}
 
+I realised that the few times that stock errors did occur, it was due to the stocks ticker being an applicable non-denoted ticker pointing to a company that had no tracked financial information, resulting in a null stock being downloaded, rather then the stock download failing and retying again with the .L denotation. Because of this, a lot of previous VaR results I was getting were from American companies with direct non-denoted tickers. To fix this, I removed the need for verifying the stock downloads, since all of the stocks would successfully work, as I just needed to concatenate the previous list of tickers with ".L" to get the correct stock information every time.\\\vspace{0.3cm}
+
+A different huge problem was that I had laid out and specifically positioned the app to work with its current size, thus me restricting the scaleability of the window to not be possible. However, when you moved the application from one screen size (that I had been doing the majority of the visual creation work with) to another of different dimensions, it would completely mess up the layouts and make parts of the visuals illegible, even with both monitors being the same resolution. This was extremely problematic, since it would entirely restrict who could use my program effectively, since they would have to be lucky enough to have the same size screen as my monitor just to be able to use it properly. Once again, when searching through the Kivy documentation [\ref{ref13}], not only did I figure out that \texttt{size\_hint}, a property I had tried to avoid due to not being able to specify specific sizes, could be used to scale for whatever sized window you may have (based on percentages), but there was also a built-in unit of measurement called \texttt{sp} (Scale-independent Pixels) that could be used to specify sizes in such a way that they would automatically scale depending on screen type, which I had not known about before. Going back through and changing all my specifically defined values, I was able to ensure that the application would be accessible on all types of windows hardware with this change, keeping the view consistent and optimised, and allowing my future development to adhere to the same practice as well.\\\vspace{0.3cm}
+
+One other final thing to note, I have observed in hindsight a weird reliance on me changing and writing a vast majority of Kivy information inside of my python code, and I'm not referring to the general python integrated code, I was regularly defining layout aspects within all parts of my python code, something that is not common practice for this type of development. I believe this to be due to my lack of understanding of the .kv file at the time as a whole, since this was the first time I had programmed in Kivy. COntinuing on from this point, I adapted the framework and the workstation that my project undertook, allowing me to better make use of the .kv files for its fantastic layout and styling capabilities, and its ability to seamlessly communicate with its respective python file. I did not go back and alter the contents of my python and kivy files in this regard, since its functionality remained working optimally, although I completely acknowledge that it was a suboptimal way to program within the kivy and python combined framework. Evidence on my growth and aptitude in this regard can be seen through the exploration of my future GUI developmental sections.\\\vspace{0.3cm}
 
 \section{Chapter 4 --- Portfolio Creation}
 
 \subsection{Monte Carlo Simulation}
 
-Monte Carlo Simulation is arguably the most important computational technique I will need for calculating Value at Risk, since it can be utilised to perform repeated random sampling to estimate complex mathematical or physical models across a series of values. It's extremely useful in finance for the valuation of instruments, portfolios, and investments under uncertainty, since it simulates a range of possible outcomes for these random processes and proceeds to  averages the results to find a probabilistic estimation of the what the actual outcome would be.\\\vspace{0.3cm}
+Monte Carlo Simulation is arguably the most important computational technique I will need for calculating Value at Risk, since it can be utilised to perform repeated random sampling to estimate complex mathematical or physical models across a series of values. It's extremely useful in finance for the valuation of instruments, portfolios, and investments under uncertainty, since it simulates a range of possible outcomes for these random processes and proceeds to average the results to find a probabilistic estimation of the what the actual outcome would be.\\\vspace{0.3cm}
 
-For these Value at Risk (VaR) calculations, Monte Carlo Simulation allows for an estimation of the potential loss in value of a whole portfolio (different to the single stock's I've been dealing with using previous methods) with any given confidence level over the specified period. It does this by simulating the returns of the portfolio across numerous simulated scenarios to create a distribution of possible outcomes, and since VaR can then be derived as a percentile of this randomly estimated distribution, such as the 5th percentile, it helps indicate that there is a 95\% confidence level that losses will not exceed this value, or an equivalently based 5\% risk level that the losses will exceed.\\\vspace{0.3cm}
+For these Value at Risk (VaR) calculations, Monte Carlo Simulation allows for an estimation of the potential loss in value of a whole portfolio (different to the single stocks I've been dealing with using previous methods) with any given confidence level over the specified period. It does this by simulating the returns of the portfolio across numerous simulated scenarios to create a distribution of possible outcomes, and since VaR can then be derived as a percentile of this randomly estimated distribution, such as the 5th percentile, it helps indicate that there is a 95\% confidence level that losses will not exceed this value, or an equivalently based 5\% risk level that the losses will exceed.\\\vspace{0.3cm}
 
-It helps model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables, such as with multiple stocks within a stock market. The method involves generating a large number of random portfolio return paths based on historical return distributions and then determining the VaR from these simulated paths.\\\vspace{0.3cm}
+It helps model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables, such as with multiple stocks within a stock market. The method involves generating a large number of random portfolio return paths based on historical return distributions and then determining the VaR from these simulated paths. The general understandings of the explanations below are taken respect from reference [\ref{ref16}], although I have adapted the equations to better understand and increase comprehensibility, due to how they are needed within the context I utilise them for, me personally preferring my proposed format.\\\vspace{0.3cm}
 
 Given a portfolio consisting of \(n\) assets, let \(r = (r_1, r_2, \ldots, r_n)\) denote the vector of daily returns of these assets. The return of the portfolio on any given day can be expressed as a weighted sum of the individual asset returns:
 
@@ -840,7 +847,7 @@ where:
   \item \(r^T\) is the transpose of the return vector.
 \end{itemize}
 
-\vspace{5cm}
+\vspace{0.3cm}
 When using Monte Carlo Simulation for VaR calculation, we simulate this return \(R\) for a given time horizon using the historical mean (\(\mu\)) and covariance (\(\Sigma\)) of the asset returns. For a single-day horizon, the simulated return for the portfolio can be generated from a multivariate normal distribution:
 
 \begin{equation}
@@ -884,8 +891,6 @@ In theory, when the simulated returns are sorted in ascending order, the \((\alp
 
 This given mathematical framework helps underpin the Monte Carlo Simulation approach to VaR calculation, providing a probabilistic estimate of potential portfolio losses over a specified time horizon based on historical asset performance. This is what I will need to adapt to python in my subsequent program to be able to estimate VaR calculations within a portfolio of stocks.
 
-
-
 \subsubsection{Command Line --- Monte Carlo Simulation}
 
 Continuing on from my proof of concept programs for Historical and Method simulation, I used Yahoo Finance package again to obtain stocks from Nike (NKE), Adidas (ADS.DE), and Under Armour (UAA) over a period of 100 days. I will leverage historical price data to help model my portfolios future returns distribution. I will also be using the numpy package, since it lets me perform the random multivariate normal distribution, as well as the dot product sum between this result and my weightings. \\\vspace{0.3cm}
@@ -904,7 +909,7 @@ Firstly, I download the historical price data for the specified stocks using the
 \end{verbatim}
 
 \vspace{0.3cm}
-The Monte Carlo simulation is conducted by generating random samples from a multivariate normal distribution, utilising the mean and covariance of the daily returns, simulating the portfolio's returns over the specified time horizon. The process is then repeated a large number of times to form a distribution of the portfolio's returns, in this case I opted for 10,000 simulations for the program. I initialise an empty list to store the simulated portfolio returns and iterate over the number of simulations, calculating the weighted sum of the simulated returns to represent the portfolio return for each simulation, appending these results to the list.\\\vspace{0.3cm}
+The Monte Carlo simulation is conducted by generating random samples from a multivariate normal distribution, utilising the mean and covariance of the daily returns, simulating the portfolio's returns over the specified time horizon. The process is then repeated a large number of times to form a distribution of the portfolio's returns, in this case I opted for 10,000 simulations for the program. I initialise an empty list to store the simulated portfolio returns and iterate over the number of simulations, calculating the weighted sum of the simulated returns to represent the portfolio return for each simulation, appending these results to the list [\ref{ref17}].\\\vspace{0.3cm}
 
 \begin{verbatim}
   portfoReturns = []
@@ -929,9 +934,9 @@ Using this methodology, I can provide a robust framework for estimating the VaR 
 
 
 \subsection{Kivy Screen Manager}
-I knew that next I would want to implement what I had learnt about Monte Carlo Simulation into my GUI, but my current deliverable couldn't handle multiple stocks being selected at the same time, let alone the calculation of the VaR for them all, as it was only designed for single stock VaR calculations. I figured the best way to implement this be to add more sections to my program that can actually handle these multiple stocks needed, in essence, I needed to have the ability to create a portfolio. And since this was building towards my final deliverable, I knew I wanted to produce something that would adhere to the industry standards that I was creating my software for.\\\vspace{0.3cm}
+I knew that next I would want to implement what I had learnt about Monte Carlo Simulation into my GUI, but my current deliverable couldn't handle multiple stocks being selected at the same time, let alone the calculation of the VaR for them all, as it was only designed for single stock VaR calculations. I figured the best way to implement this would be to add more sections to my program that can actually handle these multiple stocks needed, in essence, I needed to have the ability to create a portfolio. And since this was building towards my final deliverable, I knew I wanted to produce something that would adhere to the industry standards that I was creating my software for.\\\vspace{0.3cm}
 
-Subsequently, upon researching more into the capabilities of kivy and its framework using the online Kivy documentation [\ref{ref13}], I discovered the Kivy Screen Manager, a powerful tool that allows for the creation of multiple screens within a single application, each screen able to be utilised as a different section and form of functionality within the program. This was perfect for what I wanted to achieve, the ability to have multiple screens represented within one application, bouncing between the different options depending on what you need to do, possibly allowing for communication between screen adding to a more in-depth functionality provided by my program. It also allowed for impressive transitional animations between defined screens, an impressive gif showcasing this being found on the main page for it within the documentation. With this, I knew I had to plan out and draft what I initially needed for my subsequent final deliverable, so just as I had done with my previous design, I drew what I envisioned in the figure below:\\\vspace{0.3cm}
+Subsequently, upon researching more into the capabilities of kivy and its framework using the online Kivy documentation [\ref{ref13}], I discovered the Kivy Screen Manager, a powerful tool that allows for the creation of multiple screens within a single application, each screen able to be utilised as a different section and form of functionality within the program. This was perfect for what I wanted to achieve, the ability to have multiple screens represented within one application, bouncing between these different screen options depending on what you need to do, possibly allowing for communication between screen adding to a more in-depth functionality provided by my program. It also allowed for impressive transitional animations between defined screens, an impressive gif showcasing this being found on the main page for it within the documentation. With this, I knew I had to plan out and draft what I initially needed for my subsequent final deliverable, so just as I had done with my previous design, I drew what I envisioned in the figure below:\\\vspace{0.3cm}
 
 \begin{figure}[h]
   \centering
@@ -951,9 +956,9 @@ With this, I came up with the 4 screens that I wanted to implement into my progr
 I was inspired by the design of tabs in most modern browsers, which are used to switch back and forth between websites. I also liked the trapezium shape I used, but I knew I would fit the constrains of whatever my program needed to function optimally. With this, I knew that I had to implement it into my program, so I could begin the development of these screens, allowing for the functionality I was aiming for within my final deliverable.\\\vspace{0.3cm}
 
 \subsubsection{Tabbing System and Workspace Structure}
-Up until now, I had my whole program within one file, \texttt{Initial Design Test.py}, and the subsequent \texttt{IDT.kv} file alongside it, but for this, I knew that I wanted to be connecting a bunch of screens together, which would be far too much code to have it all handled within one file. So, since I'm' developing this program adhering to Object Oriented principles, I decided to use a hub program, and split up all my other screens into separate files, and then put into specific folders within the same directory as the main program.\\\vspace{0.3cm}
+Up until now, I had my whole program within one file, \texttt{Initial Design Test.py}, and the subsequent \texttt{IDT.kv} file alongside it, but for this, I knew that I wanted to be connecting a bunch of screens together, which would be far too much code to have it all handled within one file. So, since I'm developing this program adhering to Object Oriented principles, I decided to use a hub program, and split up all my other screens into separate files, and then put into specific folders within the same directory as the main program.\\\vspace{0.3cm}
 
-For this I had to seperate my original file into one called \texttt{Final Design.py}, which would be the hub program, and my renaming my old file to be the screen, \texttt{VaRChecker.py}. This involved removing the kivy app definition and running section and putting it in the new program, intialising the app, certain imports and the window size (which had to be increased to be able to fit in the new tabs). The old program was then placed into a folder called \texttt{Screens}, and the new program remained at the base of the previous directory. Following on from this, I created the other 3 screens, \texttt{PortfolioScreen.py}, \texttt{RankingsScreen.py}, and \texttt{TrendsScreen.py}, and placed them in the same folder as the \texttt{VaRChecker.py} file.\\\vspace{0.3cm}
+For this I had to separate my original file into one called \texttt{Final Design.py}, which would be the hub program, and my renaming my old file to be the screen, \texttt{VaRChecker.py}. This involved removing the kivy app definition and running section and putting it in the new program, initialising the app, certain imports and the window size (which had to be increased to be able to fit in the new tabs). The old program was then placed into a folder called \texttt{Screens}, and the new program remained at the base of the previous directory. Following on from this, I created the other 3 screens, \texttt{PortfolioScreen.py}, \texttt{RankingsScreen.py}, and \texttt{TrendsScreen.py}, and placed them in the same folder as the \texttt{VaRChecker.py} file.\\\vspace{0.3cm}
 
 For each of these however, I needed to create the specific .kv file to match, to define the kivy visuals. To do this, I created a folder called \texttt{kvFiles}, and implemented the files \texttt{PortfolioScreen.kv}, \texttt{RankingsScreen.kv}, \texttt{TrendsScreen.kv}, and \texttt{VaRChecker.kv} (which had the same code as \texttt{IDT.kv}). But even with these individual files, my new Final Design file could not see them. To fix this, I created the final new file, \texttt{FD.kv}, within the same directory as my \texttt{Final Design.py}, that I would use to link all the others together, using: \\\vspace{0.3cm}
 
@@ -976,7 +981,7 @@ This would allow all my .kv files to work together, but the same could not be sa
 
 \end{verbatim}
 
-This would give my main program access to the other screens, and subsequently link them all together within the screen manager. To do this, within the initial build method immediately defined within the app, I defined my screen manager, and added all the screens to it as widgets. Now that they were inside my screen manager within the building app, I needed to create the tabs for them to be displayed, this being done by creating a BoxLayout taking up the top 10\% of the screen, that for each screen within the screen manager, would create a named button 25\% of the apps size wide, allowing for the creation of 4 equal sized buttons spanning the top of the screen, with a a bound on\_release function set to a method I created, taking the text instance found on the selected button and switching the screen managers "current screen" to be the screen with the clicked name. This ended up functioning perfectly, I had to create blank kv files that were gray for all the screens that had not been populated yet, but the code and tabs worked great, with it implementing a swipe animation clicking between the screens already implemented (although it would only swipe from left to right, no matter what direction you were swapping between screens). The tabs and code can be seen below:\\\vspace{0.3cm}
+This would give my main program access to the other screens, and subsequently link them all together within the screen manager. To do this, within the initial build method immediately defined within the app, I defined my screen manager, and added all the screens to it as widgets. Now that they were inside my screen manager within the building app, I needed to create the tabs for them to be displayed, this being done by creating a BoxLayout taking up the top 10\% of the screen, that for each screen within the screen manager, would create a named button 25\% of the apps size wide, allowing for the creation of 4 equal sized buttons spanning the top of the screen, with a bound on\_release function set to a method I created, taking the text instance found on the selected button and switching the screen managers "current screen" to be the screen with the clicked name. This ended up functioning perfectly, I had to create blank kv files that were gray for all the screens that had not been populated yet, but the code and tabs worked great, with it implementing a swipe animation clicking between the screens already implemented (although it would only swipe from left to right, no matter what direction you were swapping between screens). The tabs and code can be seen below:\\\vspace{0.3cm}
 
 \begin{verbatim}
   sm = ScreenManager()        
@@ -1037,7 +1042,7 @@ These in tandem will all help when creating this form of software, and help when
 
 In figure \ref{fig:Portfolio Screen Draft Top}, my plan is to create a portfolio system where you can store your stock within a scrolling list on the left hand side. This is the same concept I used for my initial design, within my VaRChecker screen now, but you can add and remove stocks from this dynamic list. To add the stocks, you would click on the button in the top left, which would create a pop-up window, a feature that I did not utilise within my initial design, but upon further use of the kivy documentation [\ref{ref13}] I discovered its existence and apparent usefulness for a situation like this. On the right hand side, it would display the overall total price/value of the portfolio, being calculated by getting the live prices of stocks, multiplied by the number of stored shares for each stock. It would also display the number of stocks (a rather useless metric from a financial standpoint but a nice feature to have), the daily return of the portfolio, and the Value at Risk of the portfolio, which would be calculated using the Monte Carlo Simulation method I had previously implemented. It is also noted that I want the stocks on the left to have their name displayed, as well as their holding value, since it can be used to compare to the overall value on the right, since both would be shown at the same time.\\\vspace{0.3cm}
 
-For figure \ref{fig:Portfolio Screen Draft Bottom}, I wanted to have it so when you select one of the stocks on the right, it replaces the overall portfolio stats on the right with specific ones for the currently selected stock, such as its name, holding value, No. of shares (much more important for this context), and individual VaR. This would allow for a more in-depth analysis of individual stocks within the portfolio, and allow for a more detailed understanding of the risks and rewards of each stock whilst still seeing how diversification affects the stability of Value at Risk. It would have a cross in the top right, allowing you return to your overall view of the portfolio. I also created a small sketch for how I would want the pop-up to look, having to inputs for ticker (since this is how yfinance would download it) and no's of shares, as well as a button to exit the pop-up, resulting in the end of the interaction.\\\vspace{0.3cm}
+For figure \ref{fig:Portfolio Screen Draft Bottom}, I wanted to have it so when you select one of the stocks on the right, it replaces the overall portfolio stats on the right with specific ones for the currently selected stock, such as its name, holding value, No. of shares (much more important for this context), and individual VaR. This would allow for a more in-depth analysis of individual stocks within the portfolio, and allow for a more detailed understanding of the risks and rewards of each stock whilst still seeing how diversification affects the stability of Value at Risk. It would have a cross in the top right, allowing you return to your overall view of the portfolio. I also created a small sketch for how I would want the pop-up to look, having two inputs for ticker (since this is how yfinance would download it) and no. of shares, as well as a button to exit the pop-up, resulting in the end of the interaction.\\\vspace{0.3cm}
 
 With these initial ideas in place, I set to work on implementing them. Since this was a large program, with many different computational elements and visual designs within both the files used, I will attempt to showcase key points of its development with accompanying visual aid when possible, but since it cannot cover everything, the full code can be found in the appendix.\\\vspace{0.3cm}
 
@@ -1107,7 +1112,7 @@ Within the class, I create a dictionary to store the stock information, so it ca
 \end{figure}
 
 \subsubsection{Storing Stocks and Calculating Portfolio Value}
-At this point in my projects development cycle, I realised that the nuance between my Rankings Tab and my Trends tab were irrespective for what I needed to create and what I could deliver. Because of this, I realised I could integrate both into each other, graphically display whatever ranking I may compute within its own section, that also would show the trends that my stocks were taking. This resulted in me removing the Rankings tab and planning to just create the Trends tab, which can be seen at the top of the program in figures going forward.\\\vspace{0.3cm}
+At this point in my project's development cycle, I realised that the nuance between my Rankings Tab and my Trends tab were irrespective for what I needed to create and what I could deliver. Because of this, I realised I could integrate both into each other, graphically display whatever ranking I may compute within its own section, that also would show the trends that my stocks were taking. This resulted in me removing the Rankings tab and planning to just create the Trends tab, which can be seen at the top of the program in figures going forward.\\\vspace{0.3cm}
 
 Since I had not implemented verification, I had to be certain that the tickers I entered into my pop-up were correct, and if so, yfinance would be able to correctly download the data. This is crucial, since I would need to retrieve and store the initial stock price of the data as soon as I added it to my stocks list, since it would be needed to refer upon in the future to compare to whatever the continued current price would be going forward, needed when calculating return. To do this I used:\\\vspace{0.3cm}
 
@@ -1119,7 +1124,7 @@ Since I had not implemented verification, I had to be certain that the tickers I
 \vspace{0.3cm}
 Which would download the stock price for the last day, and then take the last value in the list, which would be the current price of the stock. Previously, using yfinance's \texttt{.info['regularMarketPrice']} command would have been a viable way for me to retrieve the current price easily, but due to certain limitations that Yahoo's financial API had put into place recently, I was unable to use this method, and had to find this work around, which I continue to use going forward since it presents the same results. This initial price would be stored within the JSON to be referenced later.\\\vspace{0.3cm}
 
-With this initial price now stored, I could now calculate the majority of the necessary information that my program would need to consistently display within my totals section. This would be done (once checking that the length of the JSON is not 0) by iterating over all the stocks in the JSON file, and for each stock, downloading its current price, calculating it's total value by multiplying it with the stored shares quantity, summing these all together, resulting in the Portfolio's current total value. The total shares would be added up within the iteration, and the daily return I adapted into just being the total return of the portfolio, a percentage based on all the current prices together being compared to all of the initial prices summed together.\\\vspace{0.3cm}
+With this initial price now stored, I could now calculate the majority of the necessary information that my program would need to consistently display within my totals section. This would be done (once checking that the length of the JSON is not 0) by iterating over all the stocks in the JSON file, and for each stock, downloading its current price, calculating its total value by multiplying it with the stored shares quantity, summing these all together, resulting in the Portfolio's current total value. The total shares would be added up within the iteration, and the daily return I adapted into just being the total return of the portfolio, a percentage based on all the current prices together being compared to all of the initial prices summed together.\\\vspace{0.3cm}
 
 \begin{verbatim}
   def initialStockTotals(self, *args):
@@ -1150,7 +1155,7 @@ With this initial price now stored, I could now calculate the majority of the ne
 At the end, it changes the references to the id's in the \texttt{.kv} file's text to be the computed value, displaying them on the right hand side. This method would be called upon when the program is being initialised, and upon the dismissal of the pop-up, to ensure that the totals are always up to date.\\\vspace{0.3cm}
 
 \subsubsection{Background App Refresh and Race Conditions}
-But I want to have it so that the program can update the stock prices in real-time, so that the user can see the changes in their portfolio as they happen. Whilst realtime is a bit of an impossibility using python, since the download isn't instant and gets worse with more stocks being stored, having it re-download all stocks every 60 seconds seems a lot more reasonable, especially since stocks don't change in value that quickly. Within my time to decide to do this, I had implemented a \texttt{specificStockTotals} method that would be called upon when a stock was selected, and would display the specific stock's information on the right hand side, with generally the same logic as the previous section. Since I would still want this data to be updated every minute when a stock is selected, as well as when the portfolio totals are being displayed, I decided to utilise Kivy's Clock functionality.\\\vspace{0.3cm}
+But I want to have it so that the program can update the stock prices in real-time, so that the user can see the changes in their portfolio as they happen. Whilst realtime is a bit of an impossibility using python, since the download isn't instant and gets worse with more stocks being stored, having it re-download all stocks every 60 seconds seems a lot more reasonable, especially since stocks don't change in value that quickly. Within my time to decide to do this, I had implemented a \texttt{specificStockTotals} method that would be called upon when a stock was selected, and would display the specific stocks information on the right hand side, with generally the same logic as the previous section. Since I would still want this data to be updated every minute when a stock is selected, as well as when the portfolio totals are being displayed, I decided to utilise Kivy's Clock functionality.\\\vspace{0.3cm}
 
 By using \texttt{Clock.schedule\_interval()}, a function found within the \texttt{kivy.clock} module, I was able to call a function every 60 seconds, which would be my \texttt{initialStockTotals} method, which would update the stock prices and the portfolio totals. I also had a subsequent one within my \texttt{specificStockTotals} method that would do the same thing when a specific stock was selected. But this could result in the program trying to update and download the stock prices at the same time, since only downloading one stock when all are necessary would crash the program. To ensure that one clock was being run at one time (preventing any race conditions) and that the clock was not calling an instance inside itself recursively (resulting in it never being able to be stopped), I utilised the code below: \\\vspace{0.3cm}
 
@@ -1165,7 +1170,7 @@ By using \texttt{Clock.schedule\_interval()}, a function found within the \textt
 \end{verbatim}
 
 \vspace{0.3cm}
-Using stored checker methods that were initialised during the classes startup, it would check if the other clock was already running, and if so, unschedule it, and then schedule this new clock. This would ensure that only one clock was running at one time, and that the clock was not calling itself recursively, allowing for the program to update the stock prices every 60 seconds completely dependant on what they had selected at the time.\\vspace{0.3cm}
+Using stored checker methods that were initialised during the classes startup, it would check if the other clock was already running, and if so, unschedule it, and then schedule this new clock. This would ensure that only one clock was running at one time, and that the clock was not calling itself recursively, allowing for the program to update the stock prices every 60 seconds completely dependant on what they had selected at the time.\\\vspace{0.3cm}
 
 \subsubsection{Value at Risk Calculators}
 You may have noticed that when creating the displays for the total and specific stocks, that I had not displayed or generated the Value at Risk to be displayed for either. This was because I had not yet implemented the Monte Carlo Simulation method into the program, and I would need to do so to be able to calculate the VaR for the portfolio. I had tested single stock calculations for VaR with this method as well, but it did not work, so I decided that I would just use my Model Simulation (Variance-Covariance) method for the single stock VaR calculations, and the Monte Carlo Simulation for the portfolio VaR calculations, as I have had both working in other programs/screens. I chose to use model over historical simulation as when back-testing, the resultant p-value were much higher/more consistent when using the model method, so I believed it to be more reliable. To implement these methods, I decided to create another class (all subsequent new classes mention all being within this same \texttt{Portfolio.py} file.) called \texttt{VaRCalculators}, that would contain all the methods needed to calculate the VaR for the portfolio and the individual stocks. An instance of this would then be created when the screen was initialised (\texttt{self.varCalc = VaRCalculators()}), and the methods within could be referenced  whenever needed in the stock total clock cycles.\\\vspace{0.3cm}
@@ -1214,7 +1219,7 @@ For the total portfolio calculations however, I needed to implement the Monte Ca
 \end{verbatim}
 
 \vspace{0.3cm}
-This new version of my Monte Carlo Simulation would calculate the weightings of all the stocks by iterating over all the stocks in the JSON file, using this to access each index within the downloaded stock data, calculating the current value of the stock, and then dividing it by the total value of the portfolio. It would then calculate their daily returns, and run the simulation 100,000 times. However, I realised that numpy had a built in way to perform the simulation by utilising how \texttt{np.random.multivariate\_normal()} works. By defining the final section within it with both \texttt{(self.timeHori, simNum)}, it would allow me to create a 3D array of the simulations, providing me with the data I needed in one statment. I still needed to run all the simulations, so I created a for loop that would multiply the optimised simulation by the weightings, summing them all together along the outer axis, and then summing them all together again, we result in finally obtaining the portfolio returns. This method ends up being a lot more efficient than my previous method, saving a lot of loading time for the application, which is crucial for the user experience when navigating a the main portfolio screen. Finally, the VaR is calculated by taking the 5th percentile of the sorted returns, and then multiplying it by the total portfolio value, returned correctly formatted.\\\vspace{0.3cm}
+This new version of my Monte Carlo Simulation would calculate the weightings of all the stocks by iterating over all the stocks in the JSON file, using this to access each index within the downloaded stock data, calculating the current value of the stock, and then dividing it by the total value of the portfolio. It would then calculate their daily returns, and run the simulation 100,000 times. However, I realised that numpy had a built in way to perform the simulation by utilising how \texttt{np.random.multivariate\_normal()} works. By defining the final section within it with both \texttt{(self.timeHori, simNum)}, it would allow me to create a 3D array of the simulations, providing me with the data I needed in one statement. I still needed to run all the simulations, so I created a for loop that would multiply the optimised simulation by the weightings, summing them all together along the outer axis, and then summing them all together again, we result in finally obtaining the portfolio returns. This method ends up being a lot more efficient than my previous method, saving a lot of loading time for the application, which is crucial for the user experience when navigating a the main portfolio screen. Finally, the VaR is calculated by taking the 5th percentile of the sorted returns, and then multiplying it by the total portfolio value, returned correctly formatted.\\\vspace{0.3cm}
 
 \subsubsection{Finding Comparny Names and Back Button}
 As I was developing the program, there was a lot of visual iterations and changes to formatting and presentation that I can't cover in this report, but one of the features I knew I would need to have would be the actual display of the full company name, since trying to remember what each company was based on tickers in a stock list felt terrible, this being seen in figure \ref{fig:Ticker Names} (you can also see the reduced tabs at the top). Usually, this could have been done once again using the slightly altered aforementioned yfinance \texttt{.info['name']} method, but this was still broken, so I had to come up with a more creative solution.\\\vspace{0.3cm}
@@ -1256,7 +1261,7 @@ With this knowledge, I knew that I had to find a way to obtain the html of these
 \vspace{0.3cm}
 This method would take in a ticker, concatenate it with a url to create the link for my needed stock page, and then download the html of the page using the requests module. Whilst this method would work for most of the stocks that I tried for, any that had "Non-US" denoters (stocks that aren't listed on NASDAQ, instead with London Stock Exchange with .L or country specific Germany with .DE) would fail to have their page load and stored correctly. To combat this, I would employ the use of a User Agent, found at \url{https://user-agents.net/my-user-agent}, within the headers of the request, which would simulate the request to appear as if it was coming from a browser, and not a python script, successfully allowing me to download the HTML data.\\\vspace{0.3cm}
 
-I would then proceed to parse the html using BeautifulSoup, and find the \texttt{h1} element with the class I needed, and return the text within it, which would be the full company name. This method would now be called upon whenever a stock was added to the list, storing the full company name along with ticker inside the JSON file, and with a small adjustment to stocks, promptly displayed in tandem on the stock list, as seen in \ref{fig:Stock and Ticker Names}. This would allow for a much more user-friendly experience when navigating my app, I'm aware that it would be optimal to use a stock name when adding it to your portfolio but I could not envision this capability working vice versa due to the nature of the URL's that Yahoo Finance provides, since it is through that I can use the ticker and find the stock names in the first place.\\\vspace{0.3cm} 
+I would then proceed to parse the html using BeautifulSoup, and find the \texttt{h1} element with the class I needed, and return the text within it, which would be the full company name. This method would now be called upon whenever a stock was added to the list, storing the full company name along with ticker inside the JSON file, and with a small adjustment to stocks, promptly displayed in tandem on the stock list, as seen in \ref{fig:Stock and Ticker Names}. This would allow for a much more user-friendly experience when navigating my app, I'm aware that it would be optimal to use a stock name when adding it to your portfolio but I could not envision this capability working vice versa due to the nature of the URL's that Yahoo Finance provides, since it is through this that I can use the ticker and find the stock names in the first place.\\\vspace{0.3cm} 
 
 The new resultant holding information would look like this - \texttt{\{"ADS.DE": \{"name": "adidas AG (ADS.DE)", "ticker": "ADS.DE", "sharesOwned": "50", "initialPrice": 201.39999389648438\}\}}\\\vspace{0.3cm}
 
@@ -1268,7 +1273,7 @@ The new resultant holding information would look like this - \texttt{\{"ADS.DE":
 \end{figure}
 
 \vspace{0.3cm}
-Another thing to note within the figure \ref{fig:Stock and Ticker Names} is the addition of a back button, which can be seen in the top right. I assumed with the \texttt{+} symbol for adding a stock and this \texttt{X} button, that the user would intuitively understand what each were trying to represent, since it adheres to the genreal design principles found within the creation of graphical interface. (IDK ADD A REFERENCE HERE TO UCD MAYBE). On the Total Portfolio display, the back button can still be seen in the same place, but with its opacity and ability to be pressed set to 0. When you run the \texttt{specificStockTotals} method, it would set the opacity to 1 and the ability to be pressed to 1, allowing for the user to return to the total portfolio view. And the code it runs when pressed is simply just \texttt{initialStockTotals()}, redrawing back over it and setting itself to invisible \& untouchable again.\\\vspace{0.3cm}
+Another thing to note within the figure \ref{fig:Stock and Ticker Names} is the addition of a back button, which can be seen in the top right. I assumed with the \texttt{+} symbol for adding a stock and this \texttt{X} button, that the user would intuitively understand what each were trying to represent, since it adheres to the general design principles found within the creation of graphical interfaces [\ref{ref18}]. On the Total Portfolio display, the back button can still be seen in the same place, but with its opacity and ability to be pressed set to 0. When you run the \texttt{specificStockTotals} method, it would set the opacity to 1 and the ability to be pressed to 1, allowing for the user to return to the total portfolio view. And the code it runs when pressed is simply just \texttt{initialStockTotals()}, redrawing back over it and setting itself to invisible \& untouchable again.\\\vspace{0.3cm}
 
 \subsubsection{Improving Monte Carlo Simulation}\label{improvingmcs}
 Every time I would switch between my two Portfolio views, it would have to recalculate the VaR, thus running more Monte Carlo Simulations, and slightly lagging the app consistently. Whilst this method was efficient, I wanted to adapt is so that it didn't have to run through all the simulations extensively every time (since the more simulations produced more accurate results that I wanted to have displayed), resulting in me considering the use of a convergence point/threshold. With this, my method would continuously perform simulation steps, incrementing and producing a new VaR result every time, but performing many less simulations to begin with. And as soon as one of these simulations is within the same threshold (1\%) as the last one, I could assume that this was a reasonably accurate estimation of the VaR, returning the latest value for it.\\\vspace{0.3cm}
@@ -1322,7 +1327,7 @@ As can also be seen in figure \ref{fig:Stock and Ticker Names}, this time in the
 \end{verbatim}
 
 \vspace{0.3cm}
-In the process of formatting and changing the functionality of my add stocks pop-up, I discovered that by default, when you click off the pop-up, it would dismiss itself, which was the perfect behaviors for that pop-up, and could be well utilised here again, even if it does also have a no button that will accomplish the same thing. The on\_confirm using the Yes button would send a signal to the root class, but since the button for the pop-up is found within my portfolio class, I had assigned the current ticker to it, so that when it is pressed, the ticker is passed in with it.
+In the process of formatting and changing the functionality of my add stocks pop-up, I discovered that by default, when you click off the pop-up, it would dismiss itself, which was the perfect behaviours for that pop-up, and could be well utilised here again, even if it does also have a no button that will accomplish the same thing. The on\_confirm using the Yes button would send a signal to the root class, but since the button for the pop-up is found within my portfolio class, I had assigned the current ticker to it, so that when it is pressed, the ticker is passed in with it.
 
 \begin{verbatim}
   class ConfirmDelete(Popup):
@@ -1379,7 +1384,7 @@ As seen in figure \ref{fig:Deleted Stocks List}, in the exact place where the \t
 \end{verbatim}
 
 \vspace{0.3cm}
-With this pop-up, it passed in the current instance of the portfolio class and the varCalc class being used inside it. With his, it could directly change the VaR calculator class by adjusting its parameters directly, as well as updating the new VaR totals to reflect these new changes, applicable for both Monte Carlo Simulation and Model (Variance-Covariance) methods. I knew that not everyone that uses this app could understand what Value at Risk even represents or means in general, so I decided to add a brief explanation of what it is in the form of a contextual sentence as can be seen in figure \ref{fig:Final Adjust VaR}. I used colour coordination to make it easier to understand what text input relates to what portion of the sentence, making use of hint text colour, and for both pop-ups featuring inputted data (the other being \texttt{InputStock}), I added full verification and visual animations to help emphasise when either text input was incorrect. The numbers within this sentence will also update every time the pop-up is re-opened, so the user will always know what values are currently selected. I know that it would be better to show this on the Portfolio screen at all times, but I was not able to find a subsequent place that I could showcase such information, so it's current location will have to suffice.\\\vspace{0.3cm}
+With this pop-up, it passed in the current instance of the portfolio class and the varCalc class being used inside it. Then, it could directly change the VaR calculator class by adjusting its parameters directly, as well as updating the new VaR totals to reflect these new changes, applicable for both Monte Carlo Simulation and Model (Variance-Covariance) methods. I knew that not everyone that uses this app could understand what Value at Risk even represents or means in general, so I decided to add a brief explanation of what it is in the form of a contextual sentence as can be seen in figure \ref{fig:Final Adjust VaR}. I used colour coordination to make it easier to understand what text input relates to what portion of the sentence, making use of hint text colour, and for both pop-ups featuring inputted data (the other being \texttt{InputStock}), I added full verification and visual animations to help emphasise when either text input was incorrect. The numbers within this sentence will also update every time the pop-up is re-opened, so the user will always know what values are currently selected. I know that it would be better to show this on the Portfolio screen at all times, but I was not able to find a subsequent place that I could showcase such information, so it's current location will have to suffice.\\\vspace{0.3cm}
 
 \begin{figure}[h]
   \centering
@@ -1389,7 +1394,7 @@ With this pop-up, it passed in the current instance of the portfolio class and t
 \end{figure}
 
 \subsection{The Finalised Portfolio Screen}
-I am inherently not the best at creating visually appealing software, I struggle with finding colour schemes that are coherent and I don't know how to always make things look right. With my VaRChecker, I was able to find a bland gray scheme, and whilst I continued to utilise a few of these colours for consistency, I settled on a range of different blues for the portfolio screens display. I have made a multitude of different styling and customisations to help with visual appearance and user understanding of where things are and what is important. The portfolio's code has been adapted to work when there are no stocks being held within it, and when there's only one stock being held as well, since yfinance downloads need to be defined differently afterwards when retrieving information since it gives it back in a different data-frame. For a while, I was dividing my VaR Method Simulation by 100 since I used the same code from my \texttt{VaRChecker.py} file, but after realising and changing this, I was able to get matching VaR results across the two screens, so both produce accurate single stock data. The screen is fantastically robust and can handle whatever stock storage scenario you want to throw at it, including storing large stock names and numbers. I will add a range of figures showing various parts of this screen below, this also including \ref{fig:Final Adjust VaR} since that is from the finished product as well and a previous green button design that I didn't think fit the visual style, as well as me not having changed the Stocks to a Blue Hue.\\\vspace{0.3cm}
+Being focused more on the functionality of the program rather than its form, by using VaRChecker I was able to find a simple gray scheme, and whilst I continued to utilise a few of these colours for consistency, I settled on a range of different blues for the portfolio screens display. I have made a multitude of different styling and customisations to help with visual appearance and user understanding of where things are and what is important. The portfolio's code has been adapted to work when there are no stocks being held within it, and when there's only one stock being held as well, since yfinance downloads need to be defined differently afterwards when retrieving information since it gives it back in a different data-frame. For a while, I was dividing my VaR Method Simulation by 100 since I used the same code from my \texttt{VaRChecker.py} file, but after realising and changing this, I was able to get matching VaR results across the two screens, so both produce accurate single stock data. The screen is fantastically robust and can handle whatever stock storage scenario you want to throw at it, including storing large stock names and numbers. I will add a range of figures showing various parts of this screen below, this also including \ref{fig:Final Adjust VaR} since that is from the finished product as well and a previous green button design that I didn't think fit the visual style, as well as me not having changed the Stocks to a Blue Hue.\\\vspace{0.3cm}
 
 \begin{figure}[h]
   \centering
@@ -1445,44 +1450,329 @@ The methods used for the library are quite self-explanatory, with the \texttt{pl
   \label{fig:Convergence Analysis}
 \end{figure}
 
-
 \subsection{Matplotlib within Kivy}
+However, unlike my previous approach, having an external library forcefully open up its own custom pop-up was not what I was looking for in my singularly packaged application module I was looking to create. I knew that I wanted to be able to display this graphical interface within the confines of my program, and to do this I would need to utilise arguably the best feature that kivy has been able to integrate, \texttt{Garden}. Garden is a collection of widget and library addons that has been implemented and maintained by users, giving it full capability to be able to do whatever other users may have been able to implement within the kivy source material. This gives Kivy such an incredible wide range of capabilities, since community driven development can foster a lot of creativity and innovation, and upon looking through garden, the module I was in need of blossomed into view.\\\vspace{0.3cm}
 
+There was quite simply a MatPlotLib implementation of Kivy that was readily available within the Garden module, \url{https://github.com/kivy-garden/garden.matplotlib}, and whilst both garden and the matplotlib version would need a pip-install, those were the only limitations stopping me from being able to start utilising this framework within my project. Alas, after everything was installed and correctly referenced, there was no success in the communication between the garden matplotlib backend (which I had found the location of) and my ability to import the libraries into my python program. This resulted in me trying many techniques to initiate communication, even adding a custom \texttt{PATH} indicator for python to my system, but nothing seemed to work. 
 
+Fortunately, others online had been encountering the same issue as me, where they had full evidence that they had installed and referenced the library to within their knowledge, but could not prevail in overcoming the errors that were presented when trying to run the code. They had raised this issue in \texttt{Stack Overflow}, a notorious website for coders and developers alike for the amount of questions and answers contained within it, one such being someone asking for help with this same issue I was having. The answer they received was that it was a current bug, and you needed to install the library with a slightly different console command seen below:\\\vspace{0.3cm}
 
+\begin{verbatim}
+  python -m pip install https://github.com/kivy-garden/matplotlib/archive/master.zip
+\end{verbatim}
+
+\vspace{0.3cm}
+This would help install the newly update and fixed library needed from the proper github source. They also said to reference the import as \texttt{kivy\_garden}, rather then with a "." between them. With my new full import being \texttt{from kivy\_garden.matplotlib.backend\_kivyagg import FigureCanvasKivyAgg}, I was able finally able to stop the errors that my IDE was presenting me with, and could now start on implement the MatPlotLib graphs within my Kivy application. The link to the answer that I used to help fix this issue was done by "John Anderson" and can be found here \url{https://stackoverflow.com/a/77911314}\\\vspace{0.3cm}
 
 \subsection{Creating the Graphs Screen}
-Start with putting my initial drawing for this here.
+For this screen, all I knew is that I wanted to show off a multitude of different graphs, and that if I could, I would want to represent them in a sorted, ranked format. This was due to me removing my previous rankings class, in favour of an overall graphing section, so I knew that it was still something that I had to desire to incorporate. So for the last time, I was able to draft and visualise what I needed to create before I started work on it, with pen and paper again.\\\vspace{0.3cm}
 
-\subsubsection{Adding Dynamic Pop-Up Labels}
+As can be seen in figure \ref{fig:Graphs Screen Draft}, I originally had another scrollbar, on the right hand side this time, to navigate between the different graphical options, and the actual graphing section would take up the rest of the screen. But as you can also see with the red arrow below, I decided that moving it to the bottom of the window would not only diversify it in comparison to my other screens, but allow for a better space to display my graphing portion, as it aligns to a wider rectangular shape, rather than a tall and thinner one. This would allow for a better visual representation of the data, and a more user-friendly experience when navigating the screen.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/IMG_1349.jpg}
+  \caption{Draft of the Graphs Screen}
+  \label{fig:Graphs Screen Draft}
+\end{figure}
+
+\vspace{0.3cm}
+Below this drawing, I also specified the different types of graphs that I wanted to display, since it was good to plan ahead for what I wanted to accomplish. Whilst they can also be seen in figure \ref{fig:Graphs Screen Draft 2}, I will list what I initially envisioned here as well, since some are the main focus of this screen:
+
+\begin{itemize}
+  \item Convergence Analysis for Current Portfolio with Monte Carlo Simulation
+  \item Sorted FTSE100 Model VaR Plots (with hover functionality)
+  \item Visualisation of Backtesting (in some regard)
+  \item Past Theoretical Portfolio Value Over Time
+  \item Past Single Stock Selected Price Over Time
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/IMG_1349 (1).jpg}
+  \caption{Draft of the Graphs Screen Continued}
+  \label{fig:Graphs Screen Draft 2}
+\end{figure}
+
+\vspace{0.3cm}
+As you may also be able to see, I jotted numbers next to relevant ideas to understand the x-axis limits that each would have to display, since this would alter how I develop them in the future, and I wanted to make sure each one was as clear as possible for understanding the resultant graphs. With this, I used kivy to layout my initial screen and created a basic plot to test the functionality of the libraries ability to display the graphs within my code. \\\vspace{0.3cm}
+
+\begin{verbatim}
+  import matplotlib.pyplot as plt
+  from kivy\_garden.matplotlib.backend\_kivyagg import FigureCanvasKivyAgg
+  class Graphs(Screen):
+      def __init__(self, **kwargs):
+          super(Graphs, self).__init__(**kwargs)
+          self.createGraph()
+
+      def createGraph(self):
+          plt.figure(figsize=(6, 4))
+          plt.plot([1, 29, 12, 4])
+          ...
+          plt.tight_layout()
+          self.ids.graphSection.add_widget(FigureCanvasKivyAgg(plt.gcf()))
+\end{verbatim}
+
+\vspace{0.3cm}
+During \texttt{Graphs} class initialisation, the \texttt{createGraph} method would be called, creating a new figure with a size of 6 by 4, plotting a simple line graph with the random data \texttt{[1, 29, 12, 4]}, and then adding it, using the \texttt{FigureCanvasKivyAgg} class, to the \texttt{graphSection} layout within the kivy file, where I had specified enough space for it to be rendered. This worked upon initial startup, and when I created the subsequent scroll wheel with simple buttons, binding one to this method, I was able to call it to be created again. However, I was yet to add a line clearing any of the widgets within the \texttt{graphSection} layout, so every time the button was pressed (and due to the line \texttt{plt.tight\_layout()} being used to keep everything together within the graphic boundaries), the subsequent graphs would all be squashed together, lagging the program more and more. Fortunately, a simple addition of the line \texttt{self.ids.graphSection.clear\_widgets()} removed it at the start of the method call, but you can see the results of this error in figures \ref{fig:Graphs Screen Error} and \ref{fig:Graphs Screen Error 2}.\\\vspace{0.3cm}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (7).png}
+  \caption{Graphs Screen with 2 Graphs Plotted}
+  \label{fig:Graphs Screen Error}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (5).png}
+  \caption{Graphs Screen with Many Graphs Plotted}
+  \label{fig:Graphs Screen Error 2}
+\end{figure}
+
+\subsubsection{Layout and Dynamic Pop-Up Labels}
+Something that can also be seen within the figures \ref{fig:Graphs Screen Error} and \ref{fig:Graphs Screen Error 2} is the crudely drawn graph repeated many times across the buttons at the bottom of the screen. My goal was to have distinct and vibrant graphs by the end of this section, so my goal was to take these, add a blur effect as to make any text in front of them more distinct, helping the user know which graph they are going to generate when the buttons are pressed by just being able to vaguely see when scrolling through. Of course this would have to be added at the end of the screens development, when all the other graphs have achieved a distinct appearance, so the "stock" stock image that I created in paint was used as a placeholder for the majority of this classes development going forward. My original full code for \texttt{Graphs.kv} can be seen in figure \ref{fig:Graphs Screen KV}, since I haven't had opportunity to showcase much of the kivy layout. In it, you can see me define the\\\vspace{0.3cm}
+
+\begin{figure}
+\begin{verbatim}
+  <Graphs>:
+  BoxLayout:
+      orientation: 'vertical'
+      BoxLayout:
+          id: graphSection
+          orientation: 'vertical'
+          size_hint_y: 0.75
+          canvas.before:
+              Color:
+                  rgba: 0.2, 0.2, 0.2, 1
+              Rectangle:
+                  pos: self.pos
+                  size: self.size
+      ScrollView:
+          do_scroll_x: True
+          do_scroll_y: False
+          size_hint_y: 0.25
+          GridLayout:
+              cols: 10
+              size_hint_x: None
+              width: self.minimum_width
+              canvas.before:
+                  Color:
+                      rgba: 0.2, 0.2, 0.2, 1
+                  Rectangle:
+                      pos: self.pos
+                      size: self.size
+              Button:
+                  text: 'Option 1'
+                  background_normal: 'graph reference.png'
+                  size_hint_x: None
+                  width: 250 
+                  ...
+              Button:
+                  text: 'Option 6'
+                  background_normal: 'graph reference.png'
+                  size_hint_x: None
+                  width: 250
+\end{verbatim}
+\caption{Graphs Screen Original \texttt{.kv} (Kivy) File}\label{fig:Graphs Screen .kv}
+\end{figure}
+
+With my layout defined and the buttons set up to create these stock graphs, I knew that now would be the best time for me to attempt to implement one of the most important features, having the ability to hover over points on the graph, and have a little display for the information it is being plotted with. Since there was little conventional documentation for this implementation of MatPlotLib, as well as a few failed attempts to try and trial and error this to work, I decided to see if anyone in the small community that helped to develop for this user ran library had any more success with this than I was having. I once again found myself on Stack Overflow, where someone was having a problem getting their interpretation of the issue to work, and once again someone in the comments had offered a solution. Whilst I didn't take the exact code that they presented, I was heavily inspired by the logic that they used within their solution, and I want to fully acknowledge that without this original help I would not have been able to expand and adapt on this informational pop-up throughout the rest of my screens development. The link to the answer that helped inspire my adapted solution, given by \texttt{Justin CR}, can be found here \url{https://stackoverflow.com/a/55184676}, with my adapted version also being visible below, split into sections to explain how it works.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def Graph1(self):
+      x = list(range(1, 101))
+      y = [random.randint(i, 1000) for i in x]
+      self.createGraph(x, y, 'some random linear numbers', 
+           'more random linear numbers', 'Random Graph 1')
+\end{verbatim}
+
+\vspace{0.3cm}
+I've now separated the creation of the graph into its own method, so that I can call it with different data and labels, something I am continusly planning to do for other graphs, and have it create a new plot each time. This was just a random test one with some randomly generated numbers and default labels.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def createGraph(self, x, y, xlabel, ylabel, title):
+      self.ids.graphSection.clear_widgets()
+      self.fig, self.ax = plt.subplots()
+      self.currentLine, = self.ax.plot(x, y, 'o-')
+      ...
+      self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords=
+      "offset points",bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))
+      self.infoPopup.set_visible(False)
+
+      canvas = FigureCanvasKivyAgg(self.fig)
+      canvas.mpl_connect("motion_notify_event", self.mouse_hover)
+      
+      canvas = FigureCanvasKivyAgg(self.fig)
+      self.ids.graphSection.add_widget(canvas)
+\end{verbatim}
+
+\vspace{0.3cm}
+The \texttt{createGraph} method is now called with the data and labels that I want to display being passed into it, proceeding to create a new figure and axis, plotting all the data. Next, it will carefully construct the informational pop-up that will be displayed when hovering over the graph, and set it to be invisible by default. The other parameters within it are used to define the style of the pop-up, and the arrow that will point to the data point being hovered over. The \texttt{FigureCanvasKivyAgg} class is then used to display the graph within the kivy layout, and the \texttt{mpl\_connect} method is used to connect the mouse hover event to the \texttt{mouse\_hover} method, something that will be defined underneath this.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def mouse_hover(self, event):
+      if event.inaxes == self.ax:
+          cont, ind = self.line1.contains(event)
+          if cont:
+              pos = ind['ind'][0]
+              x, y = self.line1.get_data()
+              self.showPopup(x[pos], y[pos])
+          else:
+              self.hidePopup()
+
+  def hidePopup(self):
+      self.infoPopup.set_visible(False)
+      self.fig.canvas.draw_idle()
+\end{verbatim}
+
+\vspace{0.3cm}
+The \texttt{mouse\_hover} method is called whenever the mouse is moved over the graph, constantly checking to see if the mouse is within the graph's axis. If it is, it will check if the mouse is hovering over any data point by using the \texttt{contains} method, and if it so, it will pass the x and y data points to another method called \texttt{showPopup}. If the mouse is not hovering over any data points, it will call the \texttt{hidePopup} method, which will set the pop-up to be invisible, seen beneath the other method.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def showPopup(self, x, y):
+      text = f"({x}, {y})"
+      self.infoPopup.set_text(text)
+      self.infoPopup.xy = (x, y)
+      self.infoPopup.set_visible(True)
+      self.fig.canvas.draw_idle()
+\end{verbatim}
+
+\vspace{0.3cm}
+And finally, the \texttt{showPopup} method will set the text of the pop-up to currently be the x and y data points that the mouse is hovering over. I will need to change this to be able to display different values in the future, since the x values are rarely relevant to what I want to display for my proposed graphical ideas. It then sets the position of the pop-up to be at the x and y data points, sets it to be visible, and then redraw the canvas to display the pop-up. With this working in tandem with the other methods, I am able to create a fully functioning hover method that will display the values of whatever graph is entered into the \texttt{createGraph} method, and will be able to be used for all future graphs that I create.\\\vspace{0.3cm}
 
 \subsubsection{Threading}
+With this newfound ability to see specific relevant information for specific points on graphs, I knew the first one I should properly try to implement was my convergence analysis graph, since I already knew how to define it for MatPlotLib, and would especially useful in comparing the converging points to the Monte Carlo Simulation result found in my Portfolio screen. After porting over the code I had previously used and getting it to run independently from the varCalculators class in the portfolio screen, I was able to have the simulation checkpoints generated and displayed within my Kivy application. This was fantastic, but did cause a massive issue, even with the optimised simulation I had created, the amount of time I had set for the simulation to run unaltered (for 75k simulations) would lag the program for around 10+, where you couldn't move the program would become completely unresponsive. This was no way for any form of industry standard software to run, since I knew regardless of how fast I can get the simulations to generate, if I could still make the program usable at the same time, it could work as a background task before its completed and displayed.
 
-\subsubsection{Theoretical Portfolio Value Over Time and Custom ScrollView}
+To do this, I would need to implement threading, something that I had not needed to include before now due to the lack of any significant hindrances to the applications running speed. Threading is part of pythons core library, so all I would need to do is import it, and then create a new thread that would run the simulation in the background, whilst the main thread would continue to run the program as normal. This would allow for the program to be responsive, and the simulation to run in the background, with the results being displayed when they are ready. I also tried for a while to implement a module called asyncio, but this was to no avail.
+
+\begin{verbatim}
+  def graph3(self):
+      threading.Thread(target=self.monteCarloConvSim).start()
+
+  def monteCarloConvSim(self):
+      stocks = self.portfolio.tempDownload
+      store = JsonStore('holdings.json')
+      ...
+      totalValue = float(self.portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
+
+@mainthread
+    def createGraph(self, x, y, xlabel, ylabel, title):
+    ...
+\end{verbatim}
+
+\vspace{0.3cm}
+My \texttt{graph3} method would be called when the button was pressed, and would start a new thread that would run the \texttt{monteCarloConvSim} method. This method would then run the simulation, and then call the \texttt{createGraph} method  when it had ended to display the results. The \texttt{@mainthread} decorator would then be used to ensure that the graph is created on the main thread, since the simulation would have been subsequently running on a separate parallel one. This would allow for the program to be be more responsive, and the simulation to run in the background, but due to the intensity of the simulation, I had to implement a delay of 1 second in-between checkpoints just to let the program run semi-properly. It was apparent that even with this solution, I would still need to change something in the future to get this graph to be a more consistent viable option.\\\vspace{0.3cm}
+
+Later on, I would define my threads with \texttt{thread.daemon = True}, this boolean value allowing threads to run in the background as usual, but if the main thread is closed, the daemon threads will also be closed. This was important, as there were times when threads were running, and I wouldn't want to see the final result, opting to shut the program down. Since the thread was running separately from the main app initiating its shutdown, this would cause the whole app to crash, resulting in an unnecessary situation for this sort of software to encounter. To fix this, with the daemon value being set to true, as soon as the main thread closes down, the threads will all close down with it, resulting in smooth exits from the application.\\\vspace{0.3cm}
+
+\subsubsection{Theoretical Portfolio Value Over Time}
+For my first graph made specifically for this screen, I wanted to go with the Theoretical Portfolio Value Over Time, as I understood the logic for it, and knew that with it completed, I would be able to create the specific stock graph easily afterwards. I had altered the info popup to now only display the more relevant y-value, along with a passed in symbol (this being a \pounds sign), allowing for a much more visually understandable graph. For all the graphs that I have developed for this screen, I will show a significant portion of the code, allowing me to explain the logic behind each one.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def graph1(self):
+      stocks = self.portfolio.tempDownload
+      store = JsonStore('holdings.json')
+      closePrices = stocks['Adj Close'].tail(500)
+      totalValues = []
+      for i in range(len(closePrices)):
+          dailyTotal = 0
+          row = closePrices.iloc[i]
+          for stockKey in store:
+              stockData = store.get(stockKey)
+              dailyTotal += row[stockData['ticker']] * float(stockData['sharesOwned'])
+          totalValues.append(dailyTotal)
+      x = list(range(0, 500, 15))
+      y = totalValues[::15]
+      self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time')
+\end{verbatim}
+
+\vspace{0.3cm}
+My new \texttt{graph1}, since I thought that it would be the best one to see when the screen is originally loaded, will directly communicate with the portfolio screen for its information. I set it up so that whenever the stocks are downloaded, to reduce the need to have them downloaded any further time, I would store them within a variable, which can be cross referenced between classes. The store would also be loaded from it's usual file, and the subsequent adjusted close prices of the stocks being calculated too. The total values would then be computed for each day by iterating through each stock and multiplying these daily adjusted close prices by the amount of shares owned (stored within holdings), appending the results to a list. The x values would be set to be every 15 days, as this produced a well enough structured graph, and the y values would be set to be every 15th value in the total values list to match. The \texttt{createGraph} method would then be called with these values, and the graph would be displayed.\\\vspace{0.3cm}
 
 \subsubsection{Single Stock Price Over Time and Vectorisation}
+Succeeding this, I could adapt this same code to be able to display the Single Stock Price Over Time, since the logic was very similar, and I could use the same data that I had already downloaded. For this, the user would select a stock within their portfolio screen, then go over to the graphical screen to select this graph to be rendered. Since every time I would display a specific stock, I would store its downloaded info in a variable, that would also be set to none if there totals are being displayed, so I can call this variable into this program to access the data.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  tempStockInfo = self.portfolio.tempStockInfo
+  if tempStockInfo is not None:
+      stocks = self.portfolio.tempDownload
+      ...
+      for i in range(len(closePrices)):
+          dailyTotal = 0
+          row = closePrices.iloc[i]
+          ...
+          totalValues.append(dailyTotal)
+      x = list(range(500, 0, -15)) 
+      y = totalValues[::15]
+  self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker']...)
+\end{verbatim}
+
+\vspace{0.3cm}
+If the \texttt{tempStockInfo} variable is not none, the stocks variable will retrieve the rest of the temporarily stored downloaded stocks. The total values would then be computed in the same way as the previous graph, minus the need to multiply by shares and added together, for the specific stock, with the x and y value being set with almost the same metric. I decided that since these graphs are showing the progression of the stock over the last 500 days, then the graph should indicate this, with numbers ascending from 500 to 0. Now normally, this goes against how the library is plotted, since it usually defaults to putting the x-axis in ascending order. However, you can call the \texttt{invert\_xaxis()} method to help flip is when you display. Implementing this into my \texttt{createGraph} method, I was able to get it to check in what order the passed in x values where in after I plotted the values with the original x-y coordinates defaulting to ascending, allowing for the plot to look like normal, but for the x-axis to be displayed in a reverse descending order.\\\vspace{0.3cm}
+
+During this time, I was becoming increasingly annoyed by the ridiculous amount of time it would take to generate the simulations for my convergence graph (unlike how it stops itself when converging within my main program), so I decided to do some experimentations with the code, utilising the time module within python to directly time certain portion of the code, and see how me changing my algorithm affected it. However, this timer wasn't even necessary to comprehend the improvement that I found when adjusting one of my Numpy functions. 
+
+\begin{verbatim}
+  weightings = weightings.reshape(1, -1)
+  portfoReturns = np.sum(optimisedSim * weightings, axis=-1)
+\end{verbatim}
+
+\vspace{0.3cm}
+By using np.sum with the added additional parameter of summing them across the last axis, I was able to speed up the overall simulation sequence by 100\% almost. This was due to vectorisation, with the optimisedSim being a 2D array, numpy would let me then sum across its last axis, reducing it to a 1D array, and effectively replacing the previous hard coded python loop. To match this sum, I needed to slightly adjust the dimensions of weightings beforehand, but with this newfound method, I could generate the simulations needed for the graph without even the need for threading, but it was still kept due to reduce the program that can have anything capable of blocking. I implemented this revised and improved method for my normal convergence within my portfolio class as well, it bringing the same results, at a much faster rate.\\\vspace{0.3cm}
 
 \subsubsection{Creating Ranking Graphs and Displaying Names}
+When I first thought about implementing rankings graphs, I knew that I would have to completely adapt the way my code would display its popup, since there wouldn't be much relevance in seeing the y-axis, if you don't know what each individually plotted points represents. It becomes less about the value, and more about each points relative position to each other. With this knowledge, I knew I had to find some way to not only get all the names of the stocks without having to use my previous method, due to the slow speed done in retrieving that many request responses. But I also needed to find a way to get my hover feature to the names for each plotted point, especially since the would be extremely bunched together when displaying 100 different stocks for it.\\\vspace{0.3cm}
 
-\subsubsection{Keeping Labels Within the Graphs Boundaries}
+For this, I decided to create an entirely new graph creation method called \texttt{createRankingGraph}, that would be called when a ranking graph was selected. It would take in a list of strings and a list of values, create an x-axis plot based on the lengths of the list, and plot these y values equally spaced out along the x-axis.\\\vspace{0.3cm}
 
-\subsubsection{Current Portfolio Ranking}
+\begin{verbatim}
+  def createRankingGraph(self, tickers, vars):
+        self.fig, self.ax = plt.subplots()
+        self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-')
+        self.ax.get_xaxis().set_ticks([])
+        ...
+        self.tickerHover = tickers # Save the tickers for the hover function
+        canvas.mpl_connect("motion_notify_event", self.FTSEonHover)
+        self.threadRunning = False
+\end{verbatim}
 
-\subsection{Visualising Back-Testing}
+\vspace{0.3cm}
+It would remove the ticks from the x-axis, as they hold no relevance to the graph, other then to place a point dependant on the given y values, that would be sorted in an order before being passed in. The tickers would need to be saved for the hover function to work in the future for this method, as it can't be derived from a coordinate position, and the \texttt{mpl\_connect} method would be used to connect to this new hover event called \texttt{FTSEonHover}. Finally, individual thread checks were set up for any methods using threading, as to not have the user click on the button multiple times and load up multiple threads in succession, this way, it locks them out of this ability until the thread has finished running.\\\vspace{0.3cm}
 
-\subsection{The Finalised Graphs Screen}
+\begin{verbatim}
+  def FTSEonHover(self, event):
+    ...
+        pos = ind['ind'][0]
+        tickerName = self.tickerHover[pos]
+        self.showFTSE(tickerName, event.xdata, event.ydata)
+    else:
+        self.hidePopup()
+\end{verbatim}
+
+\vspace{0.3cm}
+Done the same way as the other hover method, the \texttt{FTSEonHover} method would check if the mouse was hovering over any data points, and if so, it would pass the ticker name to the \texttt{showFTSE} method, along with the x and y data points. This would then display then use the x and y points to know where to display the popup, with it not containing the ticker name within it. Later on I changed this to be the full names of the companies, as it is not good practice to ask users to be able to remember what company relates to what ticker symbol. This was done by accessing the same pandas imported wikipedia table, that contained the stocks names as well as the tickers, with both needing to be mapped with each other. If the mouse was not hovering over any data points, the previous \texttt{hidePopup} method could still be utilised for the same purpose.\\\vspace{0.3cm}
+
+\begin{verbatim}
+  def ftse100Ranking(self):
+      ftse100 = [ticker + ".L" for ticker in self.varChecker.ftse100['Ticker'].tolist()]
+      ftse100Names = self.varChecker.ftse100['Company'].tolist()
+      tickerToName = dict(zip(ftse100, ftse100Names))  # mapping between tickers and names
+      stockData = yf.download(ftse100, period="500d")
+      VaRs = {}
+      for stock in stockData.columns.levels[1]:
+          VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock])) 
+      sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1]))
+      self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()))
+\end{verbatim}
+
+\vspace{0.3cm}
+The zipped dictionary that maps each ticker to its company is stored to be used for later. The FTSE100 stocks are then downloaded all at once, much faster then doing each stock iteratively within a loop, and their VaRs are calculated for each stock using the modelSim in the VaRCalculators class, with these results also being stored in a dictionary. This dictionary is then sorted by its values, and the keys and values are passed into the \texttt{createRankingGraph} method, which will display the graph using the methods described above.\\\vspace{0.3cm}
+
+With this, I was able to plot all 100 of the lists stocks onto a graph, and with little degree of difficulty, move my mouse over each one to see the exact name of the company that the name was displaying for. This similar system was also used for creating a ranking graph for your portfolio, helping display the relative risk that each stock contains individually, and providing the user with a versatile tool to help them choose and understand the risk that they are taking on.\\\vspace{0.3cm}
 
 
-\section{Chapter 6 --- Completed Deliverable}
-
-\subsection{Features and Final GUI Design}
-
-\subsection{P-Values and Graphical Analysis}
-
-\subsection{Adaptations for Packaged Release}
-
-
-
+\subsection{Final Design}
 
 
 
@@ -1603,7 +1893,7 @@ The implementation of getter and setter methods through this helps ensure that o
 
 \underline{\textbf{Wrapper Pattern}}\\\vspace{0.3cm}
 
-I was very happy with my use of the Wrapper Pattern employed in \texttt{graphs.py} through the use of a decorator function, \texttt{checkForStocks}, which serves as a pre-invocation check for methods responsible for generating graphs. This wrapper ensures that the underlying graph generation methods are called only if there are stocks present in the portfolio, thereby preventing runtime errors or undesirable behaviors when attempting to render the graphs without data. This pattern is an excellent example of adding pre-processing steps to method invocations without altering the core functionality of the methods themselves, and I plan to use this far more in future projects due to its simplicity and usefulness.\\\vspace{0.3cm}
+I was very happy with my use of the Wrapper Pattern employed in \texttt{graphs.py} through the use of a decorator function, \texttt{checkForStocks}, which serves as a pre-invocation check for methods responsible for generating graphs. This wrapper ensures that the underlying graph generation methods are called only if there are stocks present in the portfolio, thereby preventing runtime errors or undesirable behaviours when attempting to render the graphs without data. This pattern is an excellent example of adding pre-processing steps to method invocations without altering the core functionality of the methods themselves, and I plan to use this far more in future projects due to its simplicity and usefulness.\\\vspace{0.3cm}
 
 \begin{verbatim}
 def checkForStocks(func):
@@ -1623,7 +1913,7 @@ These additional design patterns utilised throughout all code within my program 
 
 \subsection{Testing and Documentation}
 
-Testing is a critical component of software development, essential for ensuring that the application meets its requirements and is free of errors. Mainly for my project, the primary mode of testing involved running the application and observing its behaviors for errors, crashes, GUI issues or incorrect VaR calculations.\\\vspace{0.3cm}
+Testing is a critical component of software development, essential for ensuring that the application meets its requirements and is free of errors. Mainly for my project, the primary mode of testing involved running the application and observing its behaviours for errors, crashes, GUI issues or incorrect VaR calculations.\\\vspace{0.3cm}
 
 This testing approach used can be classified as Ad Hoc Testing and Exploratory Testing. These methods are informal and unstructured, as I have been relying on my intuition and experience to identify issues.
 
@@ -1736,7 +2026,7 @@ The ethical use of AI in educational and professional settings all hinges on the
   \item\label{ref1} Alexander, C. (2008). *Market Risk Analysis: Value-at-Risk Models.* Hoboken, NJ: Wiley. [Online] Available at: \url{https://ebookcentral-proquest-com.ezproxy01.rhul.ac.uk/lib/rhul/reader.action?docID=416450}.
   \\\textit{This book covers various aspects that I want to approach in this project, such as historical simulation, Monte Carlo simulation and various forms of testing that could be highly useful for my project.}
   
-  \item\label{ref2} Arbuckle, D. (2017). *Daniel Arbuckle’s Mastering Python: Build Powerful Python Applications.* Birmingham, England: Packt. [Online] Available at: \url{https://learning.oreilly.com/library/view/daniel-arbuckles-mastering/9781787283695/?ar=}.
+  \item\label{ref2} Arbuckle, D. (2017). *Daniel Arbuckle's Mastering Python: Build Powerful Python Applications.* Birmingham, England: Packt. [Online] Available at: \url{https://learning.oreilly.com/library/view/daniel-arbuckles-mastering/9781787283695/?ar=}.
   \\\textit{I chose this reference as it helps with python packaging, being able to turn a python code and all its GUI and libraries into a single executable file, which is something I want to be able to do for this project.}
 
   \item\label{ref3} Choudhry, M. (2006). *An Introduction to Value-at-Risk.* Chichester: John Wiley \& Sons Limited. [Online] Available at: \\ \url{https://learning.oreilly.com/library/view/an-introduction-to/9780470017579/}.
@@ -1769,24 +2059,23 @@ The ethical use of AI in educational and professional settings all hinges on the
   \item\label{ref12} Casarin, R., Chang, C.-L., Jimenez-Martin, J.-A., McAleer, M., Pérez-Amaral, T. (2013). *Risk management of risk under the Basel Accord: A Bayesian approach to forecasting Value-at-Risk of VIX futures.* Mathematics and Computers in Simulation, 94, 183-204. ISSN 0378-4754. [Online] Available at: \url{https://doi.org/10.1016/j.matcom.2012.06.013}.
   \\\textit{This reference is useful for understanding the Bayesian approach to forecasting Value-at-Risk of VIX futures and its relevance to risk management in financial institutions.}
 
-
-
-
   \item\label{ref13} Kivy. (2023). *Kivy Documentation.* [Online] Available at: \url{https://kivy.org/doc/stable/}.
   \\\textit{This reference is the official documentation for the Kivy framework, which I consistently used to aid me in my understanding and ability to develop the GUI to such a high degree.}
   
   \item\label{ref14} Boatright, J.R. (2010). *The Ethics of Risk Management: A Post-Crisis Perspective.* Business Ethics Quarterly, 20(4), 621-642. [Online] Available at: \url{https://www.bbvaopenmind.com/en/articles/the-ethics-of-risk-management-a-post-crisis-perspective/}.
-  \\\textit{This reference is a paper that explores the ethical considerations in risk management, which I will be using to help me understand the ethical implications of the risk management models I will be developing for my project.}
+  \\\textit{This reference is a paper that explores the ethical considerations in risk management, which I utilised to help me understand the ethical implications of risk management in financial institutions.}
 
   \item\label{ref15} Weis, V. (2023). *How Financial Services Firms Can Inform Decision-Making with Ethical Data Handling.* Atrium. [Online] Available at: \url{https://atrium.ai/resources/how-financial-services-firms-can-inform-decision-making-with-ethical-data-handling/}.
-  \\\textit{This reference is an article that discusses the importance of ethical data handling in financial services, which I will be using to help me understand the ethical implications of handling financial data in my project.}
-
+  \\\textit{This reference is another article that discusses ethical data handling in financial services, it also touches briefly onto the use of AI in the industry, leading me to understand and explore the further ethical impact that AI has in finance.}
 
   \item\label{ref16} Hong, L.J., Hu, Z., Liu, G. (2014). *Monte Carlo Methods for Value-at-Risk and Conditional Value-at-Risk: A Review.* ACM Computing Surveys, 46(2), 1-29. [Online] Available at: \url{https://dl.acm.org/doi/pdf/10.1145/2661631}.
-  \\\textit{This reference is a paper that reviews Monte Carlo methods for Value-at-Risk and Conditional Value-at-Risk, which I will be using to help me understand the Monte Carlo simulation method for my project.}
+  \\\textit{This is the reference paper that I used to help explain and comprehend the Monte Carlo Simulation method, a key aspect within the most important aspects of my projects development cycle.}
 
   \item\label{ref17} Holman, J.O., Hacherl, A. (2022). *Teaching Monte Carlo Simulation with Python.* Journal of Statistics Education, 30(1), 33-44. [Online] Available at: \url{https://www.tandfonline.com/doi/epdf/10.1080/26939169.2022.2111008?needAccess=true}.
-  \\\textit{This reference is a paper that discusses teaching Monte Carlo simulation with Python, which I will be using to help me understand how to implement the Monte Carlo simulation method in Python for my project.}
+  \\\textit{This reference is a paper that discusses teaching Monte Carlo simulation within Python, helping me understand how to best implement this method for my projects language of choice.}
+
+  \item\label{ref18} Trinidad, B. (2021). *A User-Centered Design Approach to Improving Financial Intelligence and Analytical Software.* Universidad Politécnica de Madrid. [Online] Available at: \url{https://oa.upm.es/68940/1/TFM_BEATRICE_TRINIDAD.pdf}.
+  \\\textit{This reference is a thesis that discusses user-centered design in financial software, which I briefly used to help guide me on a few user interface design decisions.}
 \end{enumerate}
 \end{small}
 
@@ -1806,17 +2095,17 @@ Overall, I think the references I have chosen really help encapsulate the multif
 
 \subsubsection{General Literature}
 
-The general literature within the industry around the development of Python software found online, particularly for applications in finance and risk management, helps to exemplify its simplicity, efficiency, and robustness for being utilised for the medium. Python's apparent ascent as a preferred programming language for financial software development is largely attributed to its easy readability, expansive library ecosystem, and the persistently supportive community surrounding it. As noted when I was looking into Van Rossum [\ref{ref18}], the creator of Python, the language's design philosophy helps to emphasise code readability and syntax simplicity, allowing developers to express concepts in fewer, more readable lines of code compared to other programming languages.\\\vspace{0.3cm}
+The general literature within the industry around the development of Python software found online, particularly for applications in finance and risk management, helps to exemplify its simplicity, efficiency, and robustness for being utilised for the medium. Python's apparent ascent as a preferred programming language for financial software development is largely attributed to its easy readability, expansive library ecosystem, and the persistently supportive community surrounding it. As noted when I was looking into Van Rossum (1995) [\ref{ref19}], the creator of Python, the language's design philosophy helps to emphasise code readability and syntax simplicity, allowing developers to express concepts in fewer, more readable lines of code compared to other programming languages.\\\vspace{0.3cm}
 
-Furthermore, the work of Oliphant [\ref{ref19}] on NumPy, an essential library for the majority of all numerical computations within Python, has significantly propelled its adoption into data-intensive and computational fields such as finance. Oliphant details how NumPy's array objects and optimised functionalities for mathematical operations lay the groundwork for more specialised financial and statistical libraries, which has resulted in packages such as pandas and SciPy, this scalability python provides making i such an indispensable tool for the financial analysis and algorithmic exploration.\\\vspace{0.3cm}
+Furthermore, the work of Oliphant (2007) [\ref{ref20}] on NumPy, an essential library for the majority of all numerical computations within Python, has significantly propelled its adoption into data-intensive and computational fields such as finance. Oliphant details how NumPy's array objects and optimised functionalities for mathematical operations lay the groundwork for more specialised financial and statistical libraries, which has resulted in packages such as pandas and SciPy, this scalability python provides making i such an indispensable tool for the financial analysis and algorithmic exploration.\\\vspace{0.3cm}
 
-With McKinney's [\ref{ref20}] seminal work on pandas, a Python library providing high-performance, easy-to-use data structures, and data analysis tools, the literature surrounding the integration of Python in finance has been extensively explored in both academic and industry contexts. This only serves to once again underscore the language's capability to address the complex data manipulation necessary to analyse the needs of financial markets in a way that few other languages are capable of. McKinney notes that Pandas' development was partly motivated by the finance industry's requirement for powerful analytical and data manipulation tools that are both flexible and accessible, being implemented within Python only helping to further that point.\\\vspace{0.3cm}
+With McKinney's (2012) [\ref{ref21}] seminal work on pandas, a Python library providing high-performance, easy-to-use data structures, and data analysis tools, the literature surrounding the integration of Python in finance has been extensively explored in both academic and industry contexts. This only serves to once again underscore the language's capability to address the complex data manipulation necessary to analyse the needs of financial markets in a way that few other languages are capable of. McKinney notes that Pandas' development was partly motivated by the finance industry's requirement for powerful analytical and data manipulation tools that are both flexible and accessible, being implemented within Python only helping to further that point.\\\vspace{0.3cm}
 
-In addition to libraries, Python's role in financial modelling and risk management can be seen detailed by Hilpisch [\ref{ref21}], who highlights Python's application in quantitative finance, from derivatives modelling all the way to risk management strategies. The book exemplifies how Python's incredible ecosystem, encompassing libraries such as MatPlotLib for data visualisation and IPython for interactive computing, help to facilitate an end-to-end workflow for financial analysis.\\\vspace{0.3cm}
+In addition to libraries, Python's role in financial modelling and risk management can be seen detailed by Hilpisch (2014) [\ref{ref22}], who highlights Python's application in quantitative finance, from derivatives modelling all the way to risk management strategies. The book exemplifies how Python's incredible ecosystem, encompassing libraries such as MatPlotLib for data visualisation and IPython for interactive computing, help to facilitate an end-to-end workflow for financial analysis.\\\vspace{0.3cm}
 
 To follow up from my previous observations, may I note how \texttt{O'Reilly} Media has played a pivotal role in my dissemination of knowledge across various domains, including the computer science, financial, and data analysis aspects of my research. With its rich history of publishing comprehensive, well-authored books, \texttt{O'Reilly} has continue to establish itself as a beacon for learners and professionals seeking to enhance their understanding and skills. Their commitment to quality content, coupled with the ease of access I can take advantage of through digital publishing and online learning platforms, have undeniably helped contribute to the widespread accessibility of these educational resources.\\\vspace{0.3cm}
 
-Moving on to exploring financial specifics, the calculation of Value at Risk (VaR) perhaps exemplifies one of the most critical aspects of risk management, helping to quantify the potential loss in value of a portfolio over a defined period for a given confidence interval (as I have mentioned throughout my report). Jorion [\ref{ref22}] writes comprehensively about the metric, elucidating its foundational methodologies and concepts, showcasing its applications in many circumstances in financial risk management. Jorion's work emphasizes VaR's singular role in quantifying market risk and showcases its adoption by financial institutions for compliance and internal risk management.\\\vspace{0.3cm}
+Moving on to exploring financial specifics, the calculation of Value at Risk (VaR) perhaps exemplifies one of the most critical aspects of risk management, helping to quantify the potential loss in value of a portfolio over a defined period for a given confidence interval (as I have mentioned throughout my report). Jorion (2007) [\ref{ref23}] writes comprehensively about the metric, elucidating its foundational methodologies and concepts, showcasing its applications in many circumstances in financial risk management. Jorion's work emphasizes VaR's singular role in quantifying market risk and showcases its adoption by financial institutions for compliance and internal risk management.\\\vspace{0.3cm}
 
 Among the various methods for calculating VaR, the historical simulation approach, method (variance-covariance) approach, and Monte Carlo Simulation are all predominantly used, all of which I have delved into and thoroughly explored. For Monte Carlo, it's flexibility and applicability to complex financial instruments make it a valuable tool for risk assessment, albeit with computational intensity that Python's scientific libraries coupled with intelligent programming help mitigate.\\\vspace{0.3cm}
 
@@ -1827,26 +2116,24 @@ To conclude, this wide range of literature detailed above and within my reports 
 \begin{small}
   \begin{enumerate}
 
-    \item\label{ref18} Van Rossum, G. (1995). *Python Reference Manual.* Amsterdam: Centrum voor Wiskunde en Informatica. [Online] Available at: \url{https://stuff.mit.edu/afs/athena/course/18/18.417/doc/pydocs/ref.pdf}.
+    \item\label{ref19} Van Rossum, G. (1995). *Python Reference Manual.* Amsterdam: Centrum voor Wiskunde en Informatica. [Online] Available at: \url{https://stuff.mit.edu/afs/athena/course/18/18.417/doc/pydocs/ref.pdf}.
     \\\textit{This reference provides the creators insight into Python's design philosophy and its emphasis on readability and simplicity, which make it a fantastic tool for use within financial software development.}
 
-    \item\label{ref19} Oliphant, T.E. (2007). *Python for Scientific Computing.* Computing in Science \& Engineering, 9(3), 10-20. [Online] Available at: \url{https://ieeexplore.ieee.org/abstract/document/4160250}.
+    \item\label{ref20} Oliphant, T.E. (2007). *Python for Scientific Computing.* Computing in Science \& Engineering, 9(3), 10-20. [Online] Available at: \url{https://ieeexplore.ieee.org/abstract/document/4160250}.
     \\\textit{This reference discusses NumPy's role in scientific computing and its impact on Python's quick adoption into finance due to its data-intensive capabilities.}
 
-    \item\label{ref20} McKinney, W. (2012). *Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://books.google.co.uk/books?hl=en&lr=&id=v3n4_AK8vu0C&oi=fnd&pg=PR3&dq=McKinney,+W.+(2012).+*Python+for+Data+Analysis:+Data+Wrangling+with+Pandas,+NumPy,+and+IPython.*+&ots=riEGbmwwnC&sig=6yVYKAcKhqcwpXXLiib29nFF2tc&redir_esc=y#v=onepage&q&f=false}.
+    \item\label{ref21} McKinney, W. (2012). *Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://books.google.co.uk/books?hl=en&lr=&id=v3n4_AK8vu0C&oi=fnd&pg=PR3&dq=McKinney,+W.+(2012).+*Python+for+Data+Analysis:+Data+Wrangling+with+Pandas,+NumPy,+and+IPython.*+&ots=riEGbmwwnC&sig=6yVYKAcKhqcwpXXLiib29nFF2tc&redir_esc=y#v=onepage&q&f=false}.
     \\\textit{This reference explores pandas' functionalities for data analysis and manipulation, highlighting Python's utility for financial data processing.}
 
-    \item\label{ref21} Hilpisch, Y. (2014). *Python for Finance: Analyze Big Financial Data.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://learning.oreilly.com/library/view/python-for-finance/9781491945360/}.
+    \item\label{ref22} Hilpisch, Y. (2014). *Python for Finance: Analyze Big Financial Data.* Sebastopol, CA: O'Reilly Media. [Online] Available at: \url{https://learning.oreilly.com/library/view/python-for-finance/9781491945360/}.
     \\\textit{This reference showcases hoe applicable Python can be for quantitative programming, emphasizing its role in helping compute financial modelling and risk management.}
 
-    \item\label{ref22} Jorion, P. (2007). *Value at Risk: The New Benchmark for Managing Financial Risk.* New York, NY: McGraw-Hill. [Online] Available at: \url{https://merage.uci.edu/~jorion/answer.pdf}.
+    \item\label{ref23} Jorion, P. (2007). *Value at Risk: The New Benchmark for Managing Financial Risk.* New York, NY: McGraw-Hill. [Online] Available at: \url{https://merage.uci.edu/~jorion/answer.pdf}.
     \\\textit{This reference provides a comprehensive look at Value at Risk, and how significant it has been for managing financial risk.}
 
   \end{enumerate}
 \end{small}
 
-% TEMPORARY END OF DOCUMENT TO PROVIDE MORE REALISTIC WORD COUNT FOR NOW
-% \end{document} 
 
 \section{Appendix}
 
@@ -1928,7 +2215,7 @@ I started today by finally getting around and doing proper verification for my i
 I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my codes future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
 
 
-
+\end{document} 
 
 \subsection{Fully Packaged Code}
 \vspace{0.5cm}

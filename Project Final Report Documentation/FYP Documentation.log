@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.30)  11 APR 2024 23:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.30)  12 APR 2024 06:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -484,11 +484,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has b
 <to be read again> 
                    \relax 
 l.63 \newpage
-              [1{c:/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] (./FYP Documentation.toc [2] [3])
+              [1{c:/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] (./FYP Documentation.toc [2])
 \tf@toc=\write4
 \openout4 = `"FYP Documentation.toc"'.
 
- [4] [5] [6] [7] [8] [9]
+ [3] [4] [5] [6] [7] [8]
 Overfull \hbox (12.0pt too wide) in alignment at lines 201--202
  [] 
  []
@@ -537,7 +537,7 @@ Overfull \hbox (12.0pt too wide) in alignment at lines 203--251
  [] 
  []
 
-[10]
+[9]
 Overfull \hbox (12.0pt too wide) in alignment at lines 258--259
  [] 
  []
@@ -577,8 +577,8 @@ Overfull \hbox (12.0pt too wide) in alignment at lines 260--298
  [] 
  []
 
-[11] [12]
-<Images/Image 1.png, id=542, 486.31688pt x 198.7425pt>
+[10] [11]
+<Images/Image 1.png, id=461, 486.31688pt x 198.7425pt>
 File: Images/Image 1.png Graphic file (type png)
 <use Images/Image 1.png>
 Package pdftex.def Info: Images/Image 1.png  used on input line 320.
@@ -587,7 +587,7 @@ Package pdftex.def Info: Images/Image 1.png  used on input line 320.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[13] [14 <./Images/Image 1.png>] [15]
+[12] [13 <./Images/Image 1.png>] [14]
 LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 395.
  (c:/texlive/2023/texmf-dist/tex/latex/base/ts1cmtt.fd
 File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
@@ -596,41 +596,41 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-<Images/Historical Command Line Result.png, id=578, 656.4525pt x 16.56187pt>
+<Images/Historical Command Line Result.png, id=499, 656.4525pt x 16.56187pt>
 File: Images/Historical Command Line Result.png Graphic file (type png)
 <use Images/Historical Command Line Result.png>
 Package pdftex.def Info: Images/Historical Command Line Result.png  used on input line 401.
 (pdftex.def)             Requested size: 430.00462pt x 10.84872pt.
- [16 <./Images/Historical Command Line Result.png>]
+ [15 <./Images/Historical Command Line Result.png>]
 Overfull \hbox (0.49162pt too wide) in paragraph at lines 421--421
 []  \OT1/cmtt/m/n/10 stock = yf.download('NKE', dt.datetime(2021, 10, 26), dt.datetime(2023, 10, 24))[] 
  []
 
-<Images/Variance-Covariance Command Line Result.png, id=588, 658.71094pt x 15.80907pt>
+<Images/Variance-Covariance Command Line Result.png, id=509, 658.71094pt x 15.80907pt>
 File: Images/Variance-Covariance Command Line Result.png Graphic file (type png)
 <use Images/Variance-Covariance Command Line Result.png>
 Package pdftex.def Info: Images/Variance-Covariance Command Line Result.png  used on input line 444.
 (pdftex.def)             Requested size: 430.00462pt x 10.32037pt.
-[17 <./Images/Variance-Covariance Command Line Result.png>]
-<Images/Back-Testing.png, id=596, 788.19469pt x 224.33812pt>
+[16 <./Images/Variance-Covariance Command Line Result.png>]
+<Images/Back-Testing.png, id=517, 788.19469pt x 224.33812pt>
 File: Images/Back-Testing.png Graphic file (type png)
 <use Images/Back-Testing.png>
 Package pdftex.def Info: Images/Back-Testing.png  used on input line 459.
 (pdftex.def)             Requested size: 430.00462pt x 122.3868pt.
- [18 <./Images/Back-Testing.png>] [19]
-<Images/Back-Testing Results.png, id=611, 371.88937pt x 33.87656pt>
+ [17 <./Images/Back-Testing.png>] [18]
+<Images/Back-Testing Results.png, id=532, 371.88937pt x 33.87656pt>
 File: Images/Back-Testing Results.png Graphic file (type png)
 <use Images/Back-Testing Results.png>
 Package pdftex.def Info: Images/Back-Testing Results.png  used on input line 512.
 (pdftex.def)             Requested size: 301.00192pt x 27.4197pt.
- [20 <./Images/Back-Testing Results.png>] [21] [22] [23]
-<Images/Initial Design Sketch.jpg, id=642, 1500.35532pt x 1367.8603pt>
+ [19 <./Images/Back-Testing Results.png>] [20] [21] [22]
+<Images/Initial Design Sketch.jpg, id=562, 1500.35532pt x 1367.8603pt>
 File: Images/Initial Design Sketch.jpg Graphic file (type jpg)
 <use Images/Initial Design Sketch.jpg>
 Package pdftex.def Info: Images/Initial Design Sketch.jpg  used on input line 614.
 (pdftex.def)             Requested size: 301.00192pt x 274.40208pt.
- [24 <./Images/Initial Design Sketch.jpg>] [25]
-<Images/Initial Design Test Image 1.png, id=654, 338.76563pt x 225.84375pt>
+ [23 <./Images/Initial Design Sketch.jpg>] [24]
+<Images/Initial Design Test Image 1.png, id=574, 338.76563pt x 225.84375pt>
 File: Images/Initial Design Test Image 1.png Graphic file (type png)
 <use Images/Initial Design Test Image 1.png>
 Package pdftex.def Info: Images/Initial Design Test Image 1.png  used on input line 686.
@@ -639,7 +639,7 @@ Package pdftex.def Info: Images/Initial Design Test Image 1.png  used on input l
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[26] [27 <./Images/Initial Design Test Image 1.png>]
+[25] [26 <./Images/Initial Design Test Image 1.png>]
 Overfull \hbox (16.24149pt too wide) in paragraph at lines 743--743
 []          \OT1/cmtt/m/n/10 VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)[] 
  []
@@ -659,7 +659,7 @@ Overfull \hbox (37.2413pt too wide) in paragraph at lines 743--743
 []                  \OT1/cmtt/m/n/10 np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori), 0))))[] 
  []
 
-[28]
+[27]
 Overfull \hbox (68.74103pt too wide) in paragraph at lines 792--792
 []  \OT1/cmtt/m/n/10 hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width="100sp")[] 
  []
@@ -669,8 +669,8 @@ Overfull \hbox (42.49126pt too wide) in paragraph at lines 792--792
 []  \OT1/cmtt/m/n/10 mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width="100sp")[] 
  []
 
-[29]
-<Images/Initial Design Tes - Final Iteration 1.png, id=673, 602.25pt x 402.75468pt>
+[28]
+<Images/Initial Design Tes - Final Iteration 1.png, id=595, 602.25pt x 402.75468pt>
 File: Images/Initial Design Tes - Final Iteration 1.png Graphic file (type png)
 <use Images/Initial Design Tes - Final Iteration 1.png>
 Package pdftex.def Info: Images/Initial Design Tes - Final Iteration 1.png  used on input line 802.
@@ -679,7 +679,7 @@ Package pdftex.def Info: Images/Initial Design Tes - Final Iteration 1.png  used
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Images/Initial Design Tes - Final Iteration 2.png, id=674, 603.75563pt x 401.24907pt>
+<Images/Initial Design Tes - Final Iteration 2.png, id=596, 603.75563pt x 401.24907pt>
 File: Images/Initial Design Tes - Final Iteration 2.png Graphic file (type png)
 <use Images/Initial Design Tes - Final Iteration 2.png>
 Package pdftex.def Info: Images/Initial Design Tes - Final Iteration 2.png  used on input line 809.
@@ -687,1330 +687,270 @@ Package pdftex.def Info: Images/Initial Design Tes - Final Iteration 2.png  used
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[30]
+[29]
 
-LaTeX Warning: Text page 31 contains only floats.
+LaTeX Warning: Text page 30 contains only floats.
 
-[31 <./Images/Initial Design Tes - Final Iteration 1.png> <./Images/Initial Design Tes - Final Iteration 2.png>] [32] [33] [34]
-<Images/Term 2 Images/IMG_1346.jpg, id=709, 2362.8275pt x 1227.58624pt>
+[30 <./Images/Initial Design Tes - Final Iteration 1.png> <./Images/Initial Design Tes - Final Iteration 2.png>] [31] [32] [33] [34]
+<Images/Term 2 Images/IMG_1346.jpg, id=642, 2362.8275pt x 1227.58624pt>
 File: Images/Term 2 Images/IMG_1346.jpg Graphic file (type jpg)
 <use Images/Term 2 Images/IMG_1346.jpg>
-Package pdftex.def Info: Images/Term 2 Images/IMG_1346.jpg  used on input line 938.
+Package pdftex.def Info: Images/Term 2 Images/IMG_1346.jpg  used on input line 943.
 (pdftex.def)             Requested size: 301.00192pt x 156.37pt.
  [35 <./Images/Term 2 Images/IMG_1346.jpg>] [36]
-<Images/Term 2 Images/tabs.png, id=721, 601.4972pt x 59.47218pt>
+<Images/Term 2 Images/tabs.png, id=653, 601.4972pt x 59.47218pt>
 File: Images/Term 2 Images/tabs.png Graphic file (type png)
 <use Images/Term 2 Images/tabs.png>
-Package pdftex.def Info: Images/Term 2 Images/tabs.png  used on input line 1006.
+Package pdftex.def Info: Images/Term 2 Images/tabs.png  used on input line 1011.
 (pdftex.def)             Requested size: 430.00462pt x 42.51775pt.
  [37 <./Images/Term 2 Images/tabs.png>]
-<Images/Term 2 Images/IMG_1117.jpg, id=728, 2127.95pt x 1165.35374pt>
+<Images/Term 2 Images/IMG_1117.jpg, id=660, 2127.95pt x 1165.35374pt>
 File: Images/Term 2 Images/IMG_1117.jpg Graphic file (type jpg)
 <use Images/Term 2 Images/IMG_1117.jpg>
-Package pdftex.def Info: Images/Term 2 Images/IMG_1117.jpg  used on input line 1026.
+Package pdftex.def Info: Images/Term 2 Images/IMG_1117.jpg  used on input line 1031.
 (pdftex.def)             Requested size: 301.00192pt x 164.83768pt.
-<Images/Term 2 Images/IMG_1347.jpg, id=729, 2683.02374pt x 1344.02126pt>
+<Images/Term 2 Images/IMG_1347.jpg, id=661, 2683.02374pt x 1344.02126pt>
 File: Images/Term 2 Images/IMG_1347.jpg Graphic file (type jpg)
 <use Images/Term 2 Images/IMG_1347.jpg>
-Package pdftex.def Info: Images/Term 2 Images/IMG_1347.jpg  used on input line 1033.
+Package pdftex.def Info: Images/Term 2 Images/IMG_1347.jpg  used on input line 1038.
 (pdftex.def)             Requested size: 301.00192pt x 150.77545pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [38 <./Images/Term 2 Images/IMG_1117.jpg>] [39 <./Images/Term 2 Images/IMG_1347.jpg>]
-LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 1076.
-LaTeX Font Info:    No file OMScmtt.fd. on input line 1076.
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 1081.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 1081.
 
 
 LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textbraceleft' on input line 1076.
+(Font)              for symbol `textbraceleft' on input line 1081.
 
 [40]
-<Images/Term 2 Images/image (16).png, id=750, 603.75563pt x 438.8897pt>
+<Images/Term 2 Images/image (16).png, id=681, 603.75563pt x 438.8897pt>
 File: Images/Term 2 Images/image (16).png Graphic file (type png)
 <use Images/Term 2 Images/image (16).png>
-Package pdftex.def Info: Images/Term 2 Images/image (16).png  used on input line 1104.
+Package pdftex.def Info: Images/Term 2 Images/image (16).png  used on input line 1109.
 (pdftex.def)             Requested size: 301.00192pt x 218.8081pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [41] [42 <./Images/Term 2 Images/image (16).png>]
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 1147--1147
+Overfull \hbox (31.99135pt too wide) in paragraph at lines 1152--1152
 []              \OT1/cmtt/m/n/10 totalValue = totalValue + (currentPrice * float(stockData['sharesOwned']))[] 
  []
 
 
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 1147--1147
+Overfull \hbox (31.99135pt too wide) in paragraph at lines 1152--1152
 []              \OT1/cmtt/m/n/10 totalInitialPrices = totalInitialPrices + float(stockData['initialPrice'])[] 
  []
 
 [43] [44] [45]
-<Images/Term 2 Images/image (15).png, id=776, 603.0028pt x 435.12563pt>
+<Images/Term 2 Images/image (15).png, id=707, 603.0028pt x 435.12563pt>
 File: Images/Term 2 Images/image (15).png Graphic file (type png)
 <use Images/Term 2 Images/image (15).png>
-Package pdftex.def Info: Images/Term 2 Images/image (15).png  used on input line 1224.
+Package pdftex.def Info: Images/Term 2 Images/image (15).png  used on input line 1229.
 (pdftex.def)             Requested size: 301.00192pt x 217.1971pt.
-<Images/Term 2 Images/HTML Element.png, id=778, 328.22626pt x 60.97781pt>
+<Images/Term 2 Images/HTML Element.png, id=709, 328.22626pt x 60.97781pt>
 File: Images/Term 2 Images/HTML Element.png Graphic file (type png)
 <use Images/Term 2 Images/HTML Element.png>
-Package pdftex.def Info: Images/Term 2 Images/HTML Element.png  used on input line 1233.
+Package pdftex.def Info: Images/Term 2 Images/HTML Element.png  used on input line 1238.
 (pdftex.def)             Requested size: 301.00192pt x 55.92067pt.
  [46 <./Images/Term 2 Images/image (15).png> <./Images/Term 2 Images/HTML Element.png>]
-<Images/Term 2 Images/image (12).png, id=789, 604.50844pt x 377.15906pt>
+<Images/Term 2 Images/image (12).png, id=720, 604.50844pt x 377.15906pt>
 File: Images/Term 2 Images/image (12).png Graphic file (type png)
 <use Images/Term 2 Images/image (12).png>
-Package pdftex.def Info: Images/Term 2 Images/image (12).png  used on input line 1265.
+Package pdftex.def Info: Images/Term 2 Images/image (12).png  used on input line 1270.
 (pdftex.def)             Requested size: 301.00192pt x 187.79639pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [47] [48 <./Images/Term 2 Images/image (12).png>]
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 1294--1294
+Overfull \hbox (0.49162pt too wide) in paragraph at lines 1299--1299
 []          \OT1/cmtt/m/n/10 currentVar = -np.percentile(sorted(portfoReturns), 100 * self.rlPercent)[] 
  []
 
 
-Overfull \hbox (42.49126pt too wide) in paragraph at lines 1322--1322
+Overfull \hbox (42.49126pt too wide) in paragraph at lines 1327--1327
 []              \OT1/cmtt/m/n/10 text: "Are you sure you want to delete this stock?\n\nIt will be permanent."[] 
  []
 
 [49]
-<Images/Term 2 Images/image (10).png, id=807, 362.10281pt x 181.42781pt>
+<Images/Term 2 Images/image (10).png, id=741, 362.10281pt x 181.42781pt>
 File: Images/Term 2 Images/image (10).png Graphic file (type png)
 <use Images/Term 2 Images/image (10).png>
-Package pdftex.def Info: Images/Term 2 Images/image (10).png  used on input line 1345.
+Package pdftex.def Info: Images/Term 2 Images/image (10).png  used on input line 1350.
 (pdftex.def)             Requested size: 301.00192pt x 150.81482pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/Term 2 Images/image (13).png, id=808, 600.74437pt x 371.88937pt>
+<Images/Term 2 Images/image (13).png, id=742, 600.74437pt x 371.88937pt>
 File: Images/Term 2 Images/image (13).png Graphic file (type png)
 <use Images/Term 2 Images/image (13).png>
-Package pdftex.def Info: Images/Term 2 Images/image (13).png  used on input line 1352.
+Package pdftex.def Info: Images/Term 2 Images/image (13).png  used on input line 1357.
 (pdftex.def)             Requested size: 301.00192pt x 186.34145pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/Term 2 Images/image (11).png, id=811, 344.78813pt x 250.68657pt>
+<Images/Term 2 Images/image (11).png, id=745, 344.78813pt x 250.68657pt>
 File: Images/Term 2 Images/image (11).png Graphic file (type png)
 <use Images/Term 2 Images/image (11).png>
-Package pdftex.def Info: Images/Term 2 Images/image (11).png  used on input line 1362.
+Package pdftex.def Info: Images/Term 2 Images/image (11).png  used on input line 1367.
 (pdftex.def)             Requested size: 301.00192pt x 218.85292pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [50]
-<Images/Term 2 Images/Final Adjust VaR.png, id=819, 341.77687pt x 225.84375pt>
+<Images/Term 2 Images/Final Adjust VaR.png, id=753, 341.77687pt x 225.84375pt>
 File: Images/Term 2 Images/Final Adjust VaR.png Graphic file (type png)
 <use Images/Term 2 Images/Final Adjust VaR.png>
-Package pdftex.def Info: Images/Term 2 Images/Final Adjust VaR.png  used on input line 1386.
+Package pdftex.def Info: Images/Term 2 Images/Final Adjust VaR.png  used on input line 1391.
 (pdftex.def)             Requested size: 301.00192pt x 198.91196pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [51 <./Images/Term 2 Images/image (10).png>]
-<Images/Term 2 Images/image (8).png, id=828, 603.75563pt x 435.87843pt>
+<Images/Term 2 Images/image (8).png, id=762, 603.75563pt x 435.87843pt>
 File: Images/Term 2 Images/image (8).png Graphic file (type png)
 <use Images/Term 2 Images/image (8).png>
-Package pdftex.def Info: Images/Term 2 Images/image (8).png  used on input line 1396.
+Package pdftex.def Info: Images/Term 2 Images/image (8).png  used on input line 1401.
 (pdftex.def)             Requested size: 301.00192pt x 217.30684pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/Term 2 Images/Create Holding.png, id=829, 409.53pt x 291.33844pt>
+<Images/Term 2 Images/Create Holding.png, id=763, 409.53pt x 291.33844pt>
 File: Images/Term 2 Images/Create Holding.png Graphic file (type png)
 <use Images/Term 2 Images/Create Holding.png>
-Package pdftex.def Info: Images/Term 2 Images/Create Holding.png  used on input line 1403.
+Package pdftex.def Info: Images/Term 2 Images/Create Holding.png  used on input line 1408.
 (pdftex.def)             Requested size: 301.00192pt x 214.14673pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/Term 2 Images/Confirm Delete.png, id=830, 408.77719pt x 204.765pt>
+<Images/Term 2 Images/Confirm Delete.png, id=764, 408.77719pt x 204.765pt>
 File: Images/Term 2 Images/Confirm Delete.png Graphic file (type png)
 <use Images/Term 2 Images/Confirm Delete.png>
-Package pdftex.def Info: Images/Term 2 Images/Confirm Delete.png  used on input line 1410.
+Package pdftex.def Info: Images/Term 2 Images/Confirm Delete.png  used on input line 1415.
 (pdftex.def)             Requested size: 301.00192pt x 150.78633pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<Images/Term 2 Images/image (6).png, id=831, 599.99156pt x 434.37282pt>
+<Images/Term 2 Images/image (6).png, id=765, 599.99156pt x 434.37282pt>
 File: Images/Term 2 Images/image (6).png Graphic file (type png)
 <use Images/Term 2 Images/image (6).png>
-Package pdftex.def Info: Images/Term 2 Images/image (6).png  used on input line 1417.
+Package pdftex.def Info: Images/Term 2 Images/image (6).png  used on input line 1422.
 (pdftex.def)             Requested size: 301.00192pt x 217.92157pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+
+LaTeX Warning: Reference `label:improvingmcs' on page 52 undefined on input line 1432.
+
 [52 <./Images/Term 2 Images/image (13).png>]
-
-LaTeX Warning: Reference `label:improvingmcs' on page 53 undefined on input line 1427.
-
-[53 <./Images/Term 2 Images/image (11).png>]
-<Images/Term 2 Images/Image (1).png, id=844, 749.04843pt x 351.56343pt>
+<Images/Term 2 Images/Image (1).png, id=773, 749.04843pt x 351.56343pt>
 File: Images/Term 2 Images/Image (1).png Graphic file (type png)
 <use Images/Term 2 Images/Image (1).png>
-Package pdftex.def Info: Images/Term 2 Images/Image (1).png  used on input line 1443.
+Package pdftex.def Info: Images/Term 2 Images/Image (1).png  used on input line 1448.
 (pdftex.def)             Requested size: 301.00192pt x 141.27197pt.
+ [53 <./Images/Term 2 Images/image (11).png>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[54 <./Images/Term 2 Images/Final Adjust VaR.png>]
+Overfull \hbox (10.99153pt too wide) in paragraph at lines 1462--1462
+[]  \OT1/cmtt/m/n/10 python -m pip install https://github.com/kivy-garden/matplotlib/archive/master.zip[] 
+ []
+
+[55 <./Images/Term 2 Images/image (8).png>]
+<Images/Term 2 Images/IMG_1349.jpg, id=796, 2104.86375pt x 1279.78125pt>
+File: Images/Term 2 Images/IMG_1349.jpg Graphic file (type jpg)
+<use Images/Term 2 Images/IMG_1349.jpg>
+Package pdftex.def Info: Images/Term 2 Images/IMG_1349.jpg  used on input line 1474.
+(pdftex.def)             Requested size: 301.00192pt x 182.9956pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[54 <./Images/Term 2 Images/Final Adjust VaR.png>] [55 <./Images/Term 2 Images/image (8).png>]
-Overfull \vbox (27.93375pt too high) has occurred while \output is active []
+<Images/Term 2 Images/IMG_1349 (1).jpg, id=798, 2235.35126pt x 2006.49625pt>
+File: Images/Term 2 Images/IMG_1349 (1).jpg Graphic file (type jpg)
+<use Images/Term 2 Images/IMG_1349 (1).jpg>
+Package pdftex.def Info: Images/Term 2 Images/IMG_1349 (1).jpg  used on input line 1492.
+(pdftex.def)             Requested size: 301.00192pt x 270.16112pt.
 
- [56 <./Images/Term 2 Images/Create Holding.png>] [57 <./Images/Term 2 Images/Confirm Delete.png>] [58 <./Images/Term 2 Images/image (6).png>] [59 <./Images/Term 2 Images/image (1).png>] [60] [61] [62] [63] [64] [65] [66] [67] [68] [69] [70] [71] [72] [73] [74] [75] [76] [77] [78] [79] [80] [81]
-Overfull \hbox (10.99153pt too wide) in paragraph at lines 2009--2009
-[]  \OT1/cmtt/m/n/10 # Check if this is running in a PyInstaller bundle or in a development environment[] 
- []
-
-[82]
-Overfull \hbox (378.48833pt too wide) in paragraph at lines 2009--2009
-[]  \OT1/cmtt/m/n/10 def createPathToResource(relativePath): # Converts the relative path to an absolute path, since that's what needed to work with pyinstaller, my packager[] 
- []
-
-
-Overfull \hbox (373.23837pt too wide) in paragraph at lines 2009--2009
-[]      \OT1/cmtt/m/n/10 originalPath = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))) # If the program is run as an executable, the path is different[] 
- []
-
-
-Overfull \hbox (247.23947pt too wide) in paragraph at lines 2009--2009
-[]      \OT1/cmtt/m/n/10 return os.path.join(originalPath, relativePath) # Joining the original path with the relative path to get the absolute path[] 
- []
-
-
-Overfull \hbox (105.4907pt too wide) in paragraph at lines 2009--2009
-[]  \OT1/cmtt/m/n/10 global PATH_TO_RESOURCE # Need to do with caps and global so that it can be used as a path reference[] 
- []
-
-
-Overfull \hbox (131.74048pt too wide) in paragraph at lines 2009--2009
-[]              \OT1/cmtt/m/n/10 currentTabIndex = sm.screen_names.index(sm.current) # Getting the index of the current screen[] 
- []
-
-
-Overfull \hbox (199.98988pt too wide) in paragraph at lines 2009--2009
-[]              \OT1/cmtt/m/n/10 selectedTabIndex = sm.screen_names.index(instance.text) # Getting the index of the screen that was clicked[] 
- []
-
-[83]
-Overfull \hbox (205.23984pt too wide) in paragraph at lines 2009--2009
-[]              \OT1/cmtt/m/n/10 if selectedTabIndex > currentTabIndex: # If the selected tab is to the right of the current tab, slide left[] 
- []
-
-
-Overfull \hbox (262.98933pt too wide) in paragraph at lines 2009--2009
-[]          \OT1/cmtt/m/n/10 tabs = BoxLayout(size_hint=(1, 0.1), pos_hint={'top': 1}) # Creating the tabs, takes up 10% of the screen space at the top[] 
- []
-
-
-Overfull \hbox (210.48979pt too wide) in paragraph at lines 2009--2009
-[]              \OT1/cmtt/m/n/10 tabButton = Button(text=screen.name, size_hint=(0.33, 1)) # There are 3, so they take up the available space[] 
- []
-
-
-Overfull \hbox (5.74158pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 tempStockInfo = None # Used to store the info of whatever stock is clicked on[] 
- []
-
-
-Overfull \hbox (110.74066pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 tempDownload = None # Used to store the download of the stocks to be referenced in another screen[] 
- []
-
-[84]
-Overfull \hbox (152.7403pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 tempTotalValue = None # Used to store the total value of the portfolio to be referenced in another screen[] 
- []
-
-
-Overfull \hbox (142.24039pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 tempCurrentPrice = None # Used to store the current price of a stock to be referenced in another screen[] 
- []
-
-
-Overfull \hbox (168.49016pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.initialStockTotals() # Initialises the portfolio and repeats every 60 seconds, also runs loadStocks[] 
- []
-
-
-Overfull \hbox (168.49016pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.initialStockTotals() # I callback to make this happen when a add stock pop-up is saved successfully[] 
- []
-
-
-Overfull \hbox (42.49126pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 def adjDeleteHandler(self): # Used to handle the adjust VaR and delete stock buttons[] 
- []
-
-
-Overfull \hbox (84.49089pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 popup = AdjustVaRPopup(portfolio=self, varCalc=self.varCalc, var=self.dailyVaR.text)[] 
- []
-
-
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 popup = ConfirmDelete(portfolio=self, ticker=self.tempStockInfo['ticker'])[] 
- []
-
-
-Overfull \hbox (10.99153pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 stockCard = Stocks(portfolio=self, **stockData, currentPrice=currentPrice)[] 
- []
-
-
-Overfull \hbox (2357.72107pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 # Some important stuff to specify for this file, it will generate in the directory that you are calling the main Final Design file from, so if you are calling that file from another folder, it will store it in the outer folder you are calling from. So make sure in the future you call the Final Design file from the same directory as you used last time, or it won't be able to access the holdings. I advise to just use the same directory as the program is being stored in when its compiled, since I assume that will work.[] 
- []
-
-
-Overfull \hbox (388.98824pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 if len(store) != 1: # I use variations of this code a lot since you need to call the code differently when there is one stock in the portfolio[] 
- []
-
-
-Overfull \hbox (294.48906pt too wide) in paragraph at lines 2417--2417
-[]                  \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()][] 
- []
-
-
-Overfull \hbox (73.99098pt too wide) in paragraph at lines 2417--2417
-[]                  \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()][] 
- []
-
-
-Overfull \hbox (136.99043pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 if isinstance(self.sSTCheck, ClockEvent): # Stops the blocking of the specificStockTotals function[] 
- []
-
-[85]
-Overfull \hbox (142.24039pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.iSTCheck = Clock.schedule_interval(self.initialStockTotals, 60) # Repeats every 60 seconds[] 
- []
-
-
-Overfull \hbox (37.24007pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.totalReturn.text = "Total Return: [color=ffffff]0.00% / \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 0.00[/color]"[] 
- []
-
-
-Overfull \hbox (210.48979pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.loadStocks(None) # Clears the stock widgets since it isn't called after a delete if there are no stocks[] 
- []
-
-
-Overfull \hbox (94.9908pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 # Animate the background colour of the right side of the screen to a slightly darker shade[] 
- []
-
-
-Overfull \hbox (394.23819pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d') # Downloads the stocks for the portfolio all at once[] 
- []
-
-
-Overfull \hbox (21.49144pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 for stockKeys in store: # Generates the necessary values to be displayed[] 
- []
-
-
-Overfull \hbox (315.48888pt too wide) in paragraph at lines 2417--2417
-[]                      \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()][] 
- []
-
-
-Overfull \hbox (94.9908pt too wide) in paragraph at lines 2417--2417
-[]                      \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()][] 
- []
-
-
-Overfull \hbox (21.49144pt too wide) in paragraph at lines 2417--2417
-[]                  \OT1/cmtt/m/n/10 totalCurrentPrices += currentPrice * float(stockData['sharesOwned'])[] 
- []
-
-
-Overfull \hbox (126.49052pt too wide) in paragraph at lines 2417--2417
-[]                  \OT1/cmtt/m/n/10 totalInitialPrices += float(stockData['initialPrice']) * float(stockData['sharesOwned'])[] 
- []
-
-[86]
-Overfull \hbox (772.2349pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000') # Determines the colour of the total return text, using red for negative, green for positive and white for no change[] 
- []
-
-
-Overfull \hbox (346.9886pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 if totalReturn < 0.01 and totalReturn > 0: totalReturn = "<0.01" # This is to prevent 0.00% from being green and vice-versa for -0.00%[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 elif totalReturn > -0.01 and totalReturn < 0: totalReturn = "<-0.01"[] 
- []
-
-
-Overfull \hbox (37.24007pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.totalValue.text = "Total Value: [b]\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {:,.2f}".format(totalValue)+"[/b]"[] 
- []
-
-
-Overfull \hbox (373.23714pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {totalCurrentPrices - totalInitialPrices:,.2f}[/color]"[] 
- []
-
-
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.totalShares.text = f"Total No. of Shares: {float(totalShares):,.0f}"[] 
- []
-
-
-Overfull \hbox (299.73901pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 if len(store) != 1: # You can't run Monte Carlo simulations on a single stock, so this helps to determine which method to use[] 
- []
-
-
-Overfull \hbox (247.23824pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {VaR[:-3]}[/b]"[] 
- []
-
-
-Overfull \hbox (105.4907pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 def specificStockTotals(self, *args): # Temporary Stock Info was passed in from the stocks class[] 
- []
-
-
-Overfull \hbox (5.74158pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.sSTCheck = Clock.schedule_interval(self.specificStockTotals, 60)[] 
- []
-
-
-Overfull \hbox (110.74066pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 anime = Animation(rgba=[0.35, 0.35, 0.35, 1], duration=0.5) # Slightly brighter shade of grey[] 
- []
-
-
-Overfull \hbox (493.98732pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 stocks = yf.download([store.get(stockKey)['ticker'] for stockKey in store], period='500d') # Still downloads all the stocks, since I may need them in my graphs screen[] 
- []
-
-
-Overfull \hbox (367.98842pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][self.tempStockInfo['ticker']].loc[stocks['Adj Close'][self.tempStockInfo['ticker']].last_valid_index()][] 
- []
-
-
-Overfull \hbox (52.99117pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()][] 
- []
-
-[87]
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 totalReturn = ((currentPrice / self.tempStockInfo['initialPrice']) - 1) * 100[] 
- []
-
-
-Overfull \hbox (205.23984pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 totalReturnMoney = totalValue - (self.tempStockInfo['initialPrice'] * float(self.tempStockInfo['sharesOwned']))[] 
- []
-
-
-Overfull \hbox (136.99043pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 totalReturnColor = 'ff3333ff' if totalReturn < 0 else ('ffffff' if totalReturn == 0 else '00e000')[] 
- []
-
-
-Overfull \hbox (10.99153pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.stockName.text = "[u][b]" + self.tempStockInfo['ticker'] + "[/u][/b]"[] 
- []
-
-
-Overfull \hbox (16.24025pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.totalValue.text = "Current Share Price: \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {:,.2f}".format(currentPrice)[] 
- []
-
-
-Overfull \hbox (231.48837pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.totalReturn.text = f"Total Return: [color={totalReturnColor}]{totalReturn}% / \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {totalReturnMoney:,.2f}[/color]"[] 
- []
-
-
-Overfull \hbox (89.74084pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.totalShares.text = f"No. of Shares: {float(self.tempStockInfo['sharesOwned']):,.0f}"[] 
- []
-
-
-Overfull \hbox (388.98824pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 VaR = self.varCalc.modelSim(totalValue, stocks['Close'][self.tempStockInfo['ticker']]) # Has to be called differently for single stock as well[] 
- []
-
-
-Overfull \hbox (226.23842pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.dailyVaR.text = f"[b]Value at Risk: {(float(VaR.replace(',', '')) / totalValue) * 100:.2f}% / \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {VaR[:-3]}[/b]"[] 
- []
-
-
-Overfull \hbox (273.48924pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()][] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 convThreshold = 0.001 # The threshold for convergence (percentage, 0.1%)[] 
- []
-
-[88]
-Overfull \hbox (299.73901pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 while not converged and simNum <= 100000: # Whilst the simulation hasn't converged and the simulation amount is less than 100,000[] 
- []
-
-
-Overfull \hbox (273.48924pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.timeHori, simNum))[] 
- []
-
-
-Overfull \hbox (152.7403pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:[] 
- []
-
-
-Overfull \hbox (1370.72968pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 return "{:,.2f}".format((-totalValue*norm.ppf(self.rlPercent, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori)) # I had an 100 in this from my VaRChecker producing bad results, but it is working now, also needs to be multiplied by square root of time horizon to get the correct value if time horizon has been adjusted[] 
- []
-
-
-Overfull \hbox (100.24075pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 def __init__(self, portfolio, name, ticker, sharesOwned, initialPrice, currentPrice, **kwargs):[] 
- []
-
-
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.currentPortfolio = portfolio # Passes in the screen to start functions when needed[] 
- []
-
-
-Overfull \hbox (173.74011pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.cols = 2 # So I can align them where I want within the scroll wheel, which is wrapped around the ":"[] 
- []
-
-
-Overfull \hbox (68.74103pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.height = "110sp" # Need to use sp so it adapts to whatever screen size is needed[] 
- []
-
-[89]
-Overfull \hbox (37.2413pt too wide) in paragraph at lines 2417--2417
-[]      \OT1/cmtt/m/n/10 def on_touch_down(self, touch): # Used to emulate a button, since it is not one now[] 
- []
-
-[90]
-Overfull \hbox (304.98897pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'[] 
- []
-
-
-Overfull \hbox (619.98622pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 } # Needed to emulate a User-Agent, as if you are an actual browser accessing the page, since this helps retrieve results from yahoo for non-american stocks, denoted with a "." in the ticker[] 
- []
-
-
-Overfull \hbox (420.48796pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 response = requests.get(yFinancePage, headers=headers) # I use requests to get the page, since the yfinance function to get the name is currently broken[] 
- []
-
-
-Overfull \hbox (173.74011pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 soup = BeautifulSoup(response.content, 'html.parser') # I use BeautifulSoup to parse the HTML of the page[] 
- []
-
-
-Overfull \hbox (488.73737pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 companyName = soup.find('h1', class_='D(ib) Fz(18px)') # When using inspect element on yahoo pages, the name is always within this specific element, so I retrieve it[] 
- []
-
-
-Overfull \hbox (378.48833pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 sharesCheck = True # Very messy use of verification but it makes sure that each input is valid, can be mutually exclusive between the two inputs[] 
- []
-
-
-Overfull \hbox (5.74158pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 stocks = yf.download(self.inputTicker.text.capitalize(), period='1d')[] 
- []
-
-
-Overfull \hbox (499.23727pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 anime = Animation(background_color=[1, 1, 1, 1], duration=1) # Animates the background colour back to white, as if flashing to say you have entered the wrong thing[] 
- []
-
-
-Overfull \hbox (257.73938pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.inputShares.focus = True # Focuses the user back to this input box, which only works if the above box is correct[] 
- []
-
-
-Overfull \hbox (52.99117pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 initialPrice = stocks['Adj Close'].loc[stocks['Adj Close'].last_valid_index()][] 
- []
-
-
-Overfull \hbox (656.7359pt too wide) in paragraph at lines 2417--2417
-[]                  \OT1/cmtt/m/n/10 'name': self.findCompanyName(self.inputTicker.text), # If the company name was not correct, it wouldn't have been able to download the stock information, so this function should always work[] 
- []
-
-[91]
-Overfull \hbox (126.49052pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 print(f"Added new holding: {stockData}")  # Only time I print, since I think its nice to see[] 
- []
-
-
-Overfull \hbox (184.24002pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.dismissHandler(1) # Basically is used to make portfolio run a function in a very specific instance[] 
- []
-
-
-Overfull \hbox (189.48997pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.currentPortfolio.initialStockTotals() # I call this to refresh the portfolio after the stock is deleted[] 
- []
-
-
-Overfull \hbox (1349.72986pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 self.varLabel.text = f"There is a [color=ff8000]{int(self.varCalc.rlPercent * 100)}%[/color] chance that my portfolio could \nlose more than [b]{var.rsplit(' ', 1)[-1]}[/b] in the next [color=00AAff]{self.varCalc.timeHori}[/color] day(s)." # Colours used to make it easier for the user to understand, helps to explain VaR as well[] 
- []
-
-
-Overfull \hbox (94.9908pt too wide) in paragraph at lines 2417--2417
-[]          \OT1/cmtt/m/n/10 if not self.timeHoriInput.text.isdigit() or not (1 <= int(self.timeHoriInput.text) <= 30):[] 
- []
-
-
-Overfull \hbox (283.98915pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.timeHoriInput.hint_text = "Invalid Horizon [1-30]" # Helps to specify the restrictions after they get something wrong[] 
- []
-
-[92]
-Overfull \hbox (152.7403pt too wide) in paragraph at lines 2417--2417
-[]              \OT1/cmtt/m/n/10 self.varCalc.rlPercent = rlPercent / 100.0 # Divided by 100 to get the percentage in decimal form[] 
- []
-
-
-Overfull \hbox (121.24057pt too wide) in paragraph at lines 2749--2749
-[]                      \OT1/cmtt/m/n/10 text: '+' # I think users can make the assumption that this button will add a stock[] 
- []
-
-[93]
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 2749--2749
-[]                              \OT1/cmtt/m/n/10 rectangle: (self.x, self.y, self.width, self.height)[] 
- []
-
-
-Overfull \hbox (604.23636pt too wide) in paragraph at lines 2749--2749
-[]                          \OT1/cmtt/m/n/10 text: '       OWNED STOCK[b]: HOLDING[/b]' # I have to do this crude method because I can't get the text to align properly otherwise, you will see it done a few more times[] 
- []
-
-
-Overfull \hbox (37.2413pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 BlueScroll: # My custom scroll view to make it easier to see the scroll bar[] 
- []
-
-
-Overfull \hbox (661.98586pt too wide) in paragraph at lines 2749--2749
-[]                          \OT1/cmtt/m/n/10 rgba: 0.95, 0.95, 1, 1 # background needs to be set to this colour since it matches the stocks that go ontop and looks terrible when there are 0 stocks without this colour being here[] 
- []
-
-[94] [95] [96]
-Overfull \hbox (42.49126pt too wide) in paragraph at lines 2749--2749
-[]                              \OT1/cmtt/m/n/10 rectangle: (self.x+1, self.y+1, self.width-2, self.height-2)[] 
- []
-
-
-Overfull \hbox (289.2391pt too wide) in paragraph at lines 2749--2749
-[]      \OT1/cmtt/m/n/10 AnchorLayout: # This managed to get it displayed in the top right, with the size and no background it looks perfect for what I want[] 
- []
-
-
-Overfull \hbox (530.737pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 text: 'X' # Same assumption here, that people will realise that a cross in the top corner of an area indicates that its to close/bring them back to the previous section.[] 
- []
-
-[97]
-Overfull \hbox (756.48503pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 text: 'If you enter a [u][b]Stock[/b][/u] you already own, it will\nupdate your [u][b]No. of Shares[/b][/u], with a new [u][b]Initial Price.[/b][/u]' # Best way I could briefly explain how to use the app this way[] 
- []
-
-
-Overfull \hbox (289.2391pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 on_text_validate: inputShares.focus = True # Have to use ontext validate, since other focus options were not working at all[] 
- []
-
-
-Overfull \hbox (289.2391pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 on_text_validate: root.saveStock() # Second one just validates both inputs, so might as well just used enter for everything[] 
- []
-
-[98]
-Overfull \hbox (189.48997pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 text: "Are you sure you want to [u][b]delete[/u][/b] this stock?\n\nIt will be [u][b]permanent[/u][/b]."[] 
- []
-
-
-Overfull \hbox (89.74084pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 hint_text_color: 1, 0.5, 0, 1 # Same colour as the ones used for the explanation text[] 
- []
-
-
-Overfull \hbox (21.49144pt too wide) in paragraph at lines 2749--2749
-[]              \OT1/cmtt/m/n/10 on_text_validate: timeHoriInput.focus = True # Same logic as other popup[] 
- []
-
-[99] [100]
-Overfull \hbox (47.74121pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def portfolio(self): # Used for self.portfolio possibly being used in other functions[] 
- []
-
-
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def varChecker(self):  # Used for self.varChecker possibly being used in other functions[] 
- []
-
-
-Overfull \hbox (226.23965pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def checkForStocks(func): # Used to make sure that certain graphs cannot be run if there are no stocks in the portfolio[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 print("Cannot create graph due to lack of stocks in portfolio.")[] 
- []
-
-
-Overfull \hbox (168.49016pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.graph4Running = False # Used to check if the respective threads for each graph is already being ran[] 
- []
-
-
-Overfull \hbox (294.48906pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 Clock.schedule_once(lambda dt: self.graph1(), 0) # This is used to run the first graph as soon as the portfolio screen is loaded[] 
- []
-
-[101]
-Overfull \hbox (84.49089pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 # Done with 10 day intervals because it looks sufficient for what this is trying to show[] 
- []
-
-
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 y = self.replaceNan(y) # Intuitively replace nan figures so the graph looks complete[] 
- []
-
-
-Overfull \hbox (310.23892pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 y[-1] = round(self.portfolio.tempTotalValue) # Sets the final value to be what is displayed on the portfolio screen for consistency[] 
- []
-
-
-Overfull \hbox (425.73544pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.createGraph(x, y, 'Last 500 Days', 'Total Theoretical Portfolio Value (\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 )', 'Theoretical Portfolio Value Over Time With Current Shares', '\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 ', 'red')[] 
- []
-
-
-Overfull \hbox (194.73993pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 stocks = self.portfolio.tempDownload # Doesn't need threading because it doesn't need to re-download anything[] 
- []
-
-
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 print("Cannot create rankings graph due to lack of stocks in portfolio.")[] 
- []
-
-
-Overfull \hbox (189.48997pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 tickerToName = {stock: store.get(stock)['name'].split("(")[0].strip() for stock in stocks.columns.levels[1]}[] 
- []
-
-
-Overfull \hbox (262.98933pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stocks['Adj Close'][stock]))  # name is the key[] 
- []
-
-
-Overfull \hbox (121.24057pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value[] 
- []
-
-
-Overfull \hbox (761.73499pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'Portfolio Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking Portfolio Stocks based on their Value at Risk', 'blue')[] 
- []
-
-
-Overfull \hbox (52.99117pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 if tempStockInfo is None: # Makes sure a stock is selected on the portfolio screen[] 
- []
-
-
-Overfull \hbox (231.48961pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 self.graph3Ref.text = "[color=ff0000]Please [u]Select a Stock[/u] on the [b]Portfolio Screen[/b] First![/color]"[] 
- []
-
-
-Overfull \hbox (478.23746pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 Clock.schedule_once(lambda dt: setattr(self.graph3Ref, 'text', "[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]"), 3)[] 
- []
-
-
-Overfull \hbox (110.74066pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 if len(store) != 1: # Needs to be called differently if there's only 1 stock being stored[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 closePrices = stocks['Close'][tempStockInfo['ticker']].tail(500)[] 
- []
-
-[102]
-Overfull \hbox (756.48256pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker'] + ' Share Value (\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 )', self.portfolio.tempStockInfo['name'].split("(", 1)[0] + '\nIndividual Share Pricing Over Time', '\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 ', '#F4743B')[] 
- []
-
-
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 print("Cannot create rankings graph due to lack of stocks in portfolio.")[] 
- []
-
-
-Overfull \hbox (231.48961pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 currentPrice = stocks['Close'][stockData['ticker']].loc[stocks['Close'][stockData['ticker']].last_valid_index()][] 
- []
-
-[103]
-Overfull \hbox (373.23837pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 checkpoints = list(range(500, 25500, 500)) # Iteration checkpoints to check for convergence, 25000 seems to always produce a good visual result[] 
- []
-
-
-Overfull \hbox (247.23947pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 varResults = [np.nan] # Helps me set the first value to not be plotted, but to show the right x coordinate on the graph[] 
- []
-
-
-Overfull \hbox (278.7392pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 optimisedSim = np.random.multivariate_normal(closeDiffs.mean(), closeDiffs.cov(), (self.portfolio.varCalc.timeHori, sim))[] 
- []
-
-
-Overfull \hbox (100.24075pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 VaR = np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent) * totalValue[] 
- []
-
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Overfull \hbox (562.23425pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.createGraph(checkpoints, varResults, 'Number of Simulations', 'Value at Risk (\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 )', 'Convergence Analysis of Monte Carlo Simulation Based on Current Portfolio', "\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 ", 'purple')[] 
- []
-
-
-Overfull \hbox (378.48833pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 thread = threading.Thread(target=self.ftse100Ranking) # Needs threading since it takes time to download the stock information for 100 stocks[] 
- []
-
-
-Overfull \hbox (52.99117pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 ftse100 = [ticker + ".L" for ticker in self.varChecker.ftse100['Ticker'].tolist()][] 
- []
-
-
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 tickerToName = dict(zip(ftse100, ftse100Names))  # mapping between tickers and names[] 
- []
-
-
-Overfull \hbox (504.48723pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(100, stockData['Adj Close'][stock])) # If you use 100, it will just generate a standard percentage[] 
- []
-
-
-Overfull \hbox (121.24057pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 sortedVar = dict(sorted(VaRs.items(), key=lambda item: item[1])) # sort the dictionary by value[] 
- []
-
-
-Overfull \hbox (745.98512pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.createRankingGraph(list(sortedVar.keys()), list(sortedVar.values()), 'FTSE100 Stocks Ranked by VaR (Best-Worst)', 'Value at Risk Percentage (%)', 'Ranking FTSE100 Stocks based on their Value at Risk', 'black')[] 
- []
-
-[104]
-Overfull \hbox (651.48595pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 self.graph6Running = True # Done to check that it doesn't run this same code again when pressed and create multiple instances, it also stops other threads from running at the same time as well[] 
- []
-
-
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 print("Cannot create rankings graph due to lack of stocks in portfolio.")[] 
- []
-
-
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 adjust = int(len(stocks)/10) # Works the same way as it did for my VaR checker[] 
- []
-
-
-Overfull \hbox (273.48924pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][stockData['ticker']].loc[stocks['Adj Close'][stockData['ticker']].last_valid_index()][] 
- []
-
-
-Overfull \hbox (310.23892pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 for i in range(1, len(stocks) - adjust - 1): # Changed this to increment differently to generate faster, but it didn't look as good[] 
- []
-
-
-Overfull \hbox (10.99153pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 closeDiffs = stocks['Adj Close'].pct_change(fill_method=None).dropna()[] 
- []
-
-
-Overfull \hbox (388.98824pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 optimisedSim = np.random.multivariate_normal(closeDiffs.mean().values, closeDiffs.cov().values, (self.portfolio.varCalc.timeHori, simNum))[] 
- []
-
-
-Overfull \hbox (94.9908pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 currentVar = -np.percentile(portfoReturns, 100 * self.portfolio.varCalc.rlPercent)[] 
- []
-
-
-Overfull \hbox (173.74011pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 if previousVar != float('inf') and abs((currentVar - previousVar) / previousVar) < convThreshold:[] 
- []
-
-[105]
-Overfull \hbox (640.98604pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 VaR = -currentVar*100 # Not multiplied by portfolio to give a percentage (negative because its the possible loss you could have, so comparing that to the actual losses, it would be negative)[] 
- []
-
-
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 currentPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust][] 
- []
-
-
-Overfull \hbox (42.49126pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 nextDayPrice = stocks['Adj Close'][stockData['ticker']].iloc[i+adjust+1][] 
- []
-
-
-Overfull \hbox (26.7414pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 totalValueNextDay += (nextDayPrice * float(stockData['sharesOwned']))[] 
- []
-
-
-Overfull \hbox (268.23929pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 percentageDifference = (((totalValueNextDay - totalValue) / totalValue) * 100)*np.sqrt(self.portfolio.varCalc.timeHori)[] 
- []
-
-
-Overfull \hbox (5.74158pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 if not np.isnan(percentageDifference) and VaR > percentageDifference:[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 pValue = binom.cdf(count, len(VaRs), 1-self.portfolio.varCalc.rlPercent)[] 
- []
-
-
-Overfull \hbox (1454.72894pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 # I know this is not displayed in a graph, but I wanted to still check, and due to the nature of Monte Carlo sim, it does not pass backtesting when the portfolio is too diverse, so even though smaller portfolio's and backtesting for single stock, I don't think its worth showing that it fails backtesting, as it is expected for well diversified ones[] 
- []
-
-
-Overfull \hbox (945.48338pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.backTestGraph(range(len(VaRs), 0, -1), VaRs, pDifferences, 'Last 450 Days', 'Value at Risk vs Percentage Difference (%)', 'Monte Carlo Simulation Back-Testing Comparing\n 50 Day Rolling Window of VaR to Daily Adjusted Close Percentage Difference')[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.ids.graphSection.clear_widgets() # Clears the graph section to make way for the new graph[] 
- []
-
-[106]
-Overfull \hbox (126.49052pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 if x[0] > x[-1]: # If the x-axis is in descending order, set the ticks to be in descending order[] 
- []
-
-
-Overfull \hbox (58.24112pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 else: # If the x-axis is in ascending order, set the ticks to be in ascending order[] 
- []
-
-
-Overfull \hbox (609.48631pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->")) # Initialise infoPopup[] 
- []
-
-
-Overfull \hbox (184.24002pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 canvas.mpl_connect("motion_notify_event", self.mouseHover) # Connects the mouseHover function to the canvas[] 
- []
-
-
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.currentSymbol = currentSymbol # Used to display the current symbol in the popup[] 
- []
-
-
-Overfull \hbox (189.48997pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 if y.is_integer(): # If the y value is an integer, display it as an integer, otherwise display it as a float[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 # Have self tested these, they are different to the last way but work perfect for this section[] 
- []
-
-[107]
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3220--3220
-[]              \OT1/cmtt/m/n/10 cont, ind = self.currentLine.contains(event) # Check if the mouse is on the line[] 
- []
-
-
-Overfull \hbox (10.99153pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 self.hidePopup() # If the mouse is not on the line, hide the popup[] 
- []
-
-
-Overfull \hbox (210.48979pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def createRankingGraph(self, tickers, vars, xlabel, ylabel, title, colour): # Needed to use different logic for this[] 
- []
-
-
-Overfull \hbox (21.49144pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.currentLine, = self.ax.plot(range(len(vars)), vars, 'o-', color=colour)[] 
- []
-
-
-Overfull \hbox (100.24075pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.ax.set_xticks([])  # Hide x-axis ticks and labels as they are not needed for a ranking[] 
- []
-
-
-Overfull \hbox (488.73737pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords="offset points", bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))[] 
- []
-
-[108]
-Overfull \hbox (58.24112pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 tickerName = self.tickerHover[pos]  # Access the corresponding ticker value[] 
- []
-
-
-Overfull \hbox (168.49016pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 self.showRanking(tickerName, event.xdata, event.ydata) # Show the popup with this different data[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 3220--3220
-[]                  \OT1/cmtt/m/n/10 self.hidePopup() # Can still use the previous hidePopup function[] 
- []
-
-
-Overfull \hbox (189.48997pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.infoPopup.set_position((-x + xOffset, -y + yOffset)) # I think this overly complicates it, but it works[] 
- []
-
-
-Overfull \hbox (257.73938pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def backTestGraph(self, x, y1, y2, xlabel, ylabel, title): # Needs again different logic, due to no hover and drawing 2 lines[] 
- []
-
-
-Overfull \hbox (84.49089pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.ax.plot(x, y1, 'o-', color='blue', label='Value at Risk (%)') # Plot the first line[] 
- []
+[56 <./Images/Term 2 Images/Create Holding.png>]
+<Images/Term 2 Images/image (7).png, id=808, 601.4972pt x 434.37282pt>
+File: Images/Term 2 Images/image (7).png Graphic file (type png)
+<use Images/Term 2 Images/image (7).png>
+Package pdftex.def Info: Images/Term 2 Images/image (7).png  used on input line 1521.
+(pdftex.def)             Requested size: 301.00192pt x 217.37808pt.
 
 
-Overfull \hbox (157.99025pt too wide) in paragraph at lines 3220--3220
-[]          \OT1/cmtt/m/n/10 self.ax.plot(x, y2, 'o-', color='red', label='Daily Percentage Difference (%)') # Plot the second line[] 
- []
-
-[109]
-Overfull \hbox (16.24149pt too wide) in paragraph at lines 3220--3220
-[]      \OT1/cmtt/m/n/10 def replaceNan(self, y): # Used to replace nan values in the y list intuitively[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)[] 
- []
-
-
-Overfull \hbox (136.99043pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 nextNextValue = next((y[j] for j in range(i + 2, len(y)) if not np.isnan(y[j])), None)[] 
- []
-
-
-Overfull \hbox (772.2349pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 if nextValue is not None and nextNextValue is not None: # If the next value and the value after that are not nan, set the first value to be the average between the two, taken away from the last non-nan value[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 prevValue = next((y[j] for j in range(i - 1, -1, -1) if not np.isnan(y[j])), None)[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 nextValue = next((y[j] for j in range(i + 1, len(y)) if not np.isnan(y[j])), None)[] 
- []
-
-
-Overfull \hbox (430.98787pt too wide) in paragraph at lines 3220--3220
-[]                      \OT1/cmtt/m/n/10 if prevValue is not None and nextValue is not None: # And the previous and next values are not nan, set the value to be the average of the two[] 
- []
-
-
-Overfull \hbox (173.74011pt too wide) in paragraph at lines 3220--3220
-[]                          \OT1/cmtt/m/n/10 lastNoneNan = next((y[i] for i in range(len(y) - 2, -1, -1) if not np.isnan(y[i])), None)[] 
- []
-
-
-Overfull \hbox (866.73407pt too wide) in paragraph at lines 3220--3220
-[]                          \OT1/cmtt/m/n/10 if lastNoneNan is not None: # If the value before the last nan value is not nan, set the last value to be the average of this value and the last y value, since I have set it to be what is displayed on the portfolio screen[] 
- []
-
-[110]
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 text: '[b][u]Portfolio Over Time[/u][/b]\nBased on Current Shares'[] 
- []
-
-
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph1Blurred.png'[] 
- []
-
-
-Overfull \hbox (0.49162pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 text: '[b][u]Portfolio VaR Ranking[/u][/b]\nNeeds 2+ Stocks'[] 
- []
-
-[111]
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph2Blurred.png'[] 
- []
-
-
-Overfull \hbox (194.73993pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 text: '[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]'[] 
- []
-
-
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph3Blurred.png'[] 
- []
-
-
-Overfull \hbox (16.24149pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 text: '[b][u]Monte Carlo Convergence[/u][/b]\n Load Time: 0.5s'[] 
- []
-
-
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph4Blurred.png'[] 
- []
-
-[112]
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph5Blurred.png'[] 
- []
-
-
-Overfull \hbox (42.49126pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 text: '[b][u]Monte Carlo Back-Testing[/u][/b]\n Load Time: 25 - 75s'[] 
- []
-
-
-Overfull \hbox (79.24094pt too wide) in paragraph at lines 3374--3374
-[]                      \OT1/cmtt/m/n/10 background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph6Blurred.png'[] 
- []
-
-[113]
-Overfull \hbox (131.74048pt too wide) in paragraph at lines 3535--3535
-[]      \OT1/cmtt/m/n/10 # Declare ObjectProperty variables for the stock list and user inputs, as well as all other variables[] 
- []
-
-
-Overfull \hbox (163.2402pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 button = Button(text=self.ftse100['Company'][i], size_hint_y=None, height="30sp", font_size="20sp")[] 
- []
-
-
-Overfull \hbox (94.9908pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 #Set the currentStock to the stock ticker that is clicked, and save it to the variable[] 
- []
-
-[114]
-Overfull \hbox (625.23618pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 button.bind(on_release=lambda btn, i=i: (setattr(self.currentStock, 'text', "Stock: " + self.ftse100['Ticker'][i] + ".L"), setattr(self, 'currentTicker', str(self.ftse100['Ticker'][i]))))[] 
- []
-
-
-Overfull \hbox (100.24075pt too wide) in paragraph at lines 3535--3535
-[]                  \OT1/cmtt/m/n/10 VaR = np.percentile(backTest, self.rlPercent)*np.sqrt(self.timeHori)*self.portfolio[] 
- []
-
-
-Overfull \hbox (730.23526pt too wide) in paragraph at lines 3535--3535
-[]                  \OT1/cmtt/m/n/10 VaR = (-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(backTest), np.std(backTest)))*np.sqrt(self.timeHori)*-1 #Always returns a positive value with model simulation, so needs to be multiplied by -1[] 
- []
-
-
-Overfull \hbox (220.9897pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 nextDay = stock['Adj Close'].pct_change()[i+adjust:i+adjust+1].values[0]*np.sqrt(self.timeHori)*self.portfolio[] 
- []
-
-
-Overfull \hbox (63.49107pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 pValue = binom.cdf((len(stock)-adjust)-count,len(stock)-adjust,1-self.rlPercent/100)[] 
- []
-
-
-Overfull \hbox (121.24057pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 setattr(self.backTestCheck, 'text', "PASSED: " + str(round(pValue*100, 0)) + "% (p-value)")[] 
- []
-
-
-Overfull \hbox (121.24057pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 setattr(self.backTestCheck, 'text', "FAILED: " + str(round(pValue*100, 0)) + "% (p-value)")[] 
- []
-
-
-Overfull \hbox (535.98695pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 stock = yf.download(self.currentTicker + ".L", period="1000d").tail(500) # I chose to default it to 500 days, also turns out all the FTSE100 stocks use .L so that is included[] 
- []
-
-
-Overfull \hbox (546.48686pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 closeDiffs = stock['Adj Close'].pct_change(fill_method=None).dropna() # fill_method=None is used to make sure that the NaN values are not filled in, as this would skew the data[] 
- []
-
-
-Overfull \hbox (598.9864pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 VaR = str('{:,}'.format(int(round(np.percentile(closeDiffs, self.rlPercent)*self.portfolio*-1*np.sqrt(self.timeHori), 0)))) #Returns a negative value, so needs to be multiplied by -1[] 
- []
-
-
-Overfull \hbox (436.23782pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 VaR = str('{:,}'.format(int(round((-self.portfolio*norm.ppf(self.rlPercent/100, np.mean(closeDiffs), np.std(closeDiffs)))*np.sqrt(self.timeHori), 0))))[] 
- []
-
-[115]
-Overfull \hbox (184.24002pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 self.userInputs.add_widget(Label(text="Select Method:", size_hint_y=None, height="30sp", font_size="20sp"))[] 
- []
-
-
-Overfull \hbox (37.2413pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 radioButtons = BoxLayout(size_hint_y=None, height="35sp", padding=["120sp", 0])[] 
- []
-
-
-Overfull \hbox (110.74066pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 hButton = ToggleButton(text='Historical', group='simMethod', size_hint_x=None, width="100sp")[] 
- []
-
-
-Overfull \hbox (84.49089pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 mButton = ToggleButton(text='Model', group='simMethod', size_hint_x=None, width="100sp")[] 
- []
-
-
-Overfull \hbox (168.49016pt too wide) in paragraph at lines 3535--3535
-[]                  \OT1/cmtt/m/n/10 raise Exception # This will be caught by the except statement below, defaulting any wrong values[] 
- []
-
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 self.userInputs.clear_widgets() # Clears all the widgets in the layout, or they will duplicate[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 self.userInputs.add_widget(Label(text="\n", size_hint_y=None, height="5sp", font_size="20sp"))[] 
- []
-
-
-Overfull \hbox (115.99062pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 # Create a dictionary of variable names and their corresponding displayed texts and max values[] 
- []
-
-[116]
-Overfull \hbox (147.49034pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 self.userInputs.add_widget(Label(text=label, size_hint_y=None, height="30sp", font_size="20sp"))[] 
- []
-
-
-Overfull \hbox (273.48924pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 centeredLayout = BoxLayout(size_hint_y=None, height="30sp", padding=["85sp", 0]) # Padding used to center the text input[] 
- []
+<Images/Term 2 Images/image (5).png, id=809, 602.25pt x 435.12563pt>
+File: Images/Term 2 Images/image (5).png Graphic file (type png)
+<use Images/Term 2 Images/image (5).png>
+Package pdftex.def Info: Images/Term 2 Images/image (5).png  used on input line 1528.
+(pdftex.def)             Requested size: 301.00192pt x 217.4826pt.
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Overfull \hbox (37.2413pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 # Needs to set multiline to false or it won't let you use enter to validate[] 
- []
 
+LaTeX Warning: Reference `fig:Graphs Screen KV' on page 57 undefined on input line 1534.
 
-Overfull \hbox (84.49089pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 text = TextInput(size_hint_x=None, width="275sp", font_size="15sp", multiline=False)[] 
+[57 <./Images/Term 2 Images/Confirm Delete.png>] [58 <./Images/Term 2 Images/image (6).png>]
+Overfull \hbox (10.99153pt too wide) in paragraph at lines 1608--1608
+[]      \OT1/cmtt/m/n/10 self.infoPopup = self.ax.annotate("", xy=(0, 0), xytext=(-20, 20), textcoords=[] 
  []
 
 
-Overfull \hbox (325.98878pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 # text.bind(on_focus=self.onFocus) #Was not working, so will maybe try again in the future, in the future it still did not work D:[] 
+Overfull \hbox (52.99117pt too wide) in paragraph at lines 1608--1608
+[]      \OT1/cmtt/m/n/10 "offset points",bbox=dict(boxstyle="round", fc="w"), arrowprops=dict(arrowstyle="->"))[] 
  []
-
 
-Overfull \hbox (299.73901pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 text.bind(on_text_validate=lambda current, varName=varName, maxVal=int(maxVal): self.validateInput(current, varName, maxVal))[] 
+[59 <./Images/Term 2 Images/image (1).png>] [60 <./Images/Term 2 Images/IMG_1349.jpg>] [61 <./Images/Term 2 Images/IMG_1349 (1).jpg>] [62 <./Images/Term 2 Images/image (7).png>]
+Overfull \hbox (52.98993pt too wide) in paragraph at lines 1662--1662
+[]      \OT1/cmtt/m/n/10 totalValue = float(self.portfolio.totalValue.text.split('\TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 ')[1].replace(',', '')[:-4])[] 
  []
 
-
-Overfull \hbox (31.99135pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 if self.portfolio == 100000000 and self.rlPercent == 5 and self.timeHori == 1:[] 
+[63 <./Images/Term 2 Images/image (5).png>] [64]
+Overfull \hbox (21.49144pt too wide) in paragraph at lines 1688--1688
+[]              \OT1/cmtt/m/n/10 dailyTotal += row[stockData['ticker']] * float(stockData['sharesOwned'])[] 
  []
 
 
-Overfull \hbox (1365.47849pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given (Default)[/u]\n" + f"Portfolio Value: \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))[] 
+Overfull \hbox (42.49126pt too wide) in paragraph at lines 1688--1688
+[]      \OT1/cmtt/m/n/10 self.createGraph(x, y, 'Days', 'Total Portfolio Value', 'Portfolio Value Over Time')[] 
  []
 
-
-Overfull \hbox (1312.97894pt too wide) in paragraph at lines 3535--3535
-[]              \OT1/cmtt/m/n/10 self.userInputs.add_widget(Label(text="\n\n\n\n\n[u]Current Info Given[/u]\n" + f"Portfolio Value: \TS1/cmtt/m/n/10 £\OT1/cmtt/m/n/10 {'{:,}'.format(self.portfolio)}\n" + f"Risk Level Percentage: {self.rlPercent}%\n" + f"Time Horizon: {self.timeHori} day(s)", size_hint_y=None, height="10sp", markup=True, font_size="20sp", pos_hint={'center_x': 0.3}))[] 
+[65]
+Overfull \hbox (10.99153pt too wide) in paragraph at lines 1709--1709
+[]  \OT1/cmtt/m/n/10 self.createGraph(x, y, 'Last 500 Days', self.portfolio.tempStockInfo['ticker']...)[] 
  []
-
 
-Overfull \hbox (756.48503pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 label = Label(text='[u]Back-Testing[/u]', pos_hint={'center_x': 0.9, 'center_y': 0.1}, font_size="14sp", markup=True, color=(0, 0, 0, 1))#Using the pos_hint to make sure its in the right place, which it now always is[] 
+[66] [67]
+Overfull \hbox (31.99135pt too wide) in paragraph at lines 1767--1767
+[]      \OT1/cmtt/m/n/10 ftse100 = [ticker + ".L" for ticker in self.varChecker.ftse100['Ticker'].tolist()][] 
  []
 
 
-Overfull \hbox (142.24039pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 # Add the FloatLayout to the userInputs GridLayout so it can be drawn in the right place every time[] 
+Overfull \hbox (42.49126pt too wide) in paragraph at lines 1767--1767
+[]      \OT1/cmtt/m/n/10 tickerToName = dict(zip(ftse100, ftse100Names))  # mapping between tickers and names[] 
  []
 
 
-Overfull \hbox (1344.4799pt too wide) in paragraph at lines 3535--3535
-[]          \OT1/cmtt/m/n/10 # After going through this in the future, I don't know why I created so much stuff in the python, rather than in the kv file and just referencing it and adapting it as needed. I also needed to use more classes, but I am still happy with its presentation and functionality, so it is good to still keep as a tab within my program.[] 
+Overfull \hbox (163.2402pt too wide) in paragraph at lines 1767--1767
+[]          \OT1/cmtt/m/n/10 VaRs[tickerToName[stock]] = float(self.portfolio.varCalc.modelSim(1000, stockData['Adj Close'][stock]))[] 
  []
 
-[117] [118] [119] (./FYP Documentation.aux)
+[68] [69] [70] [71] [72] [73] [74] [75] [76] [77] [78] [79] [80] [81] [82] [83] [84] [85] [86] [87] [88] [89] [90] [91] [92] [93] (./FYP Documentation.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
@@ -2023,21 +963,21 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `"FYP Documentation".out' has not changed.
-(rerunfilecheck)             Checksum: F586D57F1C6C27F00CC73F92BD5FD1AF;16851.
+(rerunfilecheck)             Checksum: 15FB00633EBEB58E69618EADC4D24A66;14034.
  ) 
 Here is how much of TeX's memory you used:
- 15712 strings out of 474928
- 247582 string characters out of 5763562
- 1946785 words of memory out of 5000000
- 36596 multiletter control sequences out of 15000+600000
- 572411 words of font info for 156 fonts, out of 8000000 for 9000
+ 15691 strings out of 474928
+ 248148 string characters out of 5763562
+ 1936785 words of memory out of 5000000
+ 36616 multiletter control sequences out of 15000+600000
+ 572087 words of font info for 153 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,12n,79p,6675b,677s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb><c:/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on "FYP Documentation.pdf" (120 pages, 3409762 bytes).
+Output written on "FYP Documentation.pdf" (94 pages, 4687161 bytes).
 PDF statistics:
- 1346 PDF objects out of 1440 (max. 8388607)
- 1125 compressed objects within 12 object streams
- 292 named destinations out of 1000 (max. 500000)
- 45379 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 1181 PDF objects out of 1200 (max. 8388607)
+ 982 compressed objects within 10 object streams
+ 257 named destinations out of 1000 (max. 500000)
+ 45279 words of extra memory for PDF output out of 51595 (max. 10000000)
 

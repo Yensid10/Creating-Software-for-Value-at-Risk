@@ -1,32 +1,32 @@
-\contentsline {section}{\numberline {1}Abstract}{5}{section.1}%
-\contentsline {section}{\numberline {2}Chapter 1 - Introduction}{7}{section.2}%
-\contentsline {subsection}{\numberline {2.1}What is VaR?}{7}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Aims and Goals}{8}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Milestone Plan}{9}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Timescale \& Timeline}{10}{subsubsection.2.3.1}%
-\contentsline {section}{\numberline {3}Chapter 2 --- Understanding VaR}{13}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Historical Simulation}{13}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Model Building (Variance-Covariance)}{14}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Coding VaR Methods}{15}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Command Line --- Historical Simulation}{15}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Command Line -- Model Building (Variance-Covariance)}{16}{subsubsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.4}Back-Testing}{18}{subsection.3.4}%
-\contentsline {subsection}{\numberline {3.5}Combining Implementations}{20}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Chapter 3 --- Graphical User Interface}{23}{section.4}%
-\contentsline {subsection}{\numberline {4.1}What is Kivy?}{23}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Conceptualisation of Initial Design Ideas}{24}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Initial GUI Creation}{25}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}First Iteration}{25}{subsubsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.4}Completed Initial Design}{27}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}Enhanced Application Structure}{27}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}Dynamic Stock List Generation}{28}{subsubsection.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.3}Value at Risk (VaR) Calculation}{28}{subsubsection.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.4}User Input Handling and Validation}{29}{subsubsection.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.5}Radio Buttons}{29}{subsubsection.4.4.5}%
-\contentsline {subsection}{\numberline {4.5}Initial Deliverable With Pictures}{30}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Reflectional Adjustments}{30}{subsection.4.6}%
-\contentsline {section}{\numberline {5}Chapter 4 --- Portfolio Creation}{30}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Monte Carlo Simulation}{30}{subsection.5.1}%
+\contentsline {section}{\numberline {1}Abstract}{4}{section.1}%
+\contentsline {section}{\numberline {2}Chapter 1 - Introduction}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}What is VaR?}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Aims and Goals}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Milestone Plan}{8}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Timescale \& Timeline}{9}{subsubsection.2.3.1}%
+\contentsline {section}{\numberline {3}Chapter 2 --- Understanding VaR}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Historical Simulation}{12}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Model Building (Variance-Covariance)}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Coding VaR Methods}{14}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Command Line --- Historical Simulation}{14}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Command Line -- Model Building (Variance-Covariance)}{15}{subsubsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.4}Back-Testing}{17}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Combining Implementations}{19}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Chapter 3 --- Graphical User Interface}{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1}What is Kivy?}{22}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Conceptualisation of Initial Design Ideas}{23}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Initial GUI Creation}{24}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}First Iteration}{24}{subsubsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.4}Completed Initial Design}{26}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Enhanced Application Structure}{26}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Dynamic Stock List Generation}{27}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Value at Risk (VaR) Calculation}{27}{subsubsection.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.4}User Input Handling and Validation}{28}{subsubsection.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.5}Radio Buttons}{28}{subsubsection.4.4.5}%
+\contentsline {subsection}{\numberline {4.5}Initial Deliverable with Pictures}{29}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Reflectional Adjustments}{29}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Chapter 4 --- Portfolio Creation}{31}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Monte Carlo Simulation}{31}{subsection.5.1}%
 \contentsline {subsubsection}{\numberline {5.1.1}Command Line --- Monte Carlo Simulation}{33}{subsubsection.5.1.1}%
 \contentsline {subsection}{\numberline {5.2}Kivy Screen Manager}{34}{subsection.5.2}%
 \contentsline {subsubsection}{\numberline {5.2.1}Tabbing System and Workspace Structure}{36}{subsubsection.5.2.1}%
@@ -43,46 +43,31 @@
 \contentsline {section}{\numberline {6}Chapter 5 --- Graphical Visualisation}{52}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Convergence Analysis}{52}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Matplotlib within Kivy}{54}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Creating the Graphs Screen}{54}{subsection.6.3}%
-\contentsline {subsubsection}{\numberline {6.3.1}Adding Dynamic Pop-Up Labels}{56}{subsubsection.6.3.1}%
-\contentsline {subsubsection}{\numberline {6.3.2}Threading}{56}{subsubsection.6.3.2}%
-\contentsline {subsubsection}{\numberline {6.3.3}Theoretical Portfolio Value Over Time and Custom ScrollView}{56}{subsubsection.6.3.3}%
-\contentsline {subsubsection}{\numberline {6.3.4}Single Stock Price Over Time and Vectorisation}{56}{subsubsection.6.3.4}%
-\contentsline {subsubsection}{\numberline {6.3.5}Creating Ranking Graphs and Displaying Names}{56}{subsubsection.6.3.5}%
-\contentsline {subsubsection}{\numberline {6.3.6}Keeping Labels Within the Graphs Boundaries}{56}{subsubsection.6.3.6}%
-\contentsline {subsubsection}{\numberline {6.3.7}Current Portfolio Ranking}{56}{subsubsection.6.3.7}%
-\contentsline {subsection}{\numberline {6.4}Visualising Back-Testing}{56}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}The Finalised Graphs Screen}{56}{subsection.6.5}%
-\contentsline {section}{\numberline {7}Chapter 6 --- Completed Deliverable}{56}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Features and Final GUI Design}{56}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}P-Values and Graphical Analysis}{56}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Adaptations for Packaged Release}{56}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Chapter 7 --- Software Engineering}{56}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Object Oriented Programming}{56}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Design Patterns}{58}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Testing and Documentation}{62}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Version Control (Git)}{63}{subsection.8.4}%
-\contentsline {section}{\numberline {9}Chapter 8 --- Critical Analysis}{65}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Interim Evaluation}{65}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Final Report Evaluation}{65}{subsection.9.2}%
-\contentsline {subsubsection}{\numberline {9.2.1}Coding Achivements and Dificulties}{65}{subsubsection.9.2.1}%
-\contentsline {subsection}{\numberline {9.3}Conclusion}{65}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Professional Issues}{65}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Finance Industry Ethics}{65}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Plagiarism and Using AI}{67}{subsection.10.2}%
-\contentsline {section}{\numberline {11}Bibliography}{69}{section.11}%
-\contentsline {subsection}{\numberline {11.1}References}{69}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Literature Review}{71}{subsection.11.2}%
-\contentsline {subsubsection}{\numberline {11.2.1}Bibliography Summary}{71}{subsubsection.11.2.1}%
-\contentsline {subsubsection}{\numberline {11.2.2}General Literature}{71}{subsubsection.11.2.2}%
-\contentsline {subsubsection}{\numberline {11.2.3}Literature Review References}{73}{subsubsection.11.2.3}%
-\contentsline {section}{\numberline {12}Appendix}{73}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Diary}{73}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}Fully Packaged Code}{82}{subsection.12.2}%
-\contentsline {subsubsection}{\numberline {12.2.1}Final Design.py}{82}{subsubsection.12.2.1}%
-\contentsline {subsubsection}{\numberline {12.2.2}Portfolio.py}{84}{subsubsection.12.2.2}%
-\contentsline {subsubsection}{\numberline {12.2.3}Portfolio.kv}{93}{subsubsection.12.2.3}%
-\contentsline {subsubsection}{\numberline {12.2.4}Graphs.py}{100}{subsubsection.12.2.4}%
-\contentsline {subsubsection}{\numberline {12.2.5}Graphs.kv}{110}{subsubsection.12.2.5}%
-\contentsline {subsubsection}{\numberline {12.2.6}VaRChecker.py}{114}{subsubsection.12.2.6}%
-\contentsline {subsubsection}{\numberline {12.2.7}VaRChecker.kv}{117}{subsubsection.12.2.7}%
+\contentsline {subsection}{\numberline {6.3}Creating the Graphs Screen}{55}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Layout and Dynamic Pop-Up Labels}{58}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Threading}{62}{subsubsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3}Theoretical Portfolio Value Over Time}{65}{subsubsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.4}Single Stock Price Over Time and Vectorisation}{66}{subsubsection.6.3.4}%
+\contentsline {subsubsection}{\numberline {6.3.5}Creating Ranking Graphs and Displaying Names}{67}{subsubsection.6.3.5}%
+\contentsline {subsection}{\numberline {6.4}Final Design}{69}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Chapter 7 --- Software Engineering}{69}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Object Oriented Programming}{69}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Design Patterns}{70}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Testing and Documentation}{73}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Version Control (Git)}{74}{subsection.7.4}%
+\contentsline {section}{\numberline {8}Chapter 8 --- Critical Analysis}{76}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Interim Evaluation}{76}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Final Report Evaluation}{76}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Coding Achivements and Dificulties}{76}{subsubsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.3}Conclusion}{76}{subsection.8.3}%
+\contentsline {section}{\numberline {9}Professional Issues}{76}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Finance Industry Ethics}{76}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Plagiarism and Using AI}{78}{subsection.9.2}%
+\contentsline {section}{\numberline {10}Bibliography}{80}{section.10}%
+\contentsline {subsection}{\numberline {10.1}References}{80}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Literature Review}{82}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}Bibliography Summary}{82}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}General Literature}{82}{subsubsection.10.2.2}%
+\contentsline {subsubsection}{\numberline {10.2.3}Literature Review References}{84}{subsubsection.10.2.3}%
+\contentsline {section}{\numberline {11}Appendix}{84}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Diary}{84}{subsection.11.1}%
