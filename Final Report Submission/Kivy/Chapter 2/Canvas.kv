@@ -1,0 +1,70 @@
+#:kivy 1.9.0
+# File name: Canvas.kv
+<DrawingSpace>:
+    # canvas:
+        # Rectangle:
+        #     pos: self.x+10,self.top-80
+        #     size: self.width*0.15, self.height*0.3
+        # Ellipse:
+        #     angle_start: 120
+        #     angle_end: 420
+        #     pos: 110, 110
+        #     size: 80,80
+        # Line:
+        #     points: 10,30, 90,90, 90,10, 10,60
+        # Point:
+        #     points: 110,30, 190,90, 190,10, 110,60
+        #     pointsize: 4
+        # Mesh:
+        #     mode: 'triangle_fan'
+        #     vertices: 430,90,0,0, 470,90,0,0, 490,70,0,0, 450,10,0,0, 410,70,0,0, 430,90,0,0,
+        #     indices: 0,1,2,3,4,5
+
+
+        # Ellipse:
+        #     pos: 10,10
+        #     size: 80,80
+        #     source: 'kivy.png'
+        # Rectangle:
+        #     pos: 110,10
+        #     size: 80,80
+        #     source: 'kivy.png'
+        # Color: 
+        #     rgba: 0,0,1,.75
+        # Line:
+        #     points: 10,10,390,10
+        #     width: 10
+        #     cap: 'square'
+        # Color: 
+        #     rgba: 0,1,0,1
+        # Rectangle:
+        #     pos: 210,10
+        #     size: 80,80
+        #     source: 'kivy.png'
+        # Rectangle:
+        #     pos: 310,10
+        #     size: 80,80
+
+
+    canvas.before:
+        Color: 
+            rgba: 1,0,0,1
+        Rectangle:
+            pos: 0,0
+            size: 100,100
+    canvas:
+        Color:
+            rgba: 0,1,0,1
+        Rectangle:
+            pos: 100,0
+            size: 100,100
+    canvas.after:
+        Color: 
+            rgba: 0,0,1,1
+        Rectangle:
+            pos: 200,0
+            size: 100,100
+    Button:
+        text: 'A very very very long button'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        size_hint: .9,.1

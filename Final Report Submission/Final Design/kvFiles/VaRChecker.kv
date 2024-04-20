@@ -1,0 +1,97 @@
+#:kivy 2.3.0
+# File name: VaRChecker.kv
+
+<VaRChecker>:
+    stockList: stockList
+    userInputs: userInputs
+    currentStock: currentStock
+    valAtRisk: valAtRisk
+    backTestCheck: backTestCheck
+    BoxLayout:
+        orientation: 'horizontal'
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.45
+            Label:
+                font_size: "25sp"
+                size_hint_y: 0.113
+                text: 'Stock List: FTSE100'
+                canvas.before:
+                    Color:
+                        rgba: 0.2, 0.2, 0.2, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 0, 0, 0, 1 
+                    Line:
+                        rectangle: (self.x, self.y, self.width, self.height)
+                        width: 1.5
+            BlackScroll: # Lets me use this from another kv file
+                GridLayout:
+                    id: stockList
+                    cols: 1
+                    size_hint_y: None
+                    size_hint_x: 1
+                    height: self.minimum_height
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.55
+            Label:
+                id: currentStock
+                size_hint: 1, 0.1
+                font_size: "30sp"
+                text: 'No Selected Stock'
+                color: 0, 0, 0, 1
+                canvas.before:
+                    Color:
+                        rgba: 0.9, 0.9, 0.9, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 0, 0, 0, 1 
+                    Line:
+                        rectangle: (self.x, self.y, self.width, self.height)
+                        width: 1.5
+            GridLayout:
+                id: userInputs
+                cols: 1
+                size_hint_y: None
+                spacing: 5
+                size_hint : 1, 0.85
+                canvas.before:
+                    Color:
+                        rgba: 0.5, 0.5, 0.5, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                    Color:
+                        rgba: 0, 0, 0, 1 
+                    Line:
+                        rectangle: (self.x, self.y, self.width, self.height)
+                        width: 1.5
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 0.05
+                Button:
+                    size_hint_x: 0.3
+                    text: 'Generate'
+                    font_size: "25sp"
+                    on_press: root.generateVaR()        
+                Label:
+                    id: valAtRisk
+                    size_hint_x: 0.525
+                    text: ' VaR: '
+                    font_size: "25sp"
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+                Label:
+                    id: backTestCheck
+                    size_hint_x: 0.175
+                    text: ''
+                    font_size: "10sp"
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size

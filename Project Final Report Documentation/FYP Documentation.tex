@@ -50,11 +50,11 @@
 I have read and understood the Universities regulations on plagiarism and I hereby declare that all work submitted in this project is my own, except where explicitly stated otherwise, such as the references that have been cited. \\
 
 \begin{itemize}
-  \item Word Count:
+  \item Word Count: 32,745
   \item Name: Benjamin Charles Shearlock
   \item Submission Date: 12/04/2024
   \item Youtube Video showcasing Final Deliverable Program: \url{https://www.youtube.com/watch?v=Fj-cO6MDV4g}
-  \item All other programs included within my PROJECT Git repository are simple python programs that can just be ran normally, these mainly being found within the ``Command Line VaR Programs'' folders for terms 1 and 2. The main code for this report is contained within the ``Final Design'' folder. It can be ran as a normal python program called ``Final Design.py'', but this would require further installations of various Python libraries that are documented within this report. The much easier alternative is to use the executable file found within the ``dist'' sub folder, which can be ran without any further installations. The executable file is called ``MCaT.exe''. It is all in the branch “Master”, as I was having issues with my “Main” branch.
+  \item All other programs included within my PROJECT Git repository are simple python programs that can just be ran normally, these mainly being found within the ``Command Line VaR Programs'' folders for terms 1 and 2. The main code for this report is contained within the ``Final Design'' folder. It can be ran as a normal python program called ``Final Design.py'', but this would require further installations of various Python libraries that are documented within this report. The much easier alternative is to use the executable file found within the ``dist'' sub folder, which can be ran without any further installations. The executable file is called ``MCaT.exe''. It is all in the branch “Master”, as I was having issues with my “Main” branch. If my executable file cannot be accessed via GitLab, use this link: \url{https://1drv.ms/u/s!AoSVs7KIRbFaj5lGjJwlIqXSYF7_jg?e=D8146Y.}
 
 
 \end{itemize}
@@ -796,19 +796,7 @@ The radio buttons are created using Kivy's ToggleButton widget, allowing users t
 \subsection{Initial Deliverable with Pictures}
 The final iteration of the initial design successfully integrates the core functionalities of the VaR calculation tool into a user-friendly interface. The application allows users to select an available stock, configure VaR parameters, and calculate the VaR using either historical data or a model-based approach. The dynamic stock list generation, user input handling, and radio buttons enhance the application's usability and flexibility, providing any users with a sufficient tool for risk analysis. The accompanying \texttt{.kv} file provides the structural backbone behind the visual appearance, but it is less complex than the \texttt{.py} file, more on the visual alteration of kivy can be found in later section. For what it was created to accomplish, I believe this final initial design is aesthetically pleasing, computationally sound and accomplishes exactly what is required of it in a robust and efficient manner. Pictures of this deliverable can be found on the subsequent page in figure \ref{fig:Initial Design Test - Final Iteration 1} and figure \ref{fig:Initial Design Test - Final Iteration 2}.
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\textwidth]{Images/Initial Design Tes - Final Iteration 1.png}
-  \caption{Initial Design Test - Final Iteration 1}
-  \label{fig:Initial Design Test - Final Iteration 1}
-\end{figure}
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.8\textwidth]{Images/Initial Design Tes - Final Iteration 2.png}
-  \caption{Initial Design Test - Final Iteration 2}
-  \label{fig:Initial Design Test - Final Iteration 2}
-\end{figure}
 
 Youtube Video: \href{https://youtu.be/2GIWug_IESI}{Presentation Demonstration For Final Initial Design - FYP}
 
@@ -822,7 +810,21 @@ I realised that the few times that stock errors did occur, it was due to the sto
 A different huge problem was that I had laid out and specifically positioned the app to work with its current size, thus me restricting the scaleability of the window to not be possible. However, when you moved the application from one screen size (that I had been doing the majority of the visual creation work with) to another of different dimensions, it would completely mess up the layouts and make parts of the visuals illegible, even with both monitors being the same resolution. This was extremely problematic, since it would entirely restrict who could use my program effectively, since they would have to be lucky enough to have the same size screen as my monitor just to be able to use it properly. Once again, when searching through the Kivy documentation [\ref{ref13}], not only did I figure out that \texttt{size\_hint}, a property I had tried to avoid due to not being able to specify specific sizes, could be used to scale for whatever sized window you may have (based on percentages), but there was also a built-in unit of measurement called \texttt{sp} (Scale-independent Pixels) that could be used to specify sizes in such a way that they would automatically scale depending on screen type, which I had not known about before. Going back through and changing all my specifically defined values, I was able to ensure that the application would be accessible on all types of windows hardware with this change, keeping the view consistent and optimised, and allowing my future development to adhere to the same practice as well.\\\vspace{0.3cm}
 
 One other final thing to note, I have observed in hindsight a weird reliance on me changing and writing a vast majority of Kivy information inside of my python code, and I'm not referring to the general python integrated code, I was regularly defining layout aspects within all parts of my python code, something that is not common practice for this type of development. I believe this to be due to my lack of understanding of the .kv file at the time as a whole, since this was the first time I had programmed in Kivy. COntinuing on from this point, I adapted the framework and the workstation that my project undertook, allowing me to better make use of the .kv files for its fantastic layout and styling capabilities, and its ability to seamlessly communicate with its respective python file. I did not go back and alter the contents of my python and kivy files in this regard, since its functionality remained working optimally, although I completely acknowledge that it was a suboptimal way to program within the kivy and python combined framework. Evidence on my growth and aptitude in this regard can be seen through the exploration of my future GUI developmental sections.\\\vspace{0.3cm}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/Initial Design Tes - Final Iteration 1.png}
+  \caption{Initial Design Test - Final Iteration 1}
+  \label{fig:Initial Design Test - Final Iteration 1}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/Initial Design Tes - Final Iteration 2.png}
+  \caption{Initial Design Test - Final Iteration 2}
+  \label{fig:Initial Design Test - Final Iteration 2}
+\end{figure}
+
+\newpage
 \section{Chapter 4 --- Portfolio Creation}
 
 \subsection{Monte Carlo Simulation}
@@ -846,7 +848,7 @@ where:
   \item \(r^T\) is the transpose of the return vector.
 \end{itemize}
 
-\vspace{0.3cm}
+\newpage
 When using Monte Carlo Simulation for VaR calculation, we simulate this return \(R\) for a given time horizon using the historical mean (\(\mu\)) and covariance (\(\Sigma\)) of the asset returns. For a single-day horizon, the simulated return for the portfolio can be generated from a multivariate normal distribution:
 
 \begin{equation}
@@ -944,6 +946,7 @@ Subsequently, upon researching more into the capabilities of kivy and its framew
   \label{fig:Tabbing Concept}
 \end{figure}
 
+\newpage
 With this, I came up with the 4 screens that I wanted to implement into my program, those being:
 \begin{itemize}
   \item \textbf{Portfolio Screen:} The main screen when you open up the program, where you can create a portfolio, select the stocks and amount of shares that you want for it and generate the Value at Risk for the total value.
@@ -1173,7 +1176,7 @@ Using stored checker methods that were initialised during the classes startup, i
 
 \subsubsection{Value at Risk Calculators}
 You may have noticed that when creating the displays for the total and specific stocks, that I had not displayed or generated the Value at Risk to be displayed for either. This was because I had not yet implemented the Monte Carlo Simulation method into the program, and I would need to do so to be able to calculate the VaR for the portfolio. I had tested single stock calculations for VaR with this method as well, but it did not work, so I decided that I would just use my Model Simulation (Variance-Covariance) method for the single stock VaR calculations, and the Monte Carlo Simulation for the portfolio VaR calculations, as I have had both working in other programs/screens. I chose to use model over historical simulation as when back-testing, the resultant p-value were much higher/more consistent when using the model method, so I believed it to be more reliable. To implement these methods, I decided to create another class (all subsequent new classes mention all being within this same \texttt{Portfolio.py} file.) called \texttt{VaRCalculators}, that would contain all the methods needed to calculate the VaR for the portfolio and the individual stocks. An instance of this would then be created when the screen was initialised (\texttt{self.varCalc = VaRCalculators()}), and the methods within could be referenced  whenever needed in the stock total clock cycles.\\\vspace{0.3cm}
-
+\newpage
 \begin{verbatim}
   class VaRCalculators:
     def __init__(self, *args):
@@ -1274,7 +1277,8 @@ The new resultant holding information would look like this - \texttt{\{"ADS.DE":
 \vspace{0.3cm}
 Another thing to note within the figure \ref{fig:Stock and Ticker Names} is the addition of a back button, which can be seen in the top right. I assumed with the \texttt{+} symbol for adding a stock and this \texttt{X} button, that the user would intuitively understand what each were trying to represent, since it adheres to the general design principles found within the creation of graphical interfaces [\ref{ref18}]. On the Total Portfolio display, the back button can still be seen in the same place, but with its opacity and ability to be pressed set to 0. When you run the \texttt{specificStockTotals} method, it would set the opacity to 1 and the ability to be pressed to 1, allowing for the user to return to the total portfolio view. And the code it runs when pressed is simply just \texttt{initialStockTotals()}, redrawing back over it and setting itself to invisible \& untouchable again.\\\vspace{0.3cm}
 
-\subsubsection{Improving Monte Carlo Simulation}\label{improvingmcs}
+\newpage
+\subsubsection{Improving Monte Carlo Simulation}
 Every time I would switch between my two Portfolio views, it would have to recalculate the VaR, thus running more Monte Carlo Simulations, and slightly lagging the app consistently. Whilst this method was efficient, I wanted to adapt is so that it didn't have to run through all the simulations extensively every time (since the more simulations produced more accurate results that I wanted to have displayed), resulting in me considering the use of a convergence point/threshold. With this, my method would continuously perform simulation steps, incrementing and producing a new VaR result every time, but performing many less simulations to begin with. And as soon as one of these simulations is within the same threshold (1\%) as the last one, I could assume that this was a reasonably accurate estimation of the VaR, returning the latest value for it.\\\vspace{0.3cm}
 
 \begin{verbatim}
@@ -1402,7 +1406,7 @@ Being focused more on the functionality of the program rather than its form, by 
   \label{fig:Previous Iteration}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Create Holding.png}
   \caption{Final Create/Update Holding Pop-Up}
@@ -1416,19 +1420,20 @@ Being focused more on the functionality of the program rather than its form, by 
   \label{fig:Final Confirm Delete}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (6).png}
   \caption{Completed Portfolio Screen}
   \label{Completed Portfolio Screen}
 \end{figure}
 
+\newpage
 \section{Chapter 5 --- Graphical Visualisation}
 
 \subsection{Convergence Analysis}
-After finishing my Portfolio screen, I realised that the term "Trends" for my final screen was not sufficient for what I wanted it to be. Thus, it was changed to "Graphs", particularly influenced by a brief detour I took within my recent development cycle, when I created a graphical representation of my Monte Carlo Simulation. I was trying to understand the convergence method I eventually used, since it would help me hone in on a more accurate result in faster time, improving my codes efficiency, but I didn't entirely understand what I was looking for. To help me visualise what I needed, I decided to employ the use of a library called MatPlotLib (\url{https://matplotlib.org/}), a plotting library for the Python programming language. When defined and called, it would create a new window with a graph of the data you had inputted, a feature I have used in the past for other coding projects, so I knew how useful it can be for displaying these forms of information.\\\vspace{0.3cm}
+After finishing my Portfolio screen, I realised that the term "Trends" for my final screen was not sufficient for what I wanted it to be. Thus, it was changed to "Graphs", particularly influenced by a brief detour I took within my recent development cycle, when I created a graphical representation of my Monte Carlo Simulation. I was trying to understand the convergence method I eventually used, since it would help me hone in on a more accurate result in faster time, improving my code's efficiency, but I didn't entirely understand what I was looking for. To help me visualise what I needed, I decided to employ the use of a library called MatPlotLib (\url{https://matplotlib.org/}), a plotting library for the Python programming language. When defined and called, it would create a new window with a graph of the data you had inputted, a feature I have used in the past for other coding projects, so I knew how useful it can be for displaying these forms of information.\\\vspace{0.3cm}
 
-So whilst I was initially experimenting with the coding design found in section \ref{label:improvingmcs}, I used the codes results to store the VaR values into a list, and plotted these results on a graph, with the x-axis being the number of simulations (checkpoints) done for each VaR value, which was subsequently displayed on the y-axis. This would allow me to see if I was right to attempt this method of finding an incremental way to ensure that the VaR was converging, and if it was, how many simulations it would take to reach this point.\\\vspace{0.3cm}
+So whilst I was initially experimenting with the coding design found in my Monte Carlo Convergence section, I used the code's results to store the VaR values into a list, and plotted these results on a graph, with the x-axis being the number of simulations (checkpoints) done for each VaR value, which was subsequently displayed on the y-axis. This would allow me to see if I was right to attempt this method of finding an incremental way to ensure that the VaR was converging, and if it was, how many simulations it would take to reach this point.\\\vspace{0.3cm}
 
 \begin{verbatim}
   import matplotlib.pyplot as plt
@@ -1440,7 +1445,7 @@ So whilst I was initially experimenting with the coding design found in section 
 \end{verbatim}
 
 \vspace{0.3cm}
-The methods used for the library are quite self-explanatory, with the \texttt{plt.plot()} method plotting the data, the \texttt{plt.xlabel()} and \texttt{plt.ylabel()} methods setting the labels for the x and y axis, the \texttt{plt.title()} method setting the title of the graph, and with \texttt{plt.show()}, the graph is displayed. When the code is ran, a MatPlotLib pop-up window would appear, giving me the ability to visually perceive the convergence and perform my own analysis of it, resulting in me implementing a slightly altered version of this convergence method for my portfolio, but giving me the idea to have this be displayed within my Graphs screen, since its so useful in showing how the Monte Carlo Simulation works. I would go on to create many graphs within this screen, one of such being this one. Within the rest of this section, I will go into detail on each screen that was created, but here I will show what the Convergence Analysis graph looked like in figure \ref{fig:Convergence Analysis}.\\\vspace{0.3cm}
+The methods used for the library are quite self-explanatory, with the \texttt{plt.plot()} method plotting the data, the \texttt{plt.xlabel()} and \texttt{plt.ylabel()} methods setting the labels for the x and y axis, the \texttt{plt.title()} method setting the title of the graph, and with \texttt{plt.show()}, the graph is displayed. When the code is ran, a MatPlotLib pop-up window would appear, giving me the ability to visually perceive the convergence and perform my own analysis of it, resulting in me implementing a slightly altered version of this convergence method for my portfolio, but giving me the idea to have this be displayed within my Graphs screen, since it's so useful in showing how the Monte Carlo Simulation works. I would go on to create many graphs within this screen, one of such being this one. Within the rest of this section, I will go into detail on each screen that was created, but here I will show what the Convergence Analysis graph looked like in figure \ref{fig:Convergence Analysis}.\\\vspace{0.3cm}
 
 \begin{figure}[h]
   \centering
@@ -1450,7 +1455,7 @@ The methods used for the library are quite self-explanatory, with the \texttt{pl
 \end{figure}
 
 \subsection{Matplotlib within Kivy}
-However, unlike my previous approach, having an external library forcefully open up its own custom pop-up was not what I was looking for in my singularly packaged application module I was looking to create. I knew that I wanted to be able to display this graphical interface within the confines of my program, and to do this I would need to utilise arguably the best feature that kivy has been able to integrate, \texttt{Garden}. Garden is a collection of widget and library addons that has been implemented and maintained by users, giving it full capability to be able to do whatever other users may have been able to implement within the kivy source material. This gives Kivy such an incredible wide range of capabilities, since community driven development can foster a lot of creativity and innovation, and upon looking through garden, the module I was in need of blossomed into view.\\\vspace{0.3cm}
+However, unlike my previous approach, having an external library forcefully open up its own custom pop-up was not what I was looking for in my singularly packaged application module I was looking to create. I knew that I wanted to be able to display this graphical interface within the confines of my program, and to do this I would need to utilise arguably the best feature that kivy has been able to integrate, \texttt{Garden}. Garden is a collection of widget and library addons that has been implemented and maintained by users, giving it full capability to be able to do whatever other users may have been able to implement within the kivy source material. This gives Kivy such an incredible wide range of capabilities, since community driven development can foster a lot of creativity and innovation, and upon looking through Garden, the module I was in need of blossomed into view.\\\vspace{0.3cm}
 
 There was quite simply a MatPlotLib implementation of Kivy that was readily available within the Garden module, \url{https://github.com/kivy-garden/garden.matplotlib}, and whilst both garden and the matplotlib version would need a pip-install, those were the only limitations stopping me from being able to start utilising this framework within my project. Alas, after everything was installed and correctly referenced, there was no success in the communication between the garden matplotlib backend (which I had found the location of) and my ability to import the libraries into my python program. This resulted in me trying many techniques to initiate communication, even adding a custom \texttt{PATH} indicator for python to my system, but nothing seemed to work. 
 
@@ -1475,7 +1480,7 @@ As can be seen in figure \ref{fig:Graphs Screen Draft}, I originally had another
   \label{fig:Graphs Screen Draft}
 \end{figure}
 
-\vspace{0.3cm}
+\newpage
 Below this drawing, I also specified the different types of graphs that I wanted to display, since it was good to plan ahead for what I wanted to accomplish. Whilst they can also be seen in figure \ref{fig:Graphs Screen Draft 2}, I will list what I initially envisioned here as well, since some are the main focus of this screen:
 
 \begin{itemize}
@@ -1503,7 +1508,9 @@ As you may also be able to see, I jotted numbers next to relevant ideas to under
       def __init__(self, **kwargs):
           super(Graphs, self).__init__(**kwargs)
           self.createGraph()
-
+\end{verbatim}
+% \newpage
+\begin{verbatim}
       def createGraph(self):
           plt.figure(figsize=(6, 4))
           plt.plot([1, 29, 12, 4])
@@ -1522,7 +1529,7 @@ During \texttt{Graphs} class initialisation, the \texttt{createGraph} method wou
   \label{fig:Graphs Screen Error}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (5).png}
   \caption{Graphs Screen with Many Graphs Plotted}
@@ -1530,7 +1537,7 @@ During \texttt{Graphs} class initialisation, the \texttt{createGraph} method wou
 \end{figure}
 
 \subsubsection{Layout and Dynamic Pop-Up Labels}
-Something that can also be seen within the figures \ref{fig:Graphs Screen Error} and \ref{fig:Graphs Screen Error 2} is the crudely drawn graph repeated many times across the buttons at the bottom of the screen. My goal was to have distinct and vibrant graphs by the end of this section, so my goal was to take these, add a blur effect as to make any text in front of them more distinct, helping the user know which graph they are going to generate when the buttons are pressed by just being able to vaguely see when scrolling through. Of course this would have to be added at the end of the screens development, when all the other graphs have achieved a distinct appearance, so the "stock" stock image that I created in paint was used as a placeholder for the majority of this classes development going forward. My original full code for \texttt{Graphs.kv} can be seen in figure \ref{fig:Graphs Screen KV}, since I haven't had opportunity to showcase much of the kivy layout. In it, you can see me define the\\\vspace{0.3cm}
+Something that can also be seen within the figures \ref{fig:Graphs Screen Error} and \ref{fig:Graphs Screen Error 2} is the crudely drawn graph repeated many times across the buttons at the bottom of the screen. My goal was to have distinct and vibrant graphs by the end of this section, so my goal was to take these, add a blur effect as to make any text in front of them more distinct, helping the user know which graph they are going to generate when the buttons are pressed by just being able to vaguely see when scrolling through. Of course this would have to be added at the end of the screens development, when all the other graphs have achieved a distinct appearance, so the "stock" stock image that I created in paint was used as a placeholder for the majority of this classes development going forward. My original full code for \texttt{Graphs.kv} can be seen in figure \ref{fig:Graphs Screen .kv}, since I haven't had opportunity to showcase much of the kivy layout.\\\vspace{0.3cm}
 
 \begin{figure}
 \begin{verbatim}
@@ -1576,8 +1583,8 @@ Something that can also be seen within the figures \ref{fig:Graphs Screen Error}
 \caption{Graphs Screen Original \texttt{.kv} (Kivy) File}\label{fig:Graphs Screen .kv}
 \end{figure}
 
-With my layout defined and the buttons set up to create these stock graphs, I knew that now would be the best time for me to attempt to implement one of the most important features, having the ability to hover over points on the graph, and have a little display for the information it is being plotted with. Since there was little conventional documentation for this implementation of MatPlotLib, as well as a few failed attempts to try and trial and error this to work, I decided to see if anyone in the small community that helped to develop for this user ran library had any more success with this than I was having. I once again found myself on Stack Overflow, where someone was having a problem getting their interpretation of the issue to work, and once again someone in the comments had offered a solution. Whilst I didn't take the exact code that they presented, I was heavily inspired by the logic that they used within their solution, and I want to fully acknowledge that without this original help I would not have been able to expand and adapt on this informational pop-up throughout the rest of my screens development. The link to the answer that helped inspire my adapted solution, given by \texttt{Justin CR}, can be found here \url{https://stackoverflow.com/a/55184676}, with my adapted version also being visible below, split into sections to explain how it works.\\\vspace{0.3cm}
-
+With my layout defined and the buttons set up to create these stock graphs, I knew that now would be the best time for me to attempt to implement one of the most important features, having the ability to hover over points on the graph, and have a little display for the information it is being plotted with. Since there was little conventional documentation for this implementation of MatPlotLib, as well as a few failed attempts to try and trial and error this to work, I decided to see if anyone in the small community that helped to develop for this user ran library had any more success with this than I was having. I once again found myself on Stack Overflow, where someone was having a problem getting their interpretation of the issue to work, and once again someone in the comments had offered a solution. Whilst I didn't take the exact code that they presented, I was heavily inspired by the logic that they used within their solution, and I want to fully acknowledge that without this original help I would not have been able to expand and adapt on this informational pop-up throughout the rest of my screen's development. The link to the answer that helped inspire my adapted solution, given by \texttt{Justin CR}, can be found here \url{https://stackoverflow.com/a/55184676}, with my adapted version also being visible below, split into sections to explain how it works.\\\vspace{0.3cm}
+% \newpage
 \begin{verbatim}
   def Graph1(self):
       x = list(range(1, 101))
@@ -1587,7 +1594,7 @@ With my layout defined and the buttons set up to create these stock graphs, I kn
 \end{verbatim}
 
 \vspace{0.3cm}
-I've now separated the creation of the graph into its own method, so that I can call it with different data and labels, something I am continusly planning to do for other graphs, and have it create a new plot each time. This was just a random test one with some randomly generated numbers and default labels.\\\vspace{0.3cm}
+I've now separated the creation of the graph into its own method, so that I can call it with different data and labels, something I am continuously planning to do for other graphs, and have it create a new plot each time. This was just a random test one with some randomly generated numbers and default labels.\\\vspace{0.3cm}
 
 \begin{verbatim}
   def createGraph(self, x, y, xlabel, ylabel, title):
@@ -1609,6 +1616,7 @@ I've now separated the creation of the graph into its own method, so that I can 
 \vspace{0.3cm}
 The \texttt{createGraph} method is now called with the data and labels that I want to display being passed into it, proceeding to create a new figure and axis, plotting all the data. Next, it will carefully construct the informational pop-up that will be displayed when hovering over the graph, and set it to be invisible by default. The other parameters within it are used to define the style of the pop-up, and the arrow that will point to the data point being hovered over. The \texttt{FigureCanvasKivyAgg} class is then used to display the graph within the kivy layout, and the \texttt{mpl\_connect} method is used to connect the mouse hover event to the \texttt{mouse\_hover} method, something that will be defined underneath this.\\\vspace{0.3cm}
 
+\newpage
 \begin{verbatim}
   def mouse_hover(self, event):
       if event.inaxes == self.ax:
@@ -1641,8 +1649,9 @@ The \texttt{mouse\_hover} method is called whenever the mouse is moved over the 
 And finally, the \texttt{showPopup} method will set the text of the pop-up to currently be the x and y data points that the mouse is hovering over. I will need to change this to be able to display different values in the future, since the x values are rarely relevant to what I want to display for my proposed graphical ideas. It then sets the position of the pop-up to be at the x and y data points, sets it to be visible, and then redraw the canvas to display the pop-up. With this working in tandem with the other methods, I am able to create a fully functioning hover method that will display the values of whatever graph is entered into the \texttt{createGraph} method, and will be able to be used for all future graphs that I create.\\\vspace{0.3cm}
 
 \subsubsection{Threading}
-With this newfound ability to see specific relevant information for specific points on graphs, I knew the first one I should properly try to implement was my convergence analysis graph, since I already knew how to define it for MatPlotLib, and would especially useful in comparing the converging points to the Monte Carlo Simulation result found in my Portfolio screen. After porting over the code I had previously used and getting it to run independently from the varCalculators class in the portfolio screen, I was able to have the simulation checkpoints generated and displayed within my Kivy application. This was fantastic, but did cause a massive issue, even with the optimised simulation I had created, the amount of time I had set for the simulation to run unaltered (for 75k simulations) would lag the program for around 10+, where you couldn't move the program would become completely unresponsive. This was no way for any form of industry standard software to run, since I knew regardless of how fast I can get the simulations to generate, if I could still make the program usable at the same time, it could work as a background task before its completed and displayed.
+With this newfound ability to see specific relevant information for specific points on graphs, I knew the first one I should properly try to implement was my convergence analysis graph, since I already knew how to define it for MatPlotLib, and would especially useful in comparing the converging points to the Monte Carlo Simulation result found in my Portfolio screen. After porting over the code I had previously used and getting it to run independently from the varCalculators class in the portfolio screen, I was able to have the simulation checkpoints generated and displayed within my Kivy application. This was fantastic, but did cause a massive issue, even with the optimised simulation I had created, the amount of time I had set for the simulation to run unaltered (for 75k simulations) would lag the program for around 10+s, where you couldn't move the program would become completely unresponsive. This was no way for any form of industry standard software to run, since I knew regardless of how fast I can get the simulations to generate, if I could still make the program usable at the same time, it could work as a background task before its completed and displayed.\\\vspace{0.3cm}
 
+% \newpage
 To do this, I would need to implement threading, something that I had not needed to include before now due to the lack of any significant hindrances to the applications running speed. Threading is part of pythons core library, so all I would need to do is import it, and then create a new thread that would run the simulation in the background, whilst the main thread would continue to run the program as normal. This would allow for the program to be responsive, and the simulation to run in the background, with the results being displayed when they are ready. I also tried for a while to implement a module called asyncio, but this was to no avail.
 
 \begin{verbatim}
@@ -1655,8 +1664,8 @@ To do this, I would need to implement threading, something that I had not needed
       ...
       totalValue = float(self.portfolio.totalValue.text.split('£')[1].replace(',', '')[:-4])
 
-@mainthread
-    def createGraph(self, x, y, xlabel, ylabel, title):
+  @mainthread
+      def createGraph(self, x, y, xlabel, ylabel, title):
     ...
 \end{verbatim}
 
@@ -1666,7 +1675,7 @@ My \texttt{graph3} method would be called when the button was pressed, and would
 Later on, I would define my threads with \texttt{thread.daemon = True}, this boolean value allowing threads to run in the background as usual, but if the main thread is closed, the daemon threads will also be closed. This was important, as there were times when threads were running, and I wouldn't want to see the final result, opting to shut the program down. Since the thread was running separately from the main app initiating its shutdown, this would cause the whole app to crash, resulting in an unnecessary situation for this sort of software to encounter. To fix this, with the daemon value being set to true, as soon as the main thread closes down, the threads will all close down with it, resulting in smooth exits from the application.\\\vspace{0.3cm}
 
 \subsubsection{Theoretical Portfolio Value Over Time}
-For my first graph made specifically for this screen, I wanted to go with the Theoretical Portfolio Value Over Time, as I understood the logic for it, and knew that with it completed, I would be able to create the specific stock graph easily afterwards. I had altered the info popup to now only display the more relevant y-value, along with a passed in symbol (this being a \pounds sign), allowing for a much more visually understandable graph. For all the graphs that I have developed for this screen, I will show a significant portion of the code, allowing me to explain the logic behind each one.\\\vspace{0.3cm}
+For my first graph made specifically for this screen, I wanted to create the Theoretical Portfolio Value Over Time, as I understood the logic for it, and knew that with it completed, I would be able to create the specific stock graph easily afterwards. I had altered the info popup to now only display the more relevant y-value, along with a passed in symbol (this being a pounds [\pounds] sign), allowing for a much more visually understandable graph. For all the graphs that I have developed for this screen, I will attempt to show a portion of the code, allowing me to explain some of the logic behind their data formatting and display.\\\vspace{0.3cm}
 
 \begin{verbatim}
   def graph1(self):
@@ -1690,8 +1699,8 @@ For my first graph made specifically for this screen, I wanted to go with the Th
 My new \texttt{graph1}, since I thought that it would be the best one to see when the screen is originally loaded, will directly communicate with the portfolio screen for its information. I set it up so that whenever the stocks are downloaded, to reduce the need to have them downloaded any further time, I would store them within a variable, which can be cross referenced between classes. The store would also be loaded from it's usual file, and the subsequent adjusted close prices of the stocks being calculated too. The total values would then be computed for each day by iterating through each stock and multiplying these daily adjusted close prices by the amount of shares owned (stored within holdings), appending the results to a list. The x values would be set to be every 15 days, as this produced a well enough structured graph, and the y values would be set to be every 15th value in the total values list to match. The \texttt{createGraph} method would then be called with these values, and the graph would be displayed.\\\vspace{0.3cm}
 
 \subsubsection{Single Stock Price Over Time and Vectorisation}
-Succeeding this, I could adapt this same code to be able to display the Single Stock Price Over Time, since the logic was very similar, and I could use the same data that I had already downloaded. For this, the user would select a stock within their portfolio screen, then go over to the graphical screen to select this graph to be rendered. Since every time I would display a specific stock, I would store its downloaded info in a variable, that would also be set to none if there totals are being displayed, so I can call this variable into this program to access the data.\\\vspace{0.3cm}
-
+Succeeding this, I could adapt this same code to be able to display the Single Stock Price Over Time, since the logic was very similar, and I could use the same data that I had already downloaded. For this, the user would select a stock within their portfolio screen, then go over to the graphical screen to select this graph to be rendered. Since every time I would display a specific stock, I would store its downloaded info in a variable (that would also be set to none if there totals are being displayed),  I can call this variable straight into this program to access the data.\\\vspace{0.3cm}
+\newpage
 \begin{verbatim}
   tempStockInfo = self.portfolio.tempStockInfo
   if tempStockInfo is not None:
@@ -1708,9 +1717,9 @@ Succeeding this, I could adapt this same code to be able to display the Single S
 \end{verbatim}
 
 \vspace{0.3cm}
-If the \texttt{tempStockInfo} variable is not none, the stocks variable will retrieve the rest of the temporarily stored downloaded stocks. The total values would then be computed in the same way as the previous graph, minus the need to multiply by shares and added together, for the specific stock, with the x and y value being set with almost the same metric. I decided that since these graphs are showing the progression of the stock over the last 500 days, then the graph should indicate this, with numbers ascending from 500 to 0. Now normally, this goes against how the library is plotted, since it usually defaults to putting the x-axis in ascending order. However, you can call the \texttt{invert\_xaxis()} method to help flip is when you display. Implementing this into my \texttt{createGraph} method, I was able to get it to check in what order the passed in x values where in after I plotted the values with the original x-y coordinates defaulting to ascending, allowing for the plot to look like normal, but for the x-axis to be displayed in a reverse descending order.\\\vspace{0.3cm}
+If the \texttt{tempStockInfo} variable is not none, the stocks variable will retrieve the rest of the temporarily stored downloaded stocks. The total values would then be computed in the same way as the previous graph, minus the need to multiply by shares and added together, with the x and y value being set with almost the same metric. I decided that since these graphs are showing the progression of the stock over the last 500 days, then the graph should indicate this, with numbers descending from 500 to 0. Now normally, this goes against how the library is plotted, since it usually defaults to putting the x-axis in ascending order. However, you can call the \texttt{invert\_xaxis()} method to help flip is when you display. Implementing this into my \texttt{createGraph} method, I was able to get it to check in what order the passed in x values were, initially ascending or descending and calling the method depending, after which I plotted the values with the original x-y coordinates, allowing for the plot to look like normal, but for the x-axis to be displayed in a reverse descending order.\\\vspace{0.3cm}
 
-During this time, I was becoming increasingly annoyed by the ridiculous amount of time it would take to generate the simulations for my convergence graph (unlike how it stops itself when converging within my main program), so I decided to do some experimentations with the code, utilising the time module within python to directly time certain portion of the code, and see how me changing my algorithm affected it. However, this timer wasn't even necessary to comprehend the improvement that I found when adjusting one of my Numpy functions. 
+During this time, I was becoming increasingly annoyed by the ridiculous amount of time it would take to generate the simulations for my convergence graph (unlike how it stops itself when converging within my portfolio), so I decided to do some experimentations with the code, utilising the time module within python to directly time certain portion of the code, and see how me changing my algorithm effects it. However, this timer wasn't even necessary to comprehend the improvement that I found when adjusting one of my Numpy functions:\\\vspace{0.3cm}
 
 \begin{verbatim}
   weightings = weightings.reshape(1, -1)
@@ -1718,10 +1727,10 @@ During this time, I was becoming increasingly annoyed by the ridiculous amount o
 \end{verbatim}
 
 \vspace{0.3cm}
-By using np.sum with the added additional parameter of summing them across the last axis, I was able to speed up the overall simulation sequence by 100\% almost. This was due to vectorisation, with the optimisedSim being a 2D array, numpy would let me then sum across its last axis, reducing it to a 1D array, and effectively replacing the previous hard coded python loop. To match this sum, I needed to slightly adjust the dimensions of weightings beforehand, but with this newfound method, I could generate the simulations needed for the graph without even the need for threading, but it was still kept due to reduce the program that can have anything capable of blocking. I implemented this revised and improved method for my normal convergence within my portfolio class as well, it bringing the same results, at a much faster rate.\\\vspace{0.3cm}
+By using np.sum with the added additional parameter of summing them across the last axis, I was able to speed up the overall simulation sequence by over 100 fold. This was due to vectorisation, with the optimisedSim being a 2D array, numpy would let me then sum across this last axis, reducing it to a 1D array, and effectively replacing the previous hard coded python loop. To match this sum, I needed to slightly adjust the dimensions of weightings beforehand, but with this newfound method, I could generate the simulations needed for the graph without even the need for threading, which I still kept implemented due to its ability to stop blocking. I implemented this revised and improved method for my normal convergence within my portfolio class as well, it bringing the same results, at a much faster rate.\\\vspace{0.3cm}
 
 \subsubsection{Creating Ranking Graphs and Displaying Names}
-When I first thought about implementing rankings graphs, I knew that I would have to completely adapt the way my code would display its popup, since there wouldn't be much relevance in seeing the y-axis, if you don't know what each individually plotted points represents. It becomes less about the value, and more about each points relative position to each other. With this knowledge, I knew I had to find some way to not only get all the names of the stocks without having to use my previous method, due to the slow speed done in retrieving that many request responses. But I also needed to find a way to get my hover feature to the names for each plotted point, especially since the would be extremely bunched together when displaying 100 different stocks for it.\\\vspace{0.3cm}
+When I first thought about implementing rankings graphs, I knew that I would have to completely adapt the way my code would display its popup, since there wouldn't be much relevance in seeing the y-axis, if you don't know what each individually plotted points represents. For a ranking, it becomes less about the value, and more about each points relative position to each other. With this knowledge, I knew I had to find some way to not only get all the names of the stocks without having to use my previous method, due to the slow speed done in retrieving that many request responses. But I also needed to find a way to get my hover feature to the names for each plotted point, especially since the would be extremely bunched together when displaying 100 different stocks for it.\\\vspace{0.3cm}
 
 For this, I decided to create an entirely new graph creation method called \texttt{createRankingGraph}, that would be called when a ranking graph was selected. It would take in a list of strings and a list of values, create an x-axis plot based on the lengths of the list, and plot these y values equally spaced out along the x-axis.\\\vspace{0.3cm}
 
@@ -1772,13 +1781,52 @@ The zipped dictionary that maps each ticker to its company is stored to be used 
 
 With this, I was able to plot all 100 of the lists stocks onto a graph, and with little degree of difficulty, move my mouse over each one to see the exact name of the company that the name was displaying for. This similar system was also used for creating a ranking graph for your portfolio, helping display the relative risk that each stock contains individually, and providing the user with a versatile tool to help them choose and understand the risk that they are taking on.\\\vspace{0.3cm}
 
-
+\newpage
 \subsection{Final Design}
 The final graph I implemented was for showing the backtesting for Monte Carlo Simulation, where it would calculate the VaR of the portfolio in rolling 50 day windows, then compare the portfolios return between that day and the next, and compare. The graph will plot and show these points, allowing you to easily see the times that the VaR model was breached, and the subsequent statistical assumptions that can be made from this. this graph does have a ridiculously long loading time, which I was not able to mitigate, even with all my other advancements, but it runs well as a background operation with threading, which allows the user to use the rest of the application in the meantime. \\\vspace{0.3cm}
 
-I also created a program found within my \texttt{Command Line} programs folder for term 2, that would take a png and blur it, so I saved screenshots of my graphs, ran them through this program and was able to create some fantastic looking buttons for users to select when browsing through the graphs. This was a great way to end the term, and I was very happy with the results that I had achieved. A full collection of the different graphs that have not been displayed yet will be found in figures throughout the next few pages.
+\begin{verbatim}
+  from PIL import Image, ImageFilter
+  imageLocation = 'PROJECT/Command Line VaR Programs Term 2/Graph5.png'
+  image = Image.open(imageLocation)
+  blurredImage = image.filter(ImageFilter.GaussianBlur(10))
 
+  blurredIMage = imageLocation.replace('.png', 'Blurred.png')
+  blurredImage.save(blurredIMage)
+\end{verbatim}  
 
+As seen above, I also created a program found within my \texttt{Command Line} programs folder for term 2, that would take a png and blur it, so I saved screenshots of my graphs, ran them through this program and was able to create some fantastic looking buttons for users to select when browsing through the graphs. This was a great way to end the term, and I was very happy with the results that I had achieved. There were so many things that I could not talk about with how nuanced the application is, but I hope everything I did touch on within this section was fulfilling. A full collection of the different graphs that have not been displayed yet will be found in figures throughout the next few pages.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.62\textwidth]{Images/Term 2 Images/image.png}
+  \caption{Monte Carlo Simulation Backtesting Graph}
+  \label{fig:Backtesting Visualised}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/image (4).png}
+  \caption{In Development: Individual Shares Price Over Time }
+  \label{fig:Individual Shares Price Over Time}
+  \par
+  \smallskip
+  Showcasing how the popup dynamically appears away from the graphs edges depending on what corner of the screen the mouse and plotted point are positioned.
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Screenshot 2024-04-12 062656.png}
+  \caption{FTSE100 Ranking Graph}
+  \label{fig:FTSE100 Ranking Graph}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Images/Term 2 Images/Screenshot 2024-04-12 062324.png}
+  \caption{Portfolio Value Over Time Graph}
+  \label{fig:Portfolio Value Over Time Graph}
+\end{figure}
 
 
 \section{Chapter 7 --- Software Engineering}
@@ -1817,6 +1865,7 @@ For my final iteration of my Initial GUI Design, the architecture loosely follow
     \item The \textbf{Controller} is evident in the event-handling methods, like \texttt{populateList} and \texttt{generateVaR}, which respond to user inputs and trigger model updates.
 \end{itemize}
 
+\newpage
 \underline{\textbf{Observer Pattern}}\\\vspace{0.3cm}
 
 The Observer pattern is present in the way the application monitors the state of user inputs. For instance, toggle buttons for selecting the VaR calculation method employ event listeners that update the system's state when user interaction occurs.
@@ -1921,7 +1970,7 @@ These additional design patterns utilised throughout all code within my program 
 Testing is a critical component of software development, essential for ensuring that the application meets its requirements and is free of errors. Mainly for my project, the primary mode of testing involved running the application and observing its behaviours for errors, crashes, GUI issues or incorrect VaR calculations.\\\vspace{0.3cm}
 
 This testing approach used can be classified as Ad Hoc Testing and Exploratory Testing. These methods are informal and unstructured, as I have been relying on my intuition and experience to identify issues.
-
+\newpage
 \begin{itemize}
     \item \textbf{Ad Hoc Testing}: This type of testing is carried out without any formal test plan or test case documentation. It is a random examination of the application, often useful for discovering glaring issues quickly.
     \item \textbf{Exploratory Testing}: This approach combines learning, test design, and test execution into a single activity. It is particularly effective in situations where there are no detailed specifications, and tests need to be devised on the fly.
@@ -1931,7 +1980,6 @@ While these methods can be effective for identifying obvious faults, they lack r
 
 One of the main limitations of my current testing approach is the absence of \textbf{Test-Driven Development (TDD)}. TDD is a modern software development process where requirements are turned into very specific test cases, then the software is improved to pass the new tests. This approach was not followed, as I was unable to justify what I would be testing for (I had planned out unit testing, but I especially did not know how to incorporate it within a Kivy application, as I have not done TDD with Python or Kivy before), so I continued with the above testing style, which worked and allowed me to create my program efficiently, but not up to the industry standard that I know I should be aiming for.\\\vspace{0.3cm}
 
-\newpage
 If I was to continue to develop my final deliverable, with its scalability, for future development cycles, I would plan on incorporating more testing strategies to enhance the quality and reliability of the application, such as:
 
 \begin{itemize}
@@ -1946,7 +1994,7 @@ By integrating these practices, my application could achieve a higher level of q
 
 Another key aspect to consider when developing software is the use of \underline{documentation}. Documentation is essential for ensuring that the codebase is understandable for future users and mainly developers, so they can easily navigate, comprehend and possibly scale the application going forward. For my project, since it was created in Python, I could have utilised a library called PyDoc (\url{https://docs.python.org/3/library/pydoc.html}), which automatically generates documentation from Python modules.\\\vspace{0.3cm}
 
-This would have helped me easily create documentation for my codebase, providing a clear and structured overview of the application's components, classes, methods, and attributes. However, due to the nature of my codes development alongside this reports structure, I believed that the level of detail that I have been able to display of multiple parts within my codes development cycle are acceptable in understanding key aspects of the application. But there are still many things that I did not touch on within this report, so having a more detailed documentation system in place would have been beneficial, and something that I would have welcomed implementing in the future if development was to continue with this project.\\\vspace{0.3cm}
+This would have helped me easily create documentation for my codebase, providing a clear and structured overview of the application's components, classes, methods, and attributes. However, due to the nature of my code's development alongside this reports structure, I believed that the level of detail that I have been able to display of multiple parts within my code's development cycle are acceptable in understanding key aspects of the application. But there are still many things that I did not touch on within this report, so having a more detailed documentation system in place would have been beneficial, and something that I would have welcomed implementing in the future if development was to continue with this project.\\\vspace{0.3cm}
 
 \subsection{Version Control (Git)} 
 
@@ -1958,7 +2006,7 @@ Git is a distributed version control system, which means that the complete codeb
     \item Backup and Security: All the code was backed up on OneDrive as well (a personal decision), providing an additional layer of security and ensuring that no work would be lost in case of system failures.
     \item Remote Repository: The code was pushed to a remote repository on GitHub, enabling me to work on the project from multiple devices when necessary.
 \end{itemize}
-
+\newpage
 The practice of making regular commits with detailed messages is incredibly invaluable, thus me making sure to regularly comply with this methodology. It enabled the tracking of changes and helps simplify the process of understanding the evolution of the codebase. For me, Git has been essential for several reasons:
 
 \begin{itemize}
@@ -1972,15 +2020,17 @@ While my development with this project's version control strategy was effective 
 
 Another example of me failing to leveraging the full suite of features offered by Git, which I should have implemented to ensure a more efficient and error-preventative development workflow, would be the use of tagging. Tagging is a feature that allows you to mark specific points in the repository's history as being significant, such as a release or a version update. This would have been useful for marking the completion of each screen, or the completion of each iteration of the GUI, so that I could easily refer back to these points in the future, especially when using Git interfaces such as \texttt{GitHub Desktop}, since it shows the tags in a linear visual manner, used to easily identify your significant commits. However, I do understand that tags are mainly used for different iterations of deployed software, a stage that my application did not reach until the very end of its development, so I think that my use of a tag for its final release is justifiable in this instance.\\\vspace{0.3cm}
 
+\newpage
 \section{Chapter 8 --- Critical Analysis}
 
 \subsection{Interim Evaluation}
 In the end, for this term, I am still happy with the progress I made. I learnt some very valuable lessons, such as needing to make sure that I do all of the documentation alongside the coding, since with the gap in progress, it can become tedious to try and explain it all properly in the future. I feel that I accomplished the goals set out within my original timeline for what I wanted to achieve this term, for this interim report, and whilst there are sections of this report that I am unhappy with the result of (especially the final iteration of the GUI), I am still satisfied with the report as a whole in displaying what I had learnt and the code I was able to create, especially with the inconsistency with my physical and mental health experienced over the last few months. I also am aware of my lack of testing that I have performed, I spent a large chunk of time just testing everything myself to make sure it works, when I should have been following a better framework, I plan to learn from this and change the way I develop and document the code come next term. I know the Latex is not great in this document, its still the first time I've ever done large scale documentation like this before, but hopefully by the time my final report is complete I will have given myself enough time for it to be at an acceptable level. I also know I haven't used enough sources, the sources that I did use were so useful that I kept referring back to them, which makes my ability to reference them rather bland, so I will also make sure to diversify with many more references in the future. With how the final design for the initial GUI came out, I'm extremely happy with its functionality, its very fast and easy to use and produces the exact results you need whilst still being robust. There's still a lot to work on for it in the future, like adding different windows/views, incorporating multiple stocks VaR calculations (I wrote a program to do multiple stocks but I didn't have the time to include that in this documentation either, can be found within my Git project/submitted programs) and allowing you to access entire portfolio's within the application. What I made this term was a great proof of concept for what I can do with Kivy, for my final report I want to be able to do so much more, since that is my main goal, the development of an industry grade application for Value at Risk as well as financial management in general. Finally, there were many planned sections of this report that were never completed, I aim to be able to structure my documentation so that I can complete everything I need in the following term, so to conclude, I am extremely happy with everything I was able to do, but I plan on doing everything much better in the future, as I know it was not optimal enough for what I want to achieve...
 
+\newpage
 \subsection{Final Report Evaluation}
+For my final report, my major shortcoming continues to be structuring my time for this projects development. I had many plans and ideas for how I wanted to tackle this, and whilst I felt that I met them when it came to apps development, maybe the time I spent pursuing that hindered my ability to be properly happy with this report. I still think that the technical detail and references that I've used and explored are all excellent, having spent a great deal of time on each section, but I still have to come to terms with the fact I wasn't able to completely convey the story of my journey due to my own constraints. From a purely comparative perspective to my original goals, I virtually met them, wanting to create an industry standard application featuring Value at Risk, but when I try and push forward this ideal, I am met with the nihilism of how I know that I didn't quite hit the mark. Yes the software is great in itself for what it is, but industry standard are on a completely different scale and complexity to my final deliverable, yes I had set out guidelines for how it could be done but that doesn't justify my lack of accomplishment in that area. Furthermore, I was acutely aware from the previous term that my ability to continuously provide consistent work on a subject such as this is challenging, yet my timeline remained just the same for this term as well, allowing me to still produce excellent results, but not meeting myself where my expectations lie. It is not all bad, whilst I do not believe my work to be of Industry Quality, there are some fantastic sections of my design, such as the nan-replacement in the graphs class and the Company Name finder in the portfolio class, there's some fantastic ingenuity in the code here, and it's well articulated and explained when being brought up within the report. I have enjoyed using LaTeX, I never mastered it but I can use it sufficiently enough to take advantage of the undeniably aesthetic result it provides. I apologise for the drop in formatting quality, the vast amount that I have been able to deliver with this report has left me unable to properly give its presentation what it deserves. To conclude, this report encapsulates practically everything I have for this project, and my final deliverable is the culmination of what all of it was working towards, and I am very proud of both.
 
-
-
+\newpage
 \section{Professional Issues}
 
 \subsection{Finance Industry Ethics}
@@ -2094,6 +2144,7 @@ Recent discussions around VaR and statistical analysis are enriched by Wasserste
 
 Overall, I think the references I have chosen really help encapsulate the multifaceted aspects of VaR found in the modern age, highlighting its theoretical, methodological, and practical scale. It highlights the continuous evolution in VaR modelling, helping set the context for my further research into this field, as well as helping enhance my knowledge for user interface design and general industry standard financial risk software development.
 
+\newpage
 \subsubsection{General Literature}
 
 The general literature within the industry around the development of Python software found online, particularly for applications in finance and risk management, helps to exemplify its simplicity, efficiency, and robustness for being utilised for the medium. Python's apparent ascent as a preferred programming language for financial software development is largely attributed to its easy readability, expansive library ecosystem, and the persistently supportive community surrounding it. As noted when I was looking into Van Rossum (1995) [\ref{ref19}], the creator of Python, the language's design philosophy helps to emphasise code readability and syntax simplicity, allowing developers to express concepts in fewer, more readable lines of code compared to other programming languages.\\\vspace{0.3cm}
@@ -2140,7 +2191,7 @@ To conclude, this wide range of literature detailed above and within my reports 
 
 \subsection{Diary}
 FINAL YEAR PROJECT DIARY\\
- ------------------------------------------------
+------------------------------------------------
 
 28/9/23 - Start of Project\\
 Today, I am starting this project. I have finally fully recovered from a health issue I was having at the start of term, but I am still dealing with an ongoing emotional issues that I will have to push through to complete this project successfully (heartbreak).\\\vspace{0.3cm}
@@ -2213,7 +2264,7 @@ I started today by being tired of displaying tickers for everything, its practic
 I started today by finally getting around and doing proper verification for my inputs. I started with the save stock input, since it needs to check if you're passing in a valid ticker and a bunch of other stuff. This wasn't too hard, since I had verification set up for a similar kind of thing for my previous screen, but to get the logic working perfectly it took a while and some nesting. I also wanted to give visual feedback on entering something wrong, where I discovered the animations feature for kivy, which essentially transitions from one colour to another, for me at least. This was great, because I could quickly get red to flash up and fade, showing they got it wrong. I was having so much trouble with focus shifting not working, not letting me tab from one input to another, but I was able to get it so that it could do that when I clicked the enter key which is good enough for now. Because I liked the animation feature so much, I wanted to add it as a small background transition for how the portfolio looks when going from portfolio to specific stock totals, which looks smooth and helps the user understand whats happening a bit better. \\I wanted to find a way to explain VaR a bit better, so I used the adjustment pop-up for it to write out and explain it, colour coordinating the values displayed to be the same as the text inputs, making it even easier for the user to see what they need to input. I also added verification for these as well, which was even easier to do, since I found out you can use input\_filtering, so I would only let people enter integers for these inputs. All I really needed to do for my screen then was to just fix formatting, I did a bunch of stuff like stopping the stocks from being buttons, instead they're a grid-layout with two columns, so I could wrap the text to be side by side based on the ":", since I thought this would look the most visually appealing, which it does. I had to give them an on click/on press whatever it is, so they could still function like before. \\I changed a bunch of colours all day, going back and forth between different visual ideas, adding boldness and underlining, making the top right have its own border and section, adjusting how close the right and side information is to each other and the left hand side etc. It was all just a bunch of formatting changes, so I think everything looks a lot better now, but I'm not very good at making stuff look pretty, but it will have to do for now. Very proud of the functionality, I added a massive stock name to the portfolio and the app would still display it correctly, works robust. Finally, I've started on the next and final screen that I want to complete for this project. It was originally trends but since I'm not only going to have trends display don the screen, I thought I would change it to be called graphs now. \\I got the original layout working, after I had to look online to find a way to get the imports for having matplotlib stuff within my kivy applications working, they gave me a pip-install and a different way to import the kivy gardens module, but with it working, it all seems to be good. I have a basic graph, displayed, with a scrollable bar underneath, with stock images being used for each option. I wanted to change up the style of having the up and down scrollable sections in my previous screens, so I like how this is, and honestly if I can get this section looking nice, I think I can breeze through the logic of it tomorrow, and finish up, ready to start on the write-up properly by Monday, I HOPE :))\\\vspace{0.3cm}
 
 07/04/24 - Graphs Screen\\
-I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my codes future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
+I made an example second graph and tried to add it to the same graph area, but I didn't remove the previous one, so they all got compiled together and it looked very comical haha, they would squish up. Easily solved by adding a clear widget which I had forgot to. I then knew I wanted to get it so that when you hover over points, it would display what those points are, since I knew I would want to show a list of stocks and, to be able to tell which stock is which, I want to display it when you hover over it. This is ambitious, but I really wanted to add the functionality. Unfortunately, its not built into the kivy side of matplotlib with garden, compared to just the matplotlib side, so I was struggling to get anything to work effectively. After doing some research online, I found a single page that had an answer that said would work, so I implemented it and adapted it based on what they had done, and, with a lot of trial and error, I finally got it functioning properly. This looked great, its not 100\% since if you have a graph that has a lot of value near the top, it can sometimes cut into the title and be impossible to see, but I think I'll fix that later if necessary. I was creating a graph every time I had a function, and knew that this wouldn't be efficient, so I took out the creating a graph logic, and made it its own method, making sure to pass the information needed in when it is called. \\This was great because I knew I would have a lot of big complicated code within most graph sections, that I could just call create graph and have that handle the information properly. I essentially created a factory design pattern I think :D I then tired to implement the Monte Carlo Simulation Analysis Visualisation for Convergence that I had made as a method in my Portfolio file, within the VaR Calculators class, but I didn't want to run it from there, I wanted to have all the graphical logic be within the graphs file, so I moved it over. I still needed information from my portfolio page since I was attempting to just create a method to pass it in, so I found a way to call the portfolio and have the information passed in and working for the code, which I then just displayed the values of, working perfectly, I even created a temporary save of the downloaded stocks, so I could just use that data rather then call for stock data again. However, this code, for it to be able to display the amount of simulations I want to show the convergence visually, is incredible slow, making the program freeze for over 10+ seconds every time its clicked. I was so annoyed by this, so I wanted to at least be able to use the rest of my program whilst I waited. \\To do this, I knew I had to incorporate threading/asynchronous programming\\ logic, so I originally tried asyncio, but could not get it working at all, even after updating all my files to be running on the latest version of kivy (I originally had it on 1.9.0 I think became the originally guide that taught me kivy used that), so I decided to use normal threading instead, and it worked, but I needed to use a sleep method to have my code logic run slow enough to even make the rest of the program barely usable whilst it ran. It would also now take a minute, all highly un-optimal but I couldn't do anything about it if I wanted my simulations to look good. This was also annoying since when the threading was running, I couldn't leave the application without it crashing, so I implemented a check to see if I'm trying to close the application, and if so, stop threading. I knew I would want to call portfolio multiple times in my code's future, so I made it a property, that will handle the logic, since it would need to happen after all the screens were initialised, so I can't have it as like a "self" variable, but I also did an on\_enter thing so maybe I can actually, I may try and change that in the future... I disliked the scroll wheel that my portfolio had, so I made a custom one, I need to add it to my original VaRChecker. \\I also took the stock download and displayed a past theoretical total if I had kept these amount of shares with stock pricing from the last 500 days downloaded. This looked great but would display the numbers at the bottom in a confusing way, and I got stuck forever trying to fix it, since it defaults to displaying the numbers from 0-x, but I implemented a check to flip the axis which finally seemed to work. There were also a bunch of gaps between points on the graph, after printing out I saw there were nan values, so I created some code to check for this and create assumed values that make logical sense to me and look good on the graph. I also wanted to display pounds and other symbols with the hover over, so I added that as something saved and shown as well. On a whim, I decided to research a way to get my monte carlo sim to run a bit faster, since it was horrifically slow without using the convergence stopping method I was using in my portfolio code, upon testing each section of it for time taken, I realised it was mainly the for loop nested inside the outer for loop, the one calculating returns. \\Seeing that it was done with numpy, I realised that I can implement the built in vectorisation to calculate this faster, so after adapting my weightings to fit the shape of my optimised simulation for them to be summed together, it got it to achieve the same results without the loop. This made the simulation honestly 100 times faster, which is great now but embarrassing for my previous code, so I'm glad I looked into this. Now it runs extremely fast on both instances of the simulation, so even the threading isn't necessary now but I'll still keep what I have, but I won't add threading to anything else at the moment. And after checking, my VaR results are the same, so everything is looking great in that regard. Finally, I created a graph that would only appear when clicked if you had selected a specific stock (added a check in portfolio for this) and it would display that stocks single share price over time, which is a standard thing for these applications to have, so I liked how it looked. I also wanted to make sure that my final value for this and the portfolio graphs matched the ones being displayed on the portfolio page, so I hard coded it. I'm annoyed that I haven't finished up on this section, since I'm worried about having enough time on the report, but I reckon its still doable for now, so I wish myself luck for the future.\\\vspace{0.3cm}
 
 12/04/24 - Final Day\\
 I stopped with some recent entries so I could fully focus on my final deliverables up until the deadline, and whilst I have failed to meet my own internal goals (much to my annoyance), I still am extremely proud of this project, report and work as a whole. For a better understanding of what I did during these last days, I have left many detail git commit messages, so they can still be used to see my progression in a less informal was such as with these entries. I wish that my health struggles had not continued to plague me until the end with this, but having pushed through them the best I can, I can confidently say that I have done my best, and hope anyone reading has enjoyed the result...\\\vspace{0.3cm}

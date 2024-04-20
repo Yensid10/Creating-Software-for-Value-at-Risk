@@ -1,0 +1,150 @@
+#:kivy 2.3.0
+# File name: Graphs.kv
+
+<Graphs>:
+    graph3Ref: graph3Ref
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: graphSection
+            orientation: 'vertical'
+            size_hint_y: 0.75
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        BlackScroll:
+            do_scroll_x: True
+            do_scroll_y: False
+            size_hint_y: 0.25
+            canvas.after:
+                Color:
+                    rgba: 0, 0, 0, 1
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1
+            GridLayout:
+                cols: 10
+                size_hint_x: None
+                width: self.minimum_width
+                Button:
+                    text: '[b][u]Portfolio Over Time[/u][/b]\nBased on Current Shares'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph1Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph1()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+                Button:
+                    text: '[b][u]Portfolio VaR Ranking[/u][/b]\nNeeds 2+ Stocks'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph2Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph2()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+                Button:
+                    text: '[b][u]Current Stock History[/u][/b]\n [color=ff0000]Select Stock in Portfolio Tab[/color]'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph3Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph3()
+                    id: graph3Ref # Needed for verification
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+                Button:
+                    text: '[b][u]Monte Carlo Convergence[/u][/b]\n Load Time: 0.5s'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph4Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph4()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+                Button:
+                    text: '[b][u]FTSE100 VaR Ranking[/u][/b]\n Load Time: 3s'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph5Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph5()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+                Button:
+                    text: '[b][u]Monte Carlo Back-Testing[/u][/b]\n Load Time: 25 - 75s'
+                    markup: True
+                    color: 0, 0, 0, 1
+                    background_normal: app.PATH_TO_RESOURCE + 'BlurredGraphs/Graph6Blurred.png'
+                    size_hint_x: None
+                    width: 250
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
+                    on_press: root.graph6()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 2
+
+<BlackScroll@ScrollView>:
+    bar_width: 5
+    bar_color:  0, 0, 0.05, 1
+    bar_inactive_color:  0, 0, 0, 0.3
+    bar_margin: "3.5dp"
+    canvas.before:
+        Color:
+            rgba: self.bar_color if self.scroll_y else self.bar_inactive_color
+        Rectangle:
+            pos: self.x + self.width - self.bar_width, self.y
+            size: self.bar_width, self.height

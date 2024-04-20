@@ -1,0 +1,328 @@
+#:kivy 2.3.0
+# File name: Portfolio.kv
+
+<Portfolio>:
+    stockCards: stockCards
+    stockName: stockName
+    totalValue: totalValue
+    totalReturn: totalReturn
+    totalShares: totalShares
+    dailyVaR: dailyVaR
+    returnButton: returnButton
+    adjDeleteButton: adjDeleteButton
+    rightSide: rightSide
+    BoxLayout:
+        orientation: 'horizontal' 
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.575
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: 0.1
+                Button:
+                    size_hint_x: 0.1
+                    height: '50dp'
+                    text: '+' # I think users can make the assumption that this button will add a stock
+                    background_normal: ''
+                    background_color: 0.1961, 0.6392, 0.8078, 1.0
+                    on_release: root.openPopup()
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 1.3
+                BoxLayout:
+                    size_hint_x: 0.9
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0, 0.05, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                        Color:
+                            rgba: 0, 0, 0, 1 
+                        Line:
+                            rectangle: (self.x, self.y, self.width, self.height)
+                            width: 1.5
+                    canvas.after:
+                        Color:
+                            rgba: 0, 0, 0, 1
+                        Line:
+                            rectangle: self.x, self.y, self.width, self.height
+                            width: 1.3
+                    Label:
+                        text: '       OWNED STOCK[b]: HOLDING[/b]' # I have to do this crude method because I can't get the text to align properly otherwise, you will see it done a few more times
+                        color: 1, 1, 1, 1
+                        font_size: '25sp'
+                        halign: 'center'
+                        valign: 'bottom'
+                        padding: '10sp' 
+                        markup: True
+            BlueScroll: # My custom scroll view to make it easier to see the scroll bar
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 1, 1 # background needs to be set to this colour since it matches the stocks that go ontop and looks terrible when there are 0 stocks without this colour being here
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                canvas.after:
+                    Color:
+                        rgba: 0, 0, 0, 1
+                    Line:
+                        rectangle: self.x, self.y, self.width, self.height
+                        width: 1.3
+                GridLayout:
+                    id: stockCards
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.425
+            id: rightSide
+            canvas.before:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                Color:
+                    rgba: 0, 0, 0, 1 
+                Line:
+                    rectangle: (self.x, self.y, self.width, self.height)
+                    width: 1.5
+            canvas.after:
+                Color:
+                    rgba: 0, 0, 0, 1
+                Line:
+                    rectangle: self.x, self.y, self.width, self.height
+                    width: 1.3
+            BoxLayout:
+                size_hint_y: 0.8
+                canvas.before:
+                    Color:
+                        rgba: 0.1, 0.2, 0.3, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                canvas.after:
+                    Color:
+                        rgba: 0, 0, 0, 1
+                    Line:
+                        rectangle: self.x, self.y, self.width, self.height
+                        width: 1.3
+                Label:
+                    id: stockName
+                    markup: True
+                    font_size: '30sp'
+            BoxLayout:
+                size_hint_y: 0.65
+                padding: [30, 0, 0, 0] # Pushes these all away from the sides
+                Label:
+                    id: totalValue
+                    markup: True
+                    font_size: '20sp'
+                    halign: 'left'
+                    text_size: self.size
+            BoxLayout:
+                size_hint_y: 0.8
+                padding: [30, 0, 0, 0]  
+                Label:
+                    markup: True
+                    id: totalReturn
+                    font_size: '20sp'
+                    halign: 'left'
+                    text_size: self.size
+            BoxLayout:
+                size_hint_y: 0.8
+                padding: [30, 0, 0, 0]  
+                Label:
+                    id: totalShares
+                    font_size: '20sp'
+                    halign: 'left'
+                    text_size: self.size
+            BoxLayout:
+                size_hint_y: 0.8
+                padding: [30, 0, 0, 0]  
+                Label:
+                    id: dailyVaR
+                    font_size: '20sp'
+                    markup: True
+                    halign: 'left'
+                    text_size: self.size
+            BoxLayout:
+                size_hint_y: 1
+                padding: '15sp'
+                Button:
+                    id: adjDeleteButton
+                    size_hint: 0.2, 0.7
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    background_normal: ''
+                    background_color: (0.0, 0.3, 0.6, 1)
+                    on_release: root.adjDeleteHandler()
+                    canvas.before:
+                        Color:
+                            rgba: (0, 0, 0, 1)
+                        Line:
+                            rectangle: (self.x+1, self.y+1, self.width-2, self.height-2)
+                            width: 3
+
+    AnchorLayout: # This managed to get it displayed in the top right, with the size and no background it looks perfect for what I want
+        anchor_x: 'right'
+        anchor_y: 'top'
+        Button:
+            id: returnButton
+            text: 'X' # Same assumption here, that people will realise that a cross in the top corner of an area indicates that its to close/bring them back to the previous section.
+            font_size: '35sp'
+            size_hint: None, None
+            size: '40dp', '40dp'
+            background_color: 0, 0, 0, 0
+            opacity: 0
+            disabled: True
+            on_release: root.initialStockTotals()
+
+
+
+
+
+<Stocks>:
+    markup: True
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    canvas.after:
+        Color:
+            rgba: 0, 0, 0, 1
+        Line:
+            rectangle: self.x, self.y, self.width, self.height
+            width: 2
+
+
+
+
+
+<InputStock>:
+    inputTicker: inputTicker
+    inputShares: inputShares
+    size_hint: 0.5, 0.5
+    title: '                                   Create/Update Holding'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '12dp'
+        spacing: '8dp'
+        Label:
+            markup: True
+            text: 'If you enter a [u][b]Stock[/b][/u] you already own, it will\nupdate your [u][b]No. of Shares[/b][/u], with a new [u][b]Initial Price.[/b][/u]' # Best way I could briefly explain how to use the app this way
+            halign: 'center'
+            valign: 'center'
+        TextInput:
+            id: inputTicker
+            hint_text: 'Stock Ticker'
+            size_hint_y: None
+            height: '30dp'
+            multiline: False
+            focus: True
+            on_text_validate: inputShares.focus = True # Have to use ontext validate, since other focus options were not working at all
+        TextInput:
+            id: inputShares
+            hint_text: 'No. of Shares'
+            size_hint_y: None
+            height: '30dp'
+            multiline: False
+            input_filter: 'int'
+            on_text_validate: root.saveStock() # Second one just validates both inputs, so might as well just used enter for everything
+        Button:
+            text: 'Save'
+            size_hint_y: None
+            height: '40dp'
+            on_release: root.saveStock()
+
+
+
+
+
+<ConfirmDelete>:
+    size_hint: 0.5, 0.35  # Fairly simple popup
+    title: '                                           Confirm Deletion'
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        Label:
+            markup: True
+            text: "Are you sure you want to [u][b]delete[/u][/b] this stock?\n\nIt will be [u][b]permanent[/u][/b]."
+            halign: 'center'
+            valign: 'center'
+        BoxLayout:
+            size_hint_y: None
+            height: '50sp'
+            Button:
+                text: "Yes"
+                on_release: root.on_confirm()
+            Button:
+                text: "No"
+                on_release: root.dismiss()
+
+
+
+
+<AdjustVaRPopup>:
+    timeHoriInput: timeHoriInput
+    riskLevelInput: riskLevelInput
+    varLabel: varLabel
+    size_hint: 0.5, 0.5
+    title: '                                   Adjust VaR Parameters'
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '10dp'
+        padding: '20dp'
+        Label:
+            id: varLabel
+            markup: True
+            halign: 'center'
+            valign: 'center'
+        TextInput:
+            id: riskLevelInput
+            hint_text: 'Risk Level (%)'
+            hint_text_color: 1, 0.5, 0, 1 # Same colour as the ones used for the explanation text
+            foreground_color: 1, 0.5, 0, 1
+            input_filter: 'int'
+            size_hint_y: None
+            height: '30dp'
+            multiline: False
+            focus: True
+            on_text_validate: timeHoriInput.focus = True # Same logic as other popup
+        TextInput:
+            id: timeHoriInput
+            hint_text: 'Time Horizon (days)'
+            hint_text_color: 0, 170/255, 1, 1
+            foreground_color: 0, 170/255, 1, 1
+            input_filter: 'int'
+            size_hint_y: None
+            height: '30dp'
+            multiline: False
+            on_text_validate: root.submit()
+        Button:
+            text: 'Submit'
+            size_hint_y: None
+            height: '40dp'
+            on_release: root.submit()
+
+<BlueScroll@ScrollView>:
+    bar_width: 5 # The custom scroll bar I made
+    bar_color:  0, 0, 0.05, 1
+    bar_inactive_color:  0, 0, 0.5, 0.3
+    bar_margin: "3.5dp"
+    canvas.before:
+        Color:
+            rgba: self.bar_color if self.scroll_y else self.bar_inactive_color
+        Rectangle:
+            pos: self.x + self.width - self.bar_width, self.y
+            size: self.bar_width, self.height
+
